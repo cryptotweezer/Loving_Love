@@ -545,13 +545,7 @@ Each testimonial entry displays:
 
 ---
 
-### SECTION 5.1 — Page Introduction
-
-> This is a celebration of your marriage and commitment to each other. Together we plan a unique ceremony that celebrates your story.
-
----
-
-### SECTION 5.2 — Renewal of Marriage Vows
+### SECTION 5.1 — Renewal of Marriage Vows
 
 **Tagline:**
 > "A lifetime ago I said 'I do' and still 'I do'"
@@ -564,7 +558,7 @@ Each testimonial entry displays:
 
 ---
 
-### SECTION 5.3 — Commitment Ceremony
+### SECTION 5.2 — Commitment Ceremony
 
 **Body text:**
 > You may not wish to get legally married, but would like to celebrate your commitment to each other. Together we plan a special ceremony to celebrate your love, excluding all the legal components.
@@ -574,13 +568,21 @@ Each testimonial entry displays:
 
 ---
 
-### SECTION 5.4 — Baby Naming Ceremony
+### SECTION 5.3 — Baby Naming Ceremony
 
 **Body text:**
 > A naming ceremony is a celebration of your child, shared with family and friends, it's a lovely way to express the joy your child has brought to your life, and your commitment to your child. The ceremony we create together would be a celebration that involves the special people in your child's life.
 
 **Legal note:**
 > A naming ceremony is non-religious and not a legal ceremony.
+
+---
+
+### SECTION 5.4 — Celebrations of Life
+
+> **Dev note:** This section contains NO text content. It is a single button/link that takes the user to the dedicated Celebrations of Life page (`/celebrations-of-life`). No description, no copy — just the button.
+
+**Button:** `Celebrations of Life` → `/celebrations-of-life`
 
 ---
 
@@ -604,8 +606,11 @@ Each testimonial entry displays:
 | **Browser title** | `Celebrations of Life — Loving Love` |
 | **Meta description** | `[TBD — Lena to provide once content is written]` |
 
-> ⚠️ **Content Status: TBD**
-> This is a new service Lena confirmed she wants to add. All page content to be written by Lena.
+> ⚠️ **Content Status: TBD — All content to be written by Lena.**
+
+**Page purpose:** This page is dedicated to memorial and end-of-life celebration ceremonies. It is a standalone page with its own distinct tone — sober, respectful, and separate from the rest of the site. It is accessed via the button on the Other Services page (`/other-services`) and also directly from the SERVICES dropdown in the navigation.
+
+**Tone note for dev:** This page serves a different audience and emotional context than the wedding-focused pages. The tone of the content (once provided by Lena) will be calmer and more solemn. Design treatment to be defined in `DESIGN.md`.
 
 ---
 
@@ -615,9 +620,9 @@ Each testimonial entry displays:
 
 ---
 
-### SECTION 6.2 — What is a Celebration of Life?
+### SECTION 6.2 — Body Content
 
-**Body text:** `[TBD — Lena to write in her own words]`
+**All content:** `[TBD — Lena to write]`
 
 ---
 
