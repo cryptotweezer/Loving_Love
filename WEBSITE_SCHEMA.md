@@ -34,6 +34,75 @@
 
 ---
 
+## TECH STACK & DEPLOYMENT
+
+| Layer | Technology | Plan |
+|-------|-----------|------|
+| **Frontend** | Next.js | — |
+| **Deployment** | Vercel | Hobby (free) |
+| **Database** | Supabase | Free tier |
+| **Image Storage** | Supabase Storage | Free tier — 1 GB |
+| **Image Delivery** | Vercel CDN via Next.js Image component | Cached — minimises Supabase bandwidth |
+
+### Image handling
+- Lena uploads photos via the admin dashboard
+- Images are stored in Supabase Storage
+- Next.js `<Image>` component fetches once and Vercel CDN caches and serves to all visitors
+- On upload: auto-resized to max 1200px wide, converted to WebP, compressed to 80% quality
+- Supabase bandwidth impact is minimal due to Vercel CDN caching
+
+---
+
+## ADMIN DASHBOARD
+
+**Route:** `/admin` — password-protected, not visible in public navigation
+
+**Purpose:** A simple, non-technical interface for Lena to manage dynamic content on the site without touching code.
+
+**Lena manages two sections from the dashboard:**
+
+---
+
+### Dashboard Section A — Moments (Testimonials)
+
+Lena can **add**, **edit**, and **remove** testimonial entries.
+
+Each testimonial entry contains:
+
+| Field | Type | Required |
+|-------|------|----------|
+| Couple names | Text | ✅ |
+| Venue / location | Text | ✅ |
+| Testimonial quote | Long text | ✅ |
+| Couple photo 1 | Image upload | ✅ |
+| Couple photo 2 | Image upload | Optional |
+
+> **Dev note:** All 32 existing testimonials (currently hardcoded in `CONTENT.md`) must be migrated to Supabase on first deploy. After migration, the Moments page reads entirely from the database.
+
+---
+
+### Dashboard Section B — Partners
+
+Lena can **add**, **edit**, and **remove** both categories and entries within each category.
+
+**Category management:**
+- Default categories on launch: `Favourite Venues` and `Trusted Partners`
+- Lena can create new categories at any time (e.g. `Preferred Caterers`, `Florists`, etc.)
+- Lena can rename or remove categories
+
+**Entry management — each partner entry contains:**
+
+| Field | Type | Required |
+|-------|------|----------|
+| Name / Business name | Text | ✅ |
+| Category | Select (from existing categories) | ✅ |
+| Description / personal note from Lena | Long text | ✅ |
+| Photo / Logo | Image upload | Optional |
+| Website URL | Text | Optional |
+| Instagram handle | Text | Optional |
+
+---
+
 ## SITE MAP — 8 Pages
 
 ```
@@ -146,9 +215,18 @@ Copyright © 2019 by Loving Love
 
 ---
 
-### SECTION 1.3 — Featured Testimonials
+### SECTION 1.3 — Google Reviews
 
-**6 featured quotes:**
+> **Dev note:** Google Reviews widget embedded here — auto-updated from Lena's Google Business Profile. Displays star rating, total number of reviews, and individual review cards.
+> Google Business Profile URL to be provided by Lena.
+
+**CTA button:** `Leave a Google Review →` *(links to Lena's Google Business Profile)*
+
+---
+
+### SECTION 1.4 — Featured Testimonials
+
+**6 featured quotes (curated by Lena, managed from admin dashboard):**
 
 > "We felt that it was a true reflection of our story and one that had our guests crying and laughing."
 > — Belle & Matt
@@ -170,6 +248,8 @@ Copyright © 2019 by Loving Love
 
 **Link:**
 - `See all Moments & Thoughtful Words →` → `/moments`
+
+---
 
 ---
 
@@ -304,22 +384,15 @@ Copyright © 2019 by Loving Love
 
 ---
 
-### SECTION 4.2 — Google Reviews
+### SECTION 4.2 — Testimonials
 
-**CTA:** `Leave a Google Review →`
-*(Google Business Profile URL to be provided by Lena)*
-
-> **Note for dev:** Google Reviews widget/embed to be integrated once Lena provides her Google Business Profile link.
-
----
-
-### SECTION 4.3 — Testimonials
+> **Dev note:** All testimonials are loaded dynamically from Supabase. Lena manages all entries from the admin dashboard — she can add, edit, and remove testimonials at any time. The 32 existing testimonials listed below must be seeded into the database on first deploy.
 
 Each testimonial entry displays:
+- Couple photo(s) *(uploaded by Lena via admin dashboard)*
 - Couple names
 - Venue / location
-- Full testimonial text
-- Couple photo *(to be provided by Lena)*
+- Full testimonial quote
 
 ---
 
@@ -759,12 +832,12 @@ E: lena@lovinglove.com.au    (clickable mailto: link)
 | Hero photo (Home page) | ✅ Exists | Credit: Michelle Fiona Photographer |
 | Photo (Meet Lena page) | ⚠️ Needed | Portrait of Lena |
 | Ceremony page hero photo | ✅ Exists | Credit: Ollie Khedun Photographer |
-| Couple photos (Moments page) | ⚠️ Needed | One per testimonial — 32 couples |
+| Couple photos (Moments page) | ⚠️ Needed | 1-2 photos per testimonial — 32 couples — uploaded via admin dashboard |
+| Google Business Profile URL | ❌ TBD | For Google Reviews widget on Home page |
 | Celebrations of Life — full content | ❌ TBD | Lena to write entire page |
 | Partners page — intro text | ❌ TBD | Lena to write |
 | Partners — Favourite Venues list + personal notes | ❌ TBD | Lena to provide |
 | Partners — Trusted Partners list + personal notes | ❌ TBD | Lena to provide |
-| Google Business Profile URL | ❌ TBD | For Google Reviews integration |
 | Meta descriptions for new pages | ❌ TBD | Once content is written |
 
 ---
@@ -772,8 +845,9 @@ E: lena@lovinglove.com.au    (clickable mailto: link)
 ## FEATURES BACKLOG
 
 ### Google Reviews *(Phase 1)*
-- Google Reviews widget/embed on the Moments & Thoughtful Words page
-- `Leave a Google Review` CTA button
+- Google Reviews widget/embed on the **Home page** (Section 1.3)
+- `Leave a Google Review` CTA button on Home page
+- Secondary `Leave a Google Review` button on Connect page
 - Google Business Profile URL required from Lena
 
 ### Enquiry Dashboard *(Phase 2 — TBD)*
