@@ -41,8 +41,47 @@
 | **Frontend** | Next.js | — |
 | **Deployment** | Vercel | Hobby (free) |
 | **Database** | Supabase | Free tier |
+| **Authentication** | Supabase Auth — Google OAuth | Free tier |
 | **Image Storage** | Supabase Storage | Free tier — 1 GB |
 | **Image Delivery** | Vercel CDN via Next.js Image component | Cached — minimises Supabase bandwidth |
+
+---
+
+## AUTHENTICATION & USER ROLES
+
+Authentication is handled by **Supabase Auth with Google OAuth**. Users sign in with their Google account — no separate username/password required.
+
+### Two roles:
+
+| Role | Who | Access |
+|------|-----|--------|
+| **Admin** | Lena (single user) | Full admin dashboard — manage Moments and Partners content |
+| **User** | Any visitor who signs in | Can interact with Lena's AI assistant |
+
+---
+
+### Role: Admin (Lena)
+
+- Lena signs in with her Google account via Supabase OAuth
+- Her email is recognised as the admin account
+- Redirected to `/admin` dashboard after login
+- Full CRUD access to: Moments (testimonials) and Partners (categories + entries)
+- No other user can access the dashboard
+
+> **Dev note:** Admin role is assigned by matching Lena's specific Google email in Supabase. Only one admin account exists.
+
+---
+
+### Role: User (Visitors)
+
+- Any visitor can sign in with their Google account
+- Authentication is required to interact with Lena's AI assistant
+- Regular users have no access to the admin dashboard
+- User session is stored via Supabase Auth
+
+> **AI assistant details to be documented in the next step.**
+
+---
 
 ### Image handling
 - Lena uploads photos via the admin dashboard
