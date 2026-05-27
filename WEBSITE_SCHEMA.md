@@ -881,31 +881,155 @@ E: lena@lovinglove.com.au    (clickable mailto: link)
 
 ---
 
-## FEATURES BACKLOG
+## DEVELOPMENT PHASES
 
-### Google Reviews *(Phase 1)*
+---
+
+### ✅ PHASE 1 — Website + Admin Dashboard
+
+**Scope:**
+- Full public website (8 pages as defined in this schema)
+- Google OAuth login via Supabase (foundation for Phase 2 + 3)
+- Admin dashboard at `/admin` (Lena only)
+  - Manage Moments: add / edit / remove testimonials with photos
+  - Manage Partners: add / edit / remove categories and entries
+- Google Reviews widget on Home page
+- Contact form sending email to Lena
+- Seed: migrate 32 existing testimonials to Supabase on first deploy
+
+---
+
+### 🤖 PHASE 2 — AI Assistant (Website Chat)
+
+**Trigger:** Any visitor who signs in with Google gets access to a chat widget to interact with Lena's AI assistant.
+
+**What the AI does:**
+- Answers questions about Lena, her services, her approach
+- Guides users to the right pages on the website
+- Provides Lena's contact details
+- Answers FAQs about ceremony planning
+- Reflects Lena's personality, tone and voice
+
+**Personality & tone:**
+- Lena writes a `.md` document defining the AI's personality, tone, communication style, and the information it should know
+- This document is used to train / prompt the AI
+- The AI speaks as a representative of Lena — warm, personal, conversational
+
+**Usage limits & abuse prevention:**
+- Free users have a **maximum daily interaction limit** (number of messages per day — exact number TBD)
+- Limit is tracked per user in Supabase (resets daily)
+- Rate limiting implemented at the API level to prevent token abuse
+- Input sanitisation to prevent prompt injection
+- Output filtering to prevent the AI from sharing sensitive or off-topic information
+- No unauthenticated access to the AI — Google login required
+
+**Supabase tables needed (Phase 2):**
+```
+ai_conversations
+  id, user_id, message_role (user / assistant),
+  content, created_at
+
+ai_usage
+  id, user_id, date, message_count
+  (tracks daily usage per user for rate limiting)
+```
+
+> **Dev note:** AI personality document (`AI_PERSONALITY.md`) to be written by Lena before Phase 2 development begins.
+
+---
+
+### 💍 PHASE 3 — Wedding Client Portal + Advanced AI
+
+#### 3A — Wedding Client Portal
+
+**How it works:**
+1. Lena creates a wedding record in her admin dashboard
+2. She assigns 2 emails (the couple) to that wedding
+3. Supabase sends an invitation to both emails
+4. Couple signs in with Google → automatically connected to their wedding dashboard
+5. Couple sees **only their own wedding** — no access to other couples' data
+
+**Lena's admin view (all weddings):**
+- List of all active weddings ordered by date (soonest first)
+- Countdown to each wedding date
+- Quick access to any individual wedding dashboard
+- Can add notes, decisions, and to-dos to any wedding
+
+**Couple's wedding dashboard:**
+- Countdown to their wedding date
+- Notes from sessions with Lena
+- Decisions made (both Lena and couple can add)
+- To-do list with tasks assigned to: couple / Lena / both
+- Couples can mark tasks as done
+
+**Data retention policy:**
+- `active` — upcoming wedding, full access for couple
+- `completed` — wedding has passed, auto-archived
+- `archived` — after 6 months post-wedding, removed from couple's view but retained in Lena's records
+
+**Supabase tables needed (Phase 3A):**
+```
+weddings
+  id, couple_name_1, couple_name_2,
+  wedding_date, ceremony_time, ceremony_location,
+  approximate_guests, status (active / completed / archived),
+  created_at
+
+wedding_users
+  id, wedding_id, email, role (partner_1 / partner_2)
+
+sessions
+  id, wedding_id, session_date,
+  notes (free text), created_by
+
+decisions
+  id, wedding_id, decision_text,
+  decided_at, created_by
+
+todos
+  id, wedding_id, task_description,
+  assigned_to (couple / lena / both),
+  status (pending / done),
+  created_by, created_at
+```
+
+**Database impact:**
+- Max ~60 active weddings/month × 2 users = 120 users
+- Estimated storage per wedding (all data): ~25 KB
+- 6 months active: ~360 weddings × 25 KB = ~9 MB — negligible on free tier
+
+---
+
+#### 3B — Advanced AI (Phase 3)
+
+**For couples (wedding dashboard AI):**
+- AI has access to the couple's specific wedding data (date, decisions, todos, session notes)
+- New AI skill set defined by Lena — examples:
+  - Wedding planner assistant
+  - Vow writing helper
+  - Ceremony inspiration and suggestions
+  - Reminder of pending tasks from their to-do list
+- Lena writes individual `.md` documents for each AI skill
+
+**For Lena (admin AI assistant):**
+- AI has read access to ALL active weddings
+- Lena can ask the AI questions about any of her events:
+  - *"What decisions have been made for Belle & Matt's wedding?"*
+  - *"Which couples have pending tasks this week?"*
+  - *"Summarise the last session notes for Jo & Fahad"*
+- AI proactively reminds Lena of upcoming events, unresolved decisions, and overdue to-dos
+- Acts as a real business assistant for managing her workload
+
+> **Dev note:** Phase 3B requires the AI to have secure, read-only tool access to Supabase wedding data. All queries are scoped per user — couples only see their own data, Lena sees all.
+
+---
+
+## GOOGLE REVIEWS *(Phase 1 feature)*
+
 - Google Reviews widget/embed on the **Home page** (Section 1.3)
 - `Leave a Google Review` CTA button on Home page
 - Secondary `Leave a Google Review` button on Connect page
-- Google Business Profile URL required from Lena
-
-### Enquiry Dashboard *(Phase 2 — TBD)*
-A future client management tool for Lena to view all enquiries. Fields to be captured:
-- Your name
-- Your partner's name
-- Phone number
-- Email address
-- Wedding date
-- Ceremony time
-- Ceremony location
-- Approximate number of guests?
-- How did you hear about me?
-- Additional information / queries?
-
-### AI Assistant *(Phase 2 — Pending Lena's approval)*
-- Lena is unfamiliar with AI and has requested a face-to-face or FaceTime discussion before any decision
-- Not to be included in Phase 1
-- Full brief documented in `CONTENT.md` under Client Notes
+- Google Business Profile URL to be provided by Lena
 
 ---
 
