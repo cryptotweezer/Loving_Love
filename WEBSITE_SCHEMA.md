@@ -34,7 +34,7 @@
 
 ---
 
-## SITE MAP — 9 Pages
+## SITE MAP — 8 Pages
 
 ```
 /                          → Home
@@ -43,35 +43,31 @@
 /moments                   → Moments & Thoughtful Words
 /other-services            → Other Services
 /celebrations-of-life      → Celebrations of Life         [NEW — content TBD]
-/favourite-venues          → Favourite Venues             [NEW — content TBD]
-/trusted-partners          → Trusted Partners             [NEW — content TBD]
+/partners                  → Partners                     [NEW — content TBD]
 /connect                   → Connect (Contact)
 ```
+
+> **Note:** `/favourite-venues` and `/trusted-partners` are NOT separate pages. They are filter categories within the single `/partners` page.
 
 ---
 
 ## NAVIGATION STRUCTURE
 
 ```
-HOME  |  MEET LENA  |  YOUR CEREMONY  |  MOMENTS  |  SERVICES ▾  |  PARTNERS ▾  |  CONNECT
-
-SERVICES dropdown:
-  → Other Services         (/other-services)
-  → Celebrations of Life   (/celebrations-of-life)
-
-PARTNERS dropdown:
-  → Favourite Venues       (/favourite-venues)
-  → Trusted Partners       (/trusted-partners)
+HOME  |  MEET LENA  |  YOUR CEREMONY  |  MOMENTS  |  SERVICES  |  PARTNERS  |  CONNECT
 ```
 
-**Navigation logic:**
-- `HOME` — Entry point
-- `MEET LENA` — Who Lena is
-- `YOUR CEREMONY` — Her primary and core service (wedding ceremonies)
-- `MOMENTS` — Testimonials and couple stories
-- `SERVICES` — Additional ceremony services (non-wedding)
-- `PARTNERS` — Strategic allies: venues + trusted professionals
-- `CONNECT` — Contact / enquiry
+**No dropdowns.** Every nav item is a direct link to its page.
+
+| Nav label | Links to | Notes |
+|-----------|----------|-------|
+| `HOME` | `/` | Entry point |
+| `MEET LENA` | `/meet-lena` | Who Lena is |
+| `YOUR CEREMONY` | `/your-ceremony` | Primary service — wedding ceremonies |
+| `MOMENTS` | `/moments` | Testimonials and couple stories |
+| `SERVICES` | `/other-services` | All additional services. Last section is a button → `/celebrations-of-life` |
+| `PARTNERS` | `/partners` | Strategic allies, filterable by category |
+| `CONNECT` | `/connect` | Contact / enquiry |
 
 ---
 
@@ -634,19 +630,24 @@ Each testimonial entry displays:
 
 ---
 
-## PAGE 7 — FAVOURITE VENUES ⭐ NEW
+## PAGE 7 — PARTNERS ⭐ NEW
 
 | Field | Value |
 |-------|-------|
-| **Page name** | Favourite Venues |
-| **URL** | `/favourite-venues` |
-| **Nav label** | Favourite Venues *(under PARTNERS dropdown)* |
-| **Browser title** | `Favourite Venues — Loving Love` |
+| **Page name** | Partners |
+| **URL** | `/partners` |
+| **Nav label** | PARTNERS |
+| **Browser title** | `Partners — Loving Love` |
 | **Meta description** | `[TBD — Lena to provide once content is written]` |
 
-> ⚠️ **Content Status: TBD**
-> Lena confirmed she is happy to add this page. Venue list and descriptions to be provided by Lena.
-> Note: Many venues are already mentioned in the Moments & Thoughtful Words testimonials (see Page 4) and may be a starting point.
+> ⚠️ **Content Status: TBD — All content to be provided by Lena.**
+
+**Page purpose:** Single page featuring all of Lena's strategic allies — the venues she loves working at and the professionals she trusts. The page has two categories that users can filter between:
+
+- **Favourite Venues** — Wedding and ceremony venues Lena recommends
+- **Trusted Partners** — Other wedding professionals (photographers, planners, florists, catering, etc.)
+
+> **Dev note:** The two categories are filter tabs or sections within this single page — not separate pages or URLs. Users land on `/partners` and can toggle between the two categories without leaving the page.
 
 ---
 
@@ -658,15 +659,33 @@ Each testimonial entry displays:
 
 ---
 
-### SECTION 7.2 — Venue Entries
+### SECTION 7.2 — Filter / Category Tabs
 
-Each entry contains:
+**Category 1: Favourite Venues**
+
+Each venue entry contains:
 - Venue name
 - Location / suburb
 - Lena's personal note about the venue `[TBD — Lena to write]`
 - Venue website link *(optional)*
 
 **Venue list:** `[TBD — Lena to provide]`
+
+> Note: Many venues are already referenced in the Moments & Thoughtful Words testimonials and may be a starting point.
+
+---
+
+**Category 2: Trusted Partners**
+
+Each partner entry contains:
+- Partner / business name
+- Service category (e.g. Photographer, Planner, Florist, Catering, etc.)
+- Lena's personal note about working with them `[TBD — Lena to write]`
+- Website / Instagram link *(optional)*
+
+**Partner list:** `[TBD — Lena to provide]`
+
+> Note: Two photographers are already credited in the existing site — Michelle Fiona Photographer and Ollie Khedun Photographer — and may be starting points.
 
 ---
 
@@ -678,53 +697,7 @@ Each entry contains:
 
 ---
 
-## PAGE 8 — TRUSTED PARTNERS ⭐ NEW
-
-| Field | Value |
-|-------|-------|
-| **Page name** | Trusted Partners |
-| **URL** | `/trusted-partners` |
-| **Nav label** | Trusted Partners *(under PARTNERS dropdown)* |
-| **Browser title** | `Trusted Partners — Loving Love` |
-| **Meta description** | `[TBD — Lena to provide once content is written]` |
-
-> ⚠️ **Content Status: TBD**
-> Lena confirmed she is happy to feature trusted professionals she works with regularly. Partner list and descriptions to be provided by Lena.
-> Note: Two photographers are already credited in the existing site — Michelle Fiona Photographer and Ollie Khedun Photographer — and may be starting points for this list.
-
----
-
-### SECTION 8.1 — Page Introduction
-
-**Heading:** `[TBD — Lena to provide]`
-
-**Intro text:** `[TBD — Lena to write]`
-
----
-
-### SECTION 8.2 — Partner Entries
-
-Each entry contains:
-- Partner / business name
-- Service category (e.g. Photographer, Planner, Florist, Catering, etc.)
-- Lena's personal note about working with them `[TBD — Lena to write]`
-- Website / Instagram link *(optional)*
-
-**Partner categories include:** Photographers, Wedding Planners, Florists, Catering, and other wedding professionals.
-
-**Partner list:** `[TBD — Lena to provide]`
-
----
-
-### SECTION 8.3 — CTA
-
-**Button:** `Connect` → `/connect`
-
----
-
----
-
-## PAGE 9 — CONNECT
+## PAGE 8 — CONNECT
 
 | Field | Value |
 |-------|-------|
@@ -788,8 +761,9 @@ E: lena@lovinglove.com.au    (clickable mailto: link)
 | Ceremony page hero photo | ✅ Exists | Credit: Ollie Khedun Photographer |
 | Couple photos (Moments page) | ⚠️ Needed | One per testimonial — 32 couples |
 | Celebrations of Life — full content | ❌ TBD | Lena to write entire page |
-| Favourite Venues — venue list + notes | ❌ TBD | Lena to provide |
-| Trusted Partners — partner list + notes | ❌ TBD | Lena to provide |
+| Partners page — intro text | ❌ TBD | Lena to write |
+| Partners — Favourite Venues list + personal notes | ❌ TBD | Lena to provide |
+| Partners — Trusted Partners list + personal notes | ❌ TBD | Lena to provide |
 | Google Business Profile URL | ❌ TBD | For Google Reviews integration |
 | Meta descriptions for new pages | ❌ TBD | Once content is written |
 
