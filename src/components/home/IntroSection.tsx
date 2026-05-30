@@ -31,6 +31,16 @@ export default function IntroSection() {
   const line1Y    = useTransform(scrollYProgress, [0.18, 0.44], ["0vh", "-70vh"]);
   const line2Y    = useTransform(scrollYProgress, [0.18, 0.44], ["0vh",  "70vh"]);
 
+  // ── Mobile: black background fades out as scroll progresses ─────────────
+  // Black bg fades 0 → 0.38, disappearing right before panels enter (0.42).
+  // Text color transitions white → dark over the same window.
+  const mobileImgOp      = useTransform(scrollYProgress, [0, 0.38], [1, 0]);
+  const welcomeTextColor = useTransform(
+    scrollYProgress,
+    [0, 0.30],
+    ["rgb(255,255,255)", "rgb(23,23,23)"]
+  );
+
   // ── Horizontal track ─────────────────────────────────────────────────────────
   // Animation completes at 0.95 (not 1.00) — leaves a 5% buffer at the bottom
   // so iOS rubber-band scrolling doesn't interfere with the CTA entrance.
@@ -143,13 +153,49 @@ export default function IntroSection() {
     >
       <div
         className="sticky top-0 w-full overflow-hidden bg-white"
-        style={{ height: "100svh" }}
+        style={{ height: "max(100svh, 100dvh)" }}
       >
 
-        {/* ══ Layer 1 — Welcome text ═══════════════════════════════════════ */}
+        {/* ══ Mobile only — black background fades out as scroll progresses  */}
         <motion.div
-          className="absolute inset-0 flex flex-col items-center justify-center
-                     pointer-events-none z-10 px-6 text-center"
+          className="md:hidden absolute inset-0 z-[5] pointer-events-none bg-black"
+          style={{ opacity: mobileImgOp }}
+        />
+
+        {/* ══ Layer 1 — Welcome text ═══════════════════════════════════════ */}
+
+        {/* Mobile: text color transitions white → dark as image fades out  */}
+        <motion.div
+          className="md:hidden absolute inset-0 flex flex-col items-center
+                     justify-center pointer-events-none z-10 px-6 text-center"
+          style={{ opacity: welcomeOp }}
+        >
+          <motion.p
+            className="font-display font-normal leading-tight"
+            style={{
+              fontSize: "clamp(2rem, 5vw, 4.5rem)",
+              y: line1Y,
+              color: welcomeTextColor,
+            }}
+          >
+            A big congratulations to you
+          </motion.p>
+          <motion.p
+            className="font-display font-normal leading-tight"
+            style={{
+              fontSize: "clamp(2rem, 5vw, 4.5rem)",
+              y: line2Y,
+              color: welcomeTextColor,
+            }}
+          >
+            and thanks for visiting!
+          </motion.p>
+        </motion.div>
+
+        {/* Desktop: always dark text, no background image                  */}
+        <motion.div
+          className="hidden md:flex absolute inset-0 flex-col items-center
+                     justify-center pointer-events-none z-10 px-6 text-center"
           style={{ opacity: welcomeOp }}
         >
           <motion.p

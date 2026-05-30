@@ -10,6 +10,7 @@ import { Menu, X } from "lucide-react";
 // ─── Nav links ────────────────────────────────────────────────────────────────
 
 const navLinks = [
+  { label: "Home",          href: "/"              },
   { label: "Meet Lena",     href: "/meet-lena"     },
   { label: "Your Ceremony", href: "/your-ceremony"  },
   { label: "Moments",       href: "/moments"        },
@@ -96,8 +97,8 @@ export default function Navbar() {
                   px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap
                   transition-colors duration-200
                   ${isActive(link.href)
-                    ? "bg-black/10 text-black font-semibold"
-                    : "text-black/80 hover:text-black hover:bg-black/5"
+                    ? "text-black font-semibold"
+                    : "text-black/40 hover:text-black/70"
                   }
                 `}
               >
