@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* System font stack — avoids Google Fonts network dependency */
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Navbar height published by Navbar.tsx via ResizeObserver.
+   This fallback is overwritten immediately on mount. */
+:root {
+  --navbar-h: 81px;
+}

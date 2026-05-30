@@ -42,7 +42,6 @@ Marriage Celebrant
 - `Let's Chat`
 - `Ceremony Planning`
 
-**Photo credit:** MICHELLE FIONA PHOTOGRAPHER
 
 ---
 
@@ -57,6 +56,8 @@ Marriage Celebrant
 ---
 
 ### Testimonials Section (Featured — Home Page)
+
+Thoughtful comments shared by wonderful couples
 
 | Quote | Couple |
 |-------|--------|
@@ -114,7 +115,6 @@ Copyright © 2019 by Loving Love
 **Page Heading:**
 > When Love Happens
 
-**Photo credit:** OLLIE KHEDUN PHOTOGRAPHER
 
 ---
 
