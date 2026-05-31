@@ -137,14 +137,17 @@ export default function HeroSequence() {
           setTitleIndex(newTitleIndex);
         }
 
-        // Mobile: fade to white ONLY as the hero physically slides off the top
-        // after the animation ends — not during the animation itself.
+        // Mobile: blur the hero as it physically slides off the top —
+        // Apple-style frosted-glass transition into the white IntroSection.
         // exitScrolled = 0 while sticky (animation running), positive once
-        // the hero is scrolling off. One viewport height later it's fully white.
+        // the hero is scrolling off. One viewport height later blur is at max.
         if (whiteOverlayRef.current && window.innerWidth < 768) {
           const exitScrolled = Math.max(0, scrolled - scrollable);
-          const fadeWhite    = Math.max(0, Math.min(1, exitScrolled / window.innerHeight));
-          whiteOverlayRef.current.style.opacity = String(fadeWhite);
+          const t      = Math.max(0, Math.min(1, exitScrolled / window.innerHeight));
+          const blurPx = (t * 24).toFixed(1);
+          whiteOverlayRef.current.style.backdropFilter = `blur(${blurPx}px)`;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (whiteOverlayRef.current.style as any).webkitBackdropFilter = `blur(${blurPx}px)`;
         }
       });
     }
@@ -200,12 +203,13 @@ export default function HeroSequence() {
           />
         </div>
 
-        {/* Mobile only — white overlay fades in at end of scroll to dissolve
-            the hero cleanly into the white IntroSection below               */}
+        {/* Mobile only — frosted-glass blur overlay: increases as the hero
+            physically slides off the top (Apple-style exit transition).
+            backdrop-filter blurs the canvas behind it; no background colour. */}
         <div
           ref={whiteOverlayRef}
-          className="md:hidden absolute inset-0 z-20 pointer-events-none bg-white"
-          style={{ opacity: 0 }}
+          className="md:hidden absolute inset-0 z-20 pointer-events-none"
+          style={{ backdropFilter: "blur(0px)" }}
         />
 
         {/* ══════════════════════════════════════════════════════════════════════
