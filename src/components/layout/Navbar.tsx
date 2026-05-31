@@ -51,7 +51,9 @@ export default function Navbar() {
   return (
     <header
       ref={headerRef}
-      className="fixed top-4 left-0 right-0 z-50 px-8 lg:px-16 pointer-events-none"
+      data-navbar
+      className="fixed top-4 left-0 right-0 z-50 px-8 lg:px-16 pointer-events-none
+                 transition-transform duration-500 ease-in-out"
     >
       {/* ── Main row ──────────────────────────────────────────────────────────
             Mobile:  flex justify-between (logo+name ← → hamburger)

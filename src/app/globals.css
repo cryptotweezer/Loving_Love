@@ -6,10 +6,19 @@
 body {
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Prevent iOS Safari elastic bounce at page boundaries — important for
+     scroll-animation heavy pages (hero, sticky panels, full-screen sections) */
+  overscroll-behavior-y: none;
 }
 
 /* Navbar height published by Navbar.tsx via ResizeObserver.
    This fallback is overwritten immediately on mount. */
 :root {
   --navbar-h: 81px;
+}
+
+/* Sections that want the navbar hidden add .hide-navbar to <html>.
+   The navbar slides fully off-screen upward.                        */
+.hide-navbar [data-navbar] {
+  transform: translateY(calc(-100% - 2rem));
 }

@@ -235,6 +235,25 @@ export default function IntroSection() {
           >
             and thanks for visiting!
           </motion.p>
+
+          {/* Body text — same animation as "and thanks for visiting!" */}
+          <motion.div
+            className="mt-5 space-y-1"
+            style={{ opacity: textOpM, y: line2YM }}
+          >
+            <p
+              className="font-display italic text-neutral-500 leading-relaxed"
+              style={{ fontSize: "clamp(1rem, 3.5vw, 1.125rem)" }}
+            >
+              I&apos;m so glad you found your way here.
+            </p>
+            <p
+              className="font-display italic text-neutral-500 leading-relaxed"
+              style={{ fontSize: "clamp(1rem, 3.5vw, 1.125rem)" }}
+            >
+              Let me introduce myself.
+            </p>
+          </motion.div>
         </div>
 
         {/* ══ DESKTOP — Welcome text (starts visible, fades + splits out) ══ */}
@@ -255,6 +274,25 @@ export default function IntroSection() {
           >
             and thanks for visiting!
           </motion.p>
+
+          {/* Body text — same animation as "and thanks for visiting!" */}
+          <motion.div
+            className="mt-6 space-y-1"
+            style={{ y: line2Y }}
+          >
+            <p
+              className="font-display italic text-neutral-500 leading-relaxed"
+              style={{ fontSize: "clamp(1rem, 1.6vw, 1.25rem)" }}
+            >
+              I&apos;m so glad you found your way here.
+            </p>
+            <p
+              className="font-display italic text-neutral-500 leading-relaxed"
+              style={{ fontSize: "clamp(1rem, 1.6vw, 1.25rem)" }}
+            >
+              Let me introduce myself.
+            </p>
+          </motion.div>
         </motion.div>
 
         {/* ══ Horizontal track ═════════════════════════════════════════════ */}
@@ -291,6 +329,18 @@ export default function IntroSection() {
                 >
                   I&apos;m a Sydney based Authorised Marriage Celebrant,
                   I do travel out of Sydney and yes, I most certainly love Love!
+                </motion.p>
+                <motion.p
+                  className="text-neutral-500 leading-relaxed mt-3"
+                  style={{
+                    fontSize: "clamp(1.0625rem, 1.4vw, 1.125rem)",
+                    opacity: isMobile ? lenaBodyOpM : lenaBodyOp,
+                    y:       isMobile ? lenaBodyYM  : lenaBodyY,
+                  }}
+                >
+                  I&apos;m passionate about love, people, and connection.
+                  Getting to truly know each couple I work with is something
+                  I genuinely treasure.
                 </motion.p>
               </div>
 

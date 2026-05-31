@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import HeroSequence from "@/components/home/HeroSequence";
 import IntroSection from "@/components/home/IntroSection";
+import FocusSection from "@/components/home/FocusSection";
 
 export const metadata: Metadata = {
   title: "Lena Saunig — Loving Love | Authorised Marriage Celebrant",
@@ -13,6 +14,7 @@ export default function HomePage() {
     <>
       <HeroSequence />
       <IntroSection />
+      <FocusSection />
     </>
   );
 }

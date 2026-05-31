@@ -145,9 +145,11 @@ export default function HeroSequence() {
           const exitScrolled = Math.max(0, scrolled - scrollable);
           const t      = Math.max(0, Math.min(1, exitScrolled / window.innerHeight));
           const blurPx = (t * 24).toFixed(1);
+          const fadeW  = (t * 0.85).toFixed(3);
           whiteOverlayRef.current.style.backdropFilter = `blur(${blurPx}px)`;
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (whiteOverlayRef.current.style as any).webkitBackdropFilter = `blur(${blurPx}px)`;
+          whiteOverlayRef.current.style.background = `rgba(255,255,255,${fadeW})`;
         }
       });
     }
