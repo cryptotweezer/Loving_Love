@@ -33,10 +33,13 @@ function getFrameUrl(frame: number): string {
 export default function HeroSequence() {
   const containerRef    = useRef<HTMLDivElement>(null);
   const stickyRef       = useRef<HTMLDivElement>(null);
-  const canvasRef       = useRef<HTMLCanvasElement>(null);
-  const imagesRef       = useRef<HTMLImageElement[]>([]);
-  const currentFrameRef = useRef(0);
-  const rafRef          = useRef<number | null>(null);
+  const canvasRef         = useRef<HTMLCanvasElement>(null);
+  const imagesRef         = useRef<HTMLImageElement[]>([]);
+  const currentFrameRef   = useRef(0);
+  const rafRef            = useRef<number | null>(null);
+  // Mobile-only: white overlay that fades in over the last 20% of hero scroll,
+  // dissolving the hero cleanly into the white IntroSection below.
+  const whiteOverlayRef = useRef<HTMLDivElement>(null);
 
   const [titleIndex, setTitleIndex]   = useState(0);
   const titleIndexRef                 = useRef(0);
@@ -133,6 +136,16 @@ export default function HeroSequence() {
           titleIndexRef.current = newTitleIndex;
           setTitleIndex(newTitleIndex);
         }
+
+        // Mobile: fade to white ONLY as the hero physically slides off the top
+        // after the animation ends — not during the animation itself.
+        // exitScrolled = 0 while sticky (animation running), positive once
+        // the hero is scrolling off. One viewport height later it's fully white.
+        if (whiteOverlayRef.current && window.innerWidth < 768) {
+          const exitScrolled = Math.max(0, scrolled - scrollable);
+          const fadeWhite    = Math.max(0, Math.min(1, exitScrolled / window.innerHeight));
+          whiteOverlayRef.current.style.opacity = String(fadeWhite);
+        }
       });
     }
 
@@ -170,7 +183,7 @@ export default function HeroSequence() {
     <div
       ref={containerRef}
       style={{ height: scrollHeight }}
-      className="relative"
+      className="relative z-[10]"
     >
       <div
         ref={stickyRef}
@@ -186,6 +199,14 @@ export default function HeroSequence() {
             aria-label="Wedding ceremony film — scroll to play"
           />
         </div>
+
+        {/* Mobile only — white overlay fades in at end of scroll to dissolve
+            the hero cleanly into the white IntroSection below               */}
+        <div
+          ref={whiteOverlayRef}
+          className="md:hidden absolute inset-0 z-20 pointer-events-none bg-white"
+          style={{ opacity: 0 }}
+        />
 
         {/* ══════════════════════════════════════════════════════════════════════
             MOBILE  (<md)

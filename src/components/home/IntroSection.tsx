@@ -2,17 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 
 // ─── Snap points (scrollYProgress) — desktop only ─────────────────────────────
-// target: ideal progress for this panel to look perfect.
-// Only snap when scrolling DOWN and progress is between min and target+0.04
-// (slightly past is OK — user hasn't truly scrolled past yet).
 const SNAP_POINTS = [
   { target: 0.62, min: 0.52 }, // Lena panel settled
   { target: 0.81, min: 0.72 }, // Ceremony panel settled
-  { target: 0.95, min: 0.88 }, // CTA — target matches end of track animation
+  { target: 0.95, min: 0.88 }, // CTA
 ];
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -20,63 +17,130 @@ const SNAP_POINTS = [
 export default function IntroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Mobile gets a taller scroll height to give the welcome-text animation
+  // enough room while keeping panels feeling snappy (450vh vs 550vh desktop).
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // ── Welcome text ─────────────────────────────────────────────────────────────
-  // Starts fully visible — no fade-in → no white flash on mobile.
+  // ══════════════════════════════════════════════════════════════════════════
+  // DESKTOP — unchanged from original
+  // ══════════════════════════════════════════════════════════════════════════
+
+  // Welcome text: starts fully visible, fades + splits out
   const welcomeOp = useTransform(scrollYProgress, [0.18, 0.42], [1, 0]);
   const line1Y    = useTransform(scrollYProgress, [0.18, 0.44], ["0vh", "-70vh"]);
   const line2Y    = useTransform(scrollYProgress, [0.18, 0.44], ["0vh",  "70vh"]);
 
-  // ── Mobile: black background fades out as scroll progresses ─────────────
-  // Black bg fades 0 → 0.38, disappearing right before panels enter (0.42).
-  // Text color transitions white → dark over the same window.
-  const mobileImgOp      = useTransform(scrollYProgress, [0, 0.38], [1, 0]);
-  const welcomeTextColor = useTransform(
-    scrollYProgress,
-    [0, 0.30],
-    ["rgb(255,255,255)", "rgb(23,23,23)"]
-  );
-
-  // ── Horizontal track ─────────────────────────────────────────────────────────
-  // Animation completes at 0.95 (not 1.00) — leaves a 5% buffer at the bottom
-  // so iOS rubber-band scrolling doesn't interfere with the CTA entrance.
+  // Horizontal track (panels)
   const trackX = useTransform(
     scrollYProgress,
-    [0.42,     0.58,   0.65,   0.80,    0.82,   0.95,      1.00],
+    [0.42,     0.58,   0.65,   0.80,    0.82,   0.95,    1.00],
     ["100vw", "0vw",  "0vw", "-100vw", "-100vw", "-200vw", "-200vw"]
   );
 
-  // ── Within-panel: Lena ───────────────────────────────────────────────────────
+  // Lena panel
   const lenaTitleOp = useTransform(scrollYProgress, [0.46, 0.58], [0, 1]);
   const lenaTitleY  = useTransform(scrollYProgress, [0.46, 0.58], [32, 0]);
   const lenaBodyOp  = useTransform(scrollYProgress, [0.50, 0.62], [0, 1]);
   const lenaBodyY   = useTransform(scrollYProgress, [0.50, 0.62], [24, 0]);
   const lenaImgOp   = useTransform(scrollYProgress, [0.44, 0.58], [0, 1]);
 
-  // ── Within-panel: Ceremony ───────────────────────────────────────────────────
+  // Ceremony panel
   const cerTitleOp  = useTransform(scrollYProgress, [0.68, 0.80], [0, 1]);
   const cerTitleY   = useTransform(scrollYProgress, [0.68, 0.80], [32, 0]);
   const cerBodyOp   = useTransform(scrollYProgress, [0.72, 0.83], [0, 1]);
   const cerBodyY    = useTransform(scrollYProgress, [0.72, 0.83], [24, 0]);
   const cerImgOp    = useTransform(scrollYProgress, [0.66, 0.80], [0, 1]);
 
-  // ── Within-panel: CTA ────────────────────────────────────────────────────────
+  // CTA panel
   const ctaOp = useTransform(scrollYProgress, [0.85, 0.93, 1.00], [0, 1, 1]);
   const ctaY  = useTransform(scrollYProgress, [0.85, 0.93, 1.00], [32, 0, 0]);
 
+  // ══════════════════════════════════════════════════════════════════════════
+  // MOBILE — 450vh height, 4-phase animation
+  //
+  // Mobile scroll timeline over 450vh (progress 0 → 1):
+  //
+  //  Phase 0 — HERO EXIT       (0 → 0.10 = 35vh)
+  //    Hero slides off the top while text is hidden below viewport.
+  //    IntroSection sticky already active — zero dead space.
+  //
+  //  Phase 1 — TEXT ENTRANCE   (0.10 → 0.27 = ~60vh)
+  //    Both lines rise from BELOW the viewport (y=60vh, off-screen bottom)
+  //    to the centre. Hero exits from the TOP simultaneously — they approach
+  //    from opposite ends so the hero can never cut the text.
+  //
+  //  Phase 2 — TEXT STAY       (0.27 → 0.40 = 45.5vh)
+  //    Text centred and fully visible — user reads it.
+  //
+  //  Phase 3 — TEXT EXIT       (0.40 → 0.50 = 35vh)
+  //    Line 1 flies up (−80vh), line 2 flies down (+80vh).
+  //    Opacity fades to 0.
+  //
+  //  Phase 4 — PANELS          (0.50 → 1.00 = 175vh ≈ 58vh per panel)
+  //    Lena → Ceremony → CTA slide in from the RIGHT.
+  // ══════════════════════════════════════════════════════════════════════════
+
+  // Text starts at y=60vh — completely off-screen below the viewport.
+  // As it rises to y=0 (centre), the hero is simultaneously scrolling off
+  // from the top. They move toward each other from opposite sides of the
+  // screen, so the hero can never overlap the rising text.
+  const line1YM = useTransform(
+    scrollYProgress,
+    [0.10,    0.27,  0.40,   0.50],
+    ["60vh", "0vh", "0vh", "-80vh"]
+  );
+  const line2YM = useTransform(
+    scrollYProgress,
+    [0.10,    0.27,  0.40,  0.50],
+    ["60vh", "0vh", "0vh", "80vh"]
+  );
+  // Shared opacity — both lines fade in / out together
+  const textOpM = useTransform(scrollYProgress,
+    [0.10, 0.20, 0.38, 0.48], [0, 1, 1, 0]);
+
+  // Horizontal track — slides right → left (user POV), panels start at 0.50
+  const trackXM = useTransform(
+    scrollYProgress,
+    [0.50,     0.63,  0.68,   0.80,     0.83,     0.93,     1.00],
+    ["100vw", "0vw", "0vw", "-100vw", "-100vw", "-200vw", "-200vw"]
+  );
+
+  // Lena panel content
+  const lenaTitleOpM = useTransform(scrollYProgress, [0.53, 0.63], [0, 1]);
+  const lenaTitleYM  = useTransform(scrollYProgress, [0.53, 0.63], [32, 0]);
+  const lenaBodyOpM  = useTransform(scrollYProgress, [0.57, 0.67], [0, 1]);
+  const lenaBodyYM   = useTransform(scrollYProgress, [0.57, 0.67], [24, 0]);
+  const lenaImgOpM   = useTransform(scrollYProgress, [0.51, 0.63], [0, 1]);
+
+  // Ceremony panel content
+  const cerTitleOpM  = useTransform(scrollYProgress, [0.70, 0.80], [0, 1]);
+  const cerTitleYM   = useTransform(scrollYProgress, [0.70, 0.80], [32, 0]);
+  const cerBodyOpM   = useTransform(scrollYProgress, [0.74, 0.83], [0, 1]);
+  const cerBodyYM    = useTransform(scrollYProgress, [0.74, 0.83], [24, 0]);
+  const cerImgOpM    = useTransform(scrollYProgress, [0.68, 0.80], [0, 1]);
+
+  // CTA panel content
+  const ctaOpM = useTransform(scrollYProgress, [0.86, 0.93, 1.00], [0, 1, 1]);
+  const ctaYM  = useTransform(scrollYProgress, [0.86, 0.93, 1.00], [32, 0, 0]);
+
   // ── Desktop scroll snap ───────────────────────────────────────────────────────
-  // Snaps ONLY when scrolling DOWN and the user has paused near a panel's
-  // ideal position. Direction-aware so it never pulls the user backward.
   useEffect(() => {
     if (typeof window === "undefined" || window.innerWidth < 768) return;
 
     let scrollTimer: ReturnType<typeof setTimeout>;
     let isSnapping      = false;
-    let lastSnappedAt   = -1;   // progress of last snap — prevents re-snap loop
+    let lastSnappedAt   = -1;
     let lastScrollY     = window.scrollY;
     let goingDown       = true;
 
@@ -91,108 +155,89 @@ export default function IntroSection() {
     const snapTo = (target: number) => {
       const el = containerRef.current;
       if (!el || isSnapping) return;
-      // Prevent re-snapping to the same point immediately after landing
       if (Math.abs(target - lastSnappedAt) < 0.04) return;
-
       const scrollable   = el.offsetHeight - window.innerHeight;
       const containerTop = window.scrollY + el.getBoundingClientRect().top;
       const targetY      = containerTop + target * scrollable;
-
       isSnapping    = true;
       lastSnappedAt = target;
       window.scrollTo({ top: targetY, behavior: "smooth" });
-      // Release after smooth scroll has settled
       setTimeout(() => { isSnapping = false; }, 900);
     };
 
     const onScrollEnd = () => {
-      // Only snap when scrolling DOWN — never pull the user backward
       if (!goingDown) return;
-
       const progress = getProgress();
-      // Only act if inside the animated panels zone
       if (progress < 0.42 || progress > 0.98) return;
-
       for (const { target, min } of SNAP_POINTS) {
-        // Trigger range: from min up to target + small overshoot tolerance
         const max = target + 0.04;
-        if (progress >= min && progress <= max) {
-          snapTo(target);
-          break;
-        }
+        if (progress >= min && progress <= max) { snapTo(target); break; }
       }
     };
 
     const onScroll = () => {
-      const y   = window.scrollY;
-      goingDown = y >= lastScrollY;
+      const y = window.scrollY;
+      goingDown   = y >= lastScrollY;
       lastScrollY = y;
-
-      // Reset lastSnappedAt when the user scrolls significantly away from
-      // the last snap — so they can re-enter that range and snap again if needed
       const p = getProgress();
       if (p >= 0 && Math.abs(p - lastSnappedAt) > 0.12) lastSnappedAt = -1;
-
       if (isSnapping) return;
       clearTimeout(scrollTimer);
       scrollTimer = setTimeout(onScrollEnd, 240);
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      clearTimeout(scrollTimer);
-    };
+    return () => { window.removeEventListener("scroll", onScroll); clearTimeout(scrollTimer); };
   }, []);
 
   return (
     <div
       ref={containerRef}
       className="relative bg-white"
-      style={{ height: "550vh" }}
+      style={{
+        height: isMobile ? "450vh" : "550vh",
+        // On mobile, pull IntroSection up by exactly one viewport height so it
+        // starts right where the hero sticky releases — zero dead space.
+        // The hero is z-[2], so it covers IntroSection during the overlap.
+        // On desktop the two sections are separate and no overlap is needed.
+        marginTop: isMobile ? "-100dvh" : 0,
+      }}
     >
       <div
         className="sticky top-0 w-full overflow-hidden bg-white"
         style={{ height: "max(100svh, 100dvh)" }}
       >
 
-        {/* ══ Mobile only — black background fades out as scroll progresses  */}
-        <motion.div
-          className="md:hidden absolute inset-0 z-[5] pointer-events-none bg-black"
-          style={{ opacity: mobileImgOp }}
-        />
-
-        {/* ══ Layer 1 — Welcome text ═══════════════════════════════════════ */}
-
-        {/* Mobile: text color transitions white → dark as image fades out  */}
-        <motion.div
+        {/* ══ MOBILE — Welcome text ════════════════════════════════════════
+            Centred on screen. Both lines rise as one unit from below;
+            exit splits: line 1 up, line 2 down.                         */}
+        <div
           className="md:hidden absolute inset-0 flex flex-col items-center
                      justify-center pointer-events-none z-10 px-6 text-center"
-          style={{ opacity: welcomeOp }}
         >
           <motion.p
-            className="font-display font-normal leading-tight"
+            className="font-display font-normal text-neutral-900 leading-tight"
             style={{
-              fontSize: "clamp(2rem, 5vw, 4.5rem)",
-              y: line1Y,
-              color: welcomeTextColor,
+              fontSize: "clamp(1.75rem, 5.5vw, 3rem)",
+              y:       line1YM,
+              opacity: textOpM,
             }}
           >
-            A big congratulations to you
+            A big congratulations<br />to you
           </motion.p>
           <motion.p
-            className="font-display font-normal leading-tight"
+            className="font-display font-normal text-neutral-900 leading-tight"
             style={{
-              fontSize: "clamp(2rem, 5vw, 4.5rem)",
-              y: line2Y,
-              color: welcomeTextColor,
+              fontSize: "clamp(1.75rem, 5.5vw, 3rem)",
+              y:       line2YM,
+              opacity: textOpM,
             }}
           >
             and thanks for visiting!
           </motion.p>
-        </motion.div>
+        </div>
 
-        {/* Desktop: always dark text, no background image                  */}
+        {/* ══ DESKTOP — Welcome text (starts visible, fades + splits out) ══ */}
         <motion.div
           className="hidden md:flex absolute inset-0 flex-col items-center
                      justify-center pointer-events-none z-10 px-6 text-center"
@@ -212,10 +257,10 @@ export default function IntroSection() {
           </motion.p>
         </motion.div>
 
-        {/* ══ Layer 2 — Horizontal track ═══════════════════════════════════ */}
+        {/* ══ Horizontal track ═════════════════════════════════════════════ */}
         <motion.div
           className="absolute inset-0 flex"
-          style={{ x: trackX }}
+          style={{ x: isMobile ? trackXM : trackX }}
         >
 
           {/* ── Panel A: Lena ──────────────────────────────────────────────── */}
@@ -230,8 +275,8 @@ export default function IntroSection() {
                   className="font-display font-normal text-neutral-900 leading-tight mb-4"
                   style={{
                     fontSize: "clamp(2.125rem, 6vw, 3.25rem)",
-                    opacity: lenaTitleOp,
-                    y: lenaTitleY,
+                    opacity: isMobile ? lenaTitleOpM : lenaTitleOp,
+                    y:       isMobile ? lenaTitleYM  : lenaTitleY,
                   }}
                 >
                   My name&apos;s<br />Lena Saunig,
@@ -240,8 +285,8 @@ export default function IntroSection() {
                   className="text-neutral-500 leading-relaxed"
                   style={{
                     fontSize: "clamp(1.0625rem, 1.4vw, 1.125rem)",
-                    opacity: lenaBodyOp,
-                    y: lenaBodyY,
+                    opacity: isMobile ? lenaBodyOpM : lenaBodyOp,
+                    y:       isMobile ? lenaBodyYM  : lenaBodyY,
                   }}
                 >
                   I&apos;m a Sydney based Authorised Marriage Celebrant,
@@ -252,7 +297,7 @@ export default function IntroSection() {
               <motion.div
                 className="relative w-full rounded-2xl overflow-hidden bg-neutral-100
                            h-[min(45vh,360px)] md:h-[min(58vh,520px)]"
-                style={{ opacity: lenaImgOp }}
+                style={{ opacity: isMobile ? lenaImgOpM : lenaImgOp }}
               >
                 <Image
                   src="/images/hero1.webp"
@@ -277,8 +322,8 @@ export default function IntroSection() {
                   className="font-display font-normal text-neutral-900 leading-tight mb-4"
                   style={{
                     fontSize: "clamp(1.75rem, 5vw, 3.25rem)",
-                    opacity: cerTitleOp,
-                    y: cerTitleY,
+                    opacity: isMobile ? cerTitleOpM : cerTitleOp,
+                    y:       isMobile ? cerTitleYM  : cerTitleY,
                   }}
                 >
                   Your marriage ceremony is a celebration of your special and unique love.
@@ -287,8 +332,8 @@ export default function IntroSection() {
                   className="text-neutral-500 leading-relaxed"
                   style={{
                     fontSize: "clamp(1.0625rem, 1.4vw, 1.125rem)",
-                    opacity: cerBodyOp,
-                    y: cerBodyY,
+                    opacity: isMobile ? cerBodyOpM : cerBodyOp,
+                    y:       isMobile ? cerBodyYM  : cerBodyY,
                   }}
                 >
                   I want to make sure that you totally feel each moment, and for
@@ -301,7 +346,7 @@ export default function IntroSection() {
               <motion.div
                 className="relative w-full rounded-2xl overflow-hidden bg-neutral-100
                            h-[min(45vh,360px)] md:h-[min(58vh,520px)]"
-                style={{ opacity: cerImgOp }}
+                style={{ opacity: isMobile ? cerImgOpM : cerImgOp }}
               >
                 <Image
                   src="/images/hero2.webp"
@@ -319,7 +364,10 @@ export default function IntroSection() {
                           justify-center px-6">
             <motion.div
               className="max-w-2xl text-center"
-              style={{ opacity: ctaOp, y: ctaY }}
+              style={{
+                opacity: isMobile ? ctaOpM : ctaOp,
+                y:       isMobile ? ctaYM  : ctaY,
+              }}
             >
               <h2
                 className="font-display font-normal text-neutral-900 leading-tight mb-5"
