@@ -6,8 +6,8 @@ import { AnimatePresence, motion } from "motion/react";
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
-const TOTAL_FRAMES         = 118;
-const BASE_URL             = "https://pub-f6cbcd08f38e4342ba2b2514b0d3d0c2.r2.dev";
+const TOTAL_FRAMES         = 140;
+const BASE_URL             = "https://pub-a0ca4de753364cf088c21e9b4c9ee9ef.r2.dev";
 const SCROLL_HEIGHT        = "600vh";  // desktop
 const SCROLL_HEIGHT_MOBILE = "280vh";  // mobile — less scrolling needed
 
@@ -15,7 +15,22 @@ const SCROLL_HEIGHT_MOBILE = "280vh";  // mobile — less scrolling needed
 
 const TITLES = [
   { line1: "A ceremony as unique", line2: "as your love."  },
-  { line1: "Heartfelt moments,",   line2: "forever yours." },
+  { line1: "Loving Love", line2: "Marriage Celebrant" },
+] as const;
+
+const EYEBROWS = [
+  "Lena Saunig | Loving Love",
+  "Lena Saunig",
+] as const;
+
+const TAGLINES = [
+  "Celebrating love, and also life.",
+  "Celebrating love, and also life.",
+] as const;
+
+const BODY_COPY = [
+  "Your ceremony is the heart of your wedding day. I create deeply personal, heartfelt ceremonies that are a true reflection of who you are, leaving everyone in the room moved.",
+  "Lena is a Sydney based Authorised Marriage Celebrant creating meaningful, personal ceremonies across Sydney and beyond.",
 ] as const;
 
 function getTitleIndex(progress: number): number {
@@ -25,7 +40,7 @@ function getTitleIndex(progress: number): number {
 // ─── Frame URL ────────────────────────────────────────────────────────────────
 
 function getFrameUrl(frame: number): string {
-  return `${BASE_URL}/bride_${String(frame).padStart(4, "0")}.webp`;
+  return `${BASE_URL}/groom_${String(frame).padStart(4, "0")}.webp`;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -73,7 +88,7 @@ export default function HeroSequence() {
       const iW = img.naturalWidth;
       const iH = img.naturalHeight;
 
-      const isPortrait = W < H;
+      const isMobile = window.innerWidth < 768;
 
       // Cover — no extra zoom, preserves proportions
       const scale = Math.max(W / iW, H / iH);
@@ -81,7 +96,7 @@ export default function HeroSequence() {
       const drawH = iH * scale;
 
       // Horizontal bias: 0 = leftmost crop · 0.5 = center · 1 = rightmost crop
-      const hBias   = isPortrait ? 0.75 : 0.5;
+      const hBias   = isMobile ? 0.88 : 0.5;
       const offsetX = (W - drawW) * hBias;
 
       // Vertical: always center
@@ -179,7 +194,56 @@ export default function HeroSequence() {
       >
         <span className="whitespace-nowrap">{TITLES[titleIndex].line1}</span>
         <br />
-        {TITLES[titleIndex].line2}
+        <span
+          className={titleIndex === 1 ? "block text-[0.42em] uppercase tracking-[0.18em]" : ""}
+        >
+          {TITLES[titleIndex].line2}
+        </span>
+      </motion.span>
+    </AnimatePresence>
+  );
+
+  const eyebrowMotion = (
+    <AnimatePresence mode="wait">
+      <motion.span
+        key={titleIndex}
+        className="block"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+      >
+        {EYEBROWS[titleIndex]}
+      </motion.span>
+    </AnimatePresence>
+  );
+
+  const taglineMotion = (
+    <AnimatePresence mode="wait">
+      <motion.span
+        key={titleIndex}
+        className="block"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+      >
+        {TAGLINES[titleIndex]}
+      </motion.span>
+    </AnimatePresence>
+  );
+
+  const bodyMotion = (
+    <AnimatePresence mode="wait">
+      <motion.span
+        key={titleIndex}
+        className="block"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+      >
+        {BODY_COPY[titleIndex]}
       </motion.span>
     </AnimatePresence>
   );
@@ -192,8 +256,7 @@ export default function HeroSequence() {
     >
       <div
         ref={stickyRef}
-        className="sticky top-0 z-0 w-full"
-        style={{ height: "100dvh" }}
+        className="sticky top-0 z-0 w-full h-[100lvh] md:h-[100dvh]"
       >
 
         {/* ── Canvas — full bleed ───────────────────────────────────────────── */}
@@ -218,7 +281,7 @@ export default function HeroSequence() {
             MOBILE  (<md)
             Full-bleed image · dark gradient from bottom · text overlay
         ══════════════════════════════════════════════════════════════════════ */}
-        <div className="md:hidden absolute inset-0 pointer-events-none">
+        <div className="md:hidden absolute inset-0 pointer-events-none z-30">
 
           {/* Gradient — single layer, strong enough for white text */}
           <div
@@ -229,15 +292,20 @@ export default function HeroSequence() {
             }}
           />
 
-          {/* Text block — bottom-0 + paddingBottom handles safe area + offset.
+          {/* Text block — bottom offset uses calc(100lvh - 100dvh) to compensate
+              for the iOS Safari URL bar height on initial load.
+              100lvh - 100dvh = 0 once the bar hides; positive while it's visible.
               env(safe-area-inset-bottom) needs viewport-fit=cover (layout.tsx). */}
           <div
-            className="absolute bottom-0 left-0 right-0 px-6"
-            style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 3.5rem)" }}
+            className="absolute left-0 right-0 px-6"
+            style={{
+              bottom: "calc(100lvh - 100dvh)",
+              paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 3.5rem)",
+            }}
           >
             {/* Eyebrow */}
             <p className="text-[9px] tracking-[0.26em] uppercase text-white/90 mb-3">
-              Lena Saunig · Loving Love
+              {eyebrowMotion}
             </p>
 
             {/* H1 — vw-based so "A ceremony as unique" fits without overflow.
@@ -254,7 +322,7 @@ export default function HeroSequence() {
               className="font-display italic text-white/70 mb-2.5"
               style={{ fontSize: "clamp(0.9375rem, 3.8vw, 1.125rem)" }}
             >
-              Celebrating love, and also life.
+              {taglineMotion}
             </p>
 
             {/* Body — noticeably smaller than tagline */}
@@ -262,9 +330,7 @@ export default function HeroSequence() {
               className="text-white/65 leading-relaxed mb-5"
               style={{ fontSize: "clamp(0.8125rem, 3.2vw, 0.9375rem)" }}
             >
-              Your ceremony is the heart of your wedding day. I create
-              deeply personal, heartfelt ceremonies that are a true
-              reflection of who you are, leaving everyone in the room moved.
+              {bodyMotion}
             </p>
 
             <Link
@@ -306,7 +372,7 @@ export default function HeroSequence() {
 
             {/* Eyebrow — tight to heading */}
             <p className="text-[10px] tracking-[0.26em] uppercase text-neutral-400 mb-2">
-              Lena Saunig · Loving Love
+              {eyebrowMotion}
             </p>
 
             {/* H1 — dvh-based, lineHeight 1.08 gives breathing room on 2 lines */}
@@ -322,7 +388,7 @@ export default function HeroSequence() {
               className="font-display italic text-neutral-500 mb-3"
               style={{ fontSize: "clamp(1rem, 1.9dvh, 1.25rem)" }}
             >
-              Celebrating love, and also life.
+              {taglineMotion}
             </p>
 
             {/* Body — noticeably smaller than tagline, good line length */}
@@ -330,9 +396,7 @@ export default function HeroSequence() {
               className="text-neutral-500 leading-relaxed max-w-xs mb-8"
               style={{ fontSize: "clamp(0.875rem, 1.5dvh, 1.0625rem)" }}
             >
-              Your ceremony is the heart of your wedding day. I create
-              deeply personal, heartfelt ceremonies that are a true
-              reflection of who you are, leaving everyone in the room moved.
+              {bodyMotion}
             </p>
 
             <Link
