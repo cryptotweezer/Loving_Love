@@ -134,15 +134,45 @@ export default function IntroSection() {
   const ctaOpM = useTransform(scrollYProgress, [0.86, 0.93, 1.00], [0, 1, 1]);
   const ctaYM  = useTransform(scrollYProgress, [0.86, 0.93, 1.00], [32, 0, 0]);
 
-  // ── Desktop scroll snap ───────────────────────────────────────────────────────
+  // ── Scroll snap — desktop + mobile, bidirectional ────────────────────────────
+  // Works for both viewports. Snap zones are defined per direction so scrolling
+  // UP correctly returns to the previous panel (fixing the "faded image" bug on
+  // mobile where images appeared dim when the user stopped mid-animation).
   useEffect(() => {
-    if (typeof window === "undefined" || window.innerWidth < 768) return;
+    if (typeof window === "undefined") return;
+
+    const mobile = window.innerWidth < 768;
+
+    // DOWN: snap when entering a panel (arriving from the left of its zone).
+    // UP:   snap when backing into a panel (arriving from the right of its zone).
+    // Values are scrollYProgress within the IntroSection container.
+    const DOWN_SNAPS = mobile
+      ? [
+          { target: 0.63, range: [0.52, 0.67] as [number, number] },
+          { target: 0.80, range: [0.70, 0.83] as [number, number] },
+          { target: 0.93, range: [0.87, 0.97] as [number, number] },
+        ]
+      : [
+          { target: 0.62, range: [0.52, 0.66] as [number, number] },
+          { target: 0.81, range: [0.72, 0.85] as [number, number] },
+          { target: 0.95, range: [0.88, 0.98] as [number, number] },
+        ];
+
+    const UP_SNAPS = mobile
+      ? [
+          { target: 0.63, range: [0.55, 0.72] as [number, number] },
+          { target: 0.80, range: [0.74, 0.87] as [number, number] },
+        ]
+      : [
+          { target: 0.62, range: [0.55, 0.72] as [number, number] },
+          { target: 0.81, range: [0.75, 0.88] as [number, number] },
+        ];
 
     let scrollTimer: ReturnType<typeof setTimeout>;
-    let isSnapping      = false;
-    let lastSnappedAt   = -1;
-    let lastScrollY     = window.scrollY;
-    let goingDown       = true;
+    let isSnapping    = false;
+    let lastSnappedAt = -1;
+    let lastScrollY   = window.scrollY;
+    let goingDown     = true;
 
     const getProgress = (): number => {
       const el = containerRef.current;
@@ -166,24 +196,23 @@ export default function IntroSection() {
     };
 
     const onScrollEnd = () => {
-      if (!goingDown) return;
       const progress = getProgress();
       if (progress < 0.42 || progress > 0.98) return;
-      for (const { target, min } of SNAP_POINTS) {
-        const max = target + 0.04;
-        if (progress >= min && progress <= max) { snapTo(target); break; }
+      const zones = goingDown ? DOWN_SNAPS : UP_SNAPS;
+      for (const { target, range } of zones) {
+        if (progress >= range[0] && progress <= range[1]) { snapTo(target); break; }
       }
     };
 
     const onScroll = () => {
-      const y = window.scrollY;
-      goingDown   = y >= lastScrollY;
+      const y   = window.scrollY;
+      goingDown = y >= lastScrollY;
       lastScrollY = y;
       const p = getProgress();
       if (p >= 0 && Math.abs(p - lastSnappedAt) > 0.12) lastSnappedAt = -1;
       if (isSnapping) return;
       clearTimeout(scrollTimer);
-      scrollTimer = setTimeout(onScrollEnd, 240);
+      scrollTimer = setTimeout(onScrollEnd, 350); // 350ms — more reliable than 240ms
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -346,7 +375,7 @@ export default function IntroSection() {
 
               <motion.div
                 className="relative w-full rounded-2xl overflow-hidden bg-neutral-100
-                           h-[min(45vh,360px)] md:h-[min(58vh,520px)]"
+                           h-[min(45svh,360px)] md:h-[min(58dvh,520px)]"
                 style={{ opacity: isMobile ? lenaImgOpM : lenaImgOp }}
               >
                 <Image
@@ -395,7 +424,7 @@ export default function IntroSection() {
 
               <motion.div
                 className="relative w-full rounded-2xl overflow-hidden bg-neutral-100
-                           h-[min(45vh,360px)] md:h-[min(58vh,520px)]"
+                           h-[min(45svh,360px)] md:h-[min(58dvh,520px)]"
                 style={{ opacity: isMobile ? cerImgOpM : cerImgOp }}
               >
                 <Image

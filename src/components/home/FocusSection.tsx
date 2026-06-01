@@ -40,7 +40,10 @@ export default function FocusSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative w-full h-[100dvh] bg-neutral-950">
+    <section
+      ref={sectionRef}
+      className="relative isolate h-[100lvh] w-full snap-start overflow-hidden bg-neutral-950 md:h-[100dvh]"
+    >
 
       {/* ── Image ─────────────────────────────────────────────────────────────
           Mobile:  full-screen (inset-0)

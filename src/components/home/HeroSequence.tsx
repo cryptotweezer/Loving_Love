@@ -14,13 +14,13 @@ const SCROLL_HEIGHT_MOBILE = "280vh";  // mobile — less scrolling needed
 // ─── Scroll-driven titles ─────────────────────────────────────────────────────
 
 const TITLES = [
-  { line1: "A ceremony as unique", line2: "as your love."  },
   { line1: "Loving Love", line2: "Marriage Celebrant" },
+  { line1: "A ceremony as unique", line2: "as your love."  },
 ] as const;
 
 const EYEBROWS = [
-  "Lena Saunig | Loving Love",
   "Lena Saunig",
+  "Lena Saunig | Loving Love",
 ] as const;
 
 const TAGLINES = [
@@ -29,8 +29,8 @@ const TAGLINES = [
 ] as const;
 
 const BODY_COPY = [
-  "Your ceremony is the heart of your wedding day. I create deeply personal, heartfelt ceremonies that are a true reflection of who you are, leaving everyone in the room moved.",
   "Lena is a Sydney based Authorised Marriage Celebrant creating meaningful, personal ceremonies across Sydney and beyond.",
+  "Your ceremony is the heart of your wedding day. I create deeply personal, heartfelt ceremonies that are a true reflection of who you are, leaving everyone in the room moved.",
 ] as const;
 
 function getTitleIndex(progress: number): number {
@@ -181,8 +181,11 @@ export default function HeroSequence() {
   }, []);
 
   // ── Animated headline — shared between mobile and desktop ────────────────────
+  // mode="popLayout": exiting element becomes position:absolute immediately so
+  // it leaves the layout flow without collapsing the parent height. The entering
+  // element takes its natural position at the same time → clean crossfade, no jump.
   const titleMotion = (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="popLayout">
       <motion.span
         key={titleIndex}
         className="block"
@@ -194,9 +197,7 @@ export default function HeroSequence() {
       >
         <span className="whitespace-nowrap">{TITLES[titleIndex].line1}</span>
         <br />
-        <span
-          className={titleIndex === 1 ? "block text-[0.42em] uppercase tracking-[0.18em]" : ""}
-        >
+        <span className="block text-[0.42em] uppercase tracking-[0.18em]">
           {TITLES[titleIndex].line2}
         </span>
       </motion.span>
@@ -204,7 +205,7 @@ export default function HeroSequence() {
   );
 
   const eyebrowMotion = (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="popLayout">
       <motion.span
         key={titleIndex}
         className="block"
@@ -219,7 +220,7 @@ export default function HeroSequence() {
   );
 
   const taglineMotion = (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="popLayout">
       <motion.span
         key={titleIndex}
         className="block"
@@ -234,7 +235,7 @@ export default function HeroSequence() {
   );
 
   const bodyMotion = (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="popLayout">
       <motion.span
         key={titleIndex}
         className="block"
@@ -292,15 +293,14 @@ export default function HeroSequence() {
             }}
           />
 
-          {/* Text block — bottom offset uses calc(100lvh - 100dvh) to compensate
-              for the iOS Safari URL bar height on initial load.
-              100lvh - 100dvh = 0 once the bar hides; positive while it's visible.
-              env(safe-area-inset-bottom) needs viewport-fit=cover (layout.tsx). */}
+          {/* Text block — button lives in its own sibling div so text height
+              changes never shift the button position.
+              paddingBottom reserves space so text never grows into button area. */}
           <div
             className="absolute left-0 right-0 px-6"
             style={{
               bottom: "calc(100lvh - 100dvh)",
-              paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 3.5rem)",
+              paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 7.5rem)",
             }}
           >
             {/* Eyebrow */}
@@ -327,21 +327,36 @@ export default function HeroSequence() {
 
             {/* Body — noticeably smaller than tagline */}
             <p
-              className="text-white/65 leading-relaxed mb-5"
+              className="text-white/65 leading-relaxed"
               style={{ fontSize: "clamp(0.8125rem, 3.2vw, 0.9375rem)" }}
             >
               {bodyMotion}
             </p>
+          </div>
 
-            <Link
-              href="/connect"
-              className="pointer-events-auto inline-flex items-center
-                         px-6 py-2.5 rounded-full text-sm font-medium
-                         bg-white text-neutral-900
-                         hover:opacity-85 transition-opacity duration-200"
+          {/* Button — own anchor, never moves when text changes height */}
+          <div
+            className="absolute left-0 right-0 px-6"
+            style={{
+              bottom: "calc(100lvh - 100dvh)",
+              paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 3.5rem)",
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.35, ease: "easeInOut" }}
             >
-              Let&apos;s Chat
-            </Link>
+              <Link
+                href="/connect"
+                className="pointer-events-auto inline-flex items-center
+                           px-6 py-2.5 rounded-full text-sm font-medium
+                           bg-white text-neutral-900
+                           hover:opacity-85 transition-opacity duration-200"
+              >
+                Let&apos;s Chat
+              </Link>
+            </motion.div>
           </div>
         </div>
 
@@ -361,7 +376,7 @@ export default function HeroSequence() {
           }}
         />
 
-        {/* Text */}
+        {/* Text — button removed from flow so height changes never move it */}
         <div className="
           hidden md:flex
           absolute inset-0 z-20
@@ -393,12 +408,26 @@ export default function HeroSequence() {
 
             {/* Body — noticeably smaller than tagline, good line length */}
             <p
-              className="text-neutral-500 leading-relaxed max-w-xs mb-8"
+              className="text-neutral-500 leading-relaxed max-w-xs"
               style={{ fontSize: "clamp(0.875rem, 1.5dvh, 1.0625rem)" }}
             >
               {bodyMotion}
             </p>
+          </div>
+        </div>
 
+        {/* Desktop button — own absolute anchor aligned with text column.
+            Sits at a fixed bottom position so text height changes never move it. */}
+        <div
+          className="hidden md:block absolute z-20 pointer-events-none
+                     md:left-24 lg:left-32 xl:left-36"
+          style={{ bottom: "12dvh" }}
+        >
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
+          >
             <Link
               href="/connect"
               className="pointer-events-auto inline-flex items-center
@@ -408,7 +437,7 @@ export default function HeroSequence() {
             >
               Let&apos;s Chat
             </Link>
-          </div>
+          </motion.div>
         </div>
 
       </div>

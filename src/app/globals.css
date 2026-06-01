@@ -22,3 +22,59 @@ body {
 .hide-navbar [data-navbar] {
   transform: translateY(calc(-100% - 2rem));
 }
+
+/* Snap only on desktop — mandatory feels "stuck" on mobile touch scrolling */
+@media (min-width: 768px) {
+  .home-section-snap {
+    scroll-snap-type: y mandatory;
+  }
+}
+
+@keyframes subtle-text-shimmer {
+  0% {
+    background-position: 240% 50%, 0 0;
+  }
+  12% {
+    background-position: 240% 50%, 0 0;
+  }
+  72% {
+    background-position: -240% 50%, 0 0;
+  }
+  100% {
+    background-position: -240% 50%, 0 0;
+  }
+}
+
+.text-shimmer {
+  color: transparent;
+  background-image:
+    linear-gradient(
+      100deg,
+      transparent 0%,
+      transparent 45%,
+      rgb(184 134 57) 49%,
+      rgb(245 222 179) 52%,
+      rgb(184 134 57) 55%,
+      transparent 60%,
+      transparent 100%
+    ),
+    linear-gradient(rgb(115 115 115), rgb(115 115 115));
+  background-size: 520% 100%, 100% 100%;
+  background-repeat: no-repeat, no-repeat;
+  background-clip: text;
+  -webkit-background-clip: text;
+  transform: translateZ(0);
+}
+
+.text-shimmer.is-visible {
+  animation: subtle-text-shimmer 8s linear 1 forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-shimmer,
+  .text-shimmer.is-visible {
+    color: rgb(115 115 115);
+    background-image: none;
+    animation: none;
+  }
+}
