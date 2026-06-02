@@ -46,10 +46,10 @@ export default function Footer() {
   return (
     <footer
       ref={footerRef}
-      className="relative w-full overflow-hidden border-t border-neutral-200 bg-white px-6 py-14 text-neutral-900 md:px-16 md:py-20 xl:px-24"
+      className="relative w-full overflow-hidden bg-neutral-950 px-6 py-14 text-white md:px-16 md:py-20 xl:px-24"
     >
-      <div className="absolute left-1/2 top-0 h-px w-1/3 -translate-x-1/2 bg-neutral-900/20 blur-sm" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-[radial-gradient(45%_140px_at_50%_0%,rgba(0,0,0,0.06),transparent)]" />
+      <div className="absolute left-1/2 top-0 h-px w-1/3 -translate-x-1/2 bg-white/10 blur-sm" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-[radial-gradient(45%_140px_at_50%_0%,rgba(255,255,255,0.04),transparent)]" />
 
       <div className="relative mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.05fr_1.95fr]">
         <AnimatedContainer className="space-y-7">
@@ -64,10 +64,10 @@ export default function Footer() {
           </Link>
 
           <div>
-            <p className="font-display text-2xl leading-tight text-neutral-900">
+            <p className="font-display text-2xl leading-tight text-white">
               Lena Saunig
             </p>
-            <p className="mt-1 text-sm text-neutral-500">
+            <p className="mt-1 text-sm text-white/50">
               Authorised Marriage Celebrant
             </p>
           </div>
@@ -78,18 +78,18 @@ export default function Footer() {
               alt="Australian Marriage Celebrants"
               width={96}
               height={48}
-              className="h-10 w-auto object-contain opacity-75"
+              className="h-10 w-auto object-contain opacity-40 invert"
             />
             <Image
               src="/images/abia_logo.webp"
               alt="ABIA Weddings"
               width={96}
               height={48}
-              className="h-10 w-auto object-contain opacity-75"
+              className="h-10 w-auto object-contain opacity-40 invert"
             />
           </div>
 
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-white/40">
             Copyright 2019 by Loving Love
           </p>
         </AnimatedContainer>
@@ -102,7 +102,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-neutral-500 transition-colors duration-200 hover:text-neutral-900"
+                    className="text-sm text-white/50 transition-colors duration-200 hover:text-white"
                   >
                     {link.title}
                   </Link>
@@ -117,7 +117,7 @@ export default function Footer() {
               <li>
                 <a
                   href="tel:0405143843"
-                  className="inline-flex items-center gap-2 text-sm text-neutral-500 transition-colors duration-200 hover:text-neutral-900"
+                  className="inline-flex items-center gap-2 text-sm text-white/50 transition-colors duration-200 hover:text-white"
                 >
                   <Phone aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
                   0405 143 843
@@ -126,7 +126,7 @@ export default function Footer() {
               <li>
                 <a
                   href="mailto:lena@lovinglove.com.au"
-                  className="inline-flex items-center gap-2 text-sm text-neutral-500 transition-colors duration-200 hover:text-neutral-900"
+                  className="inline-flex items-center gap-2 text-sm text-white/50 transition-colors duration-200 hover:text-white"
                 >
                   <Mail aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
                   lena@lovinglove.com.au
@@ -144,7 +144,7 @@ export default function Footer() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm text-neutral-500 transition-colors duration-200 hover:text-neutral-900"
+                    className="inline-flex items-center gap-2 text-sm text-white/50 transition-colors duration-200 hover:text-white"
                   >
                     {link.icon && (
                       <link.icon aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
@@ -163,7 +163,7 @@ export default function Footer() {
 
 function FooterHeading({ children }: { children: ReactNode }) {
   return (
-    <h2 className="text-xs font-medium uppercase tracking-[0.24em] text-neutral-900">
+    <h2 className="text-xs font-medium uppercase tracking-[0.24em] text-white">
       {children}
     </h2>
   );

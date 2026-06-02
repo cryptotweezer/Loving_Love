@@ -10,56 +10,76 @@ export const metadata: Metadata = {
 export default function MeetLenaPage() {
   return (
     <>
-      {/* ── Hero — full-screen portrait ──────────────────────────────────── */}
-      <section className="relative h-[100lvh] flex items-center justify-center overflow-hidden">
 
-        {/* Background photo */}
-        <Image
-          src="/images/lena.png"
-          alt="Lena Saunig — Loving Love"
-          fill
-          className="object-cover object-top"
-          priority
-        />
+      {/* ══════════════════════════════════════════════════════════════════
+          SECTION 1 — Hello, I'm Lena
+      ══════════════════════════════════════════════════════════════════ */}
+      <section
+        className="relative bg-white grid md:grid-cols-[50fr_50fr] min-h-[100dvh]"
+        style={{ paddingTop: "var(--navbar-h)" }}
+      >
 
-        {/* Dark overlay */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.45) 40%, rgba(0,0,0,0.28) 100%)",
-          }}
-        />
+        {/* ── Text column ────────────────────────────────────────────────── */}
+        <div className="flex flex-col justify-center
+                        px-8 sm:px-12 md:pl-16 xl:pl-24 md:pr-12
+                        py-16 md:py-20
+                        order-2 md:order-1">
 
-        {/* Text */}
-        <div className="relative z-10 text-center px-6">
-
-          {/* Eyebrow */}
-          <p className="text-[10px] tracking-[0.26em] uppercase text-white/60 mb-5">
-            Lena Saunig
-          </p>
-
-          {/* Main title */}
+          {/* Eyebrow + Name — tight together */}
           <h1
-            className="font-display font-normal text-white mb-5"
-            style={{ fontSize: "clamp(3rem, 9.5dvh, 6.5rem)", lineHeight: 1.08 }}
+            className="font-display font-normal text-neutral-900 leading-[1.02]"
+            style={{ fontSize: "clamp(2.75rem, 5.5vw, 4.75rem)" }}
           >
-            Loving Love
-            <span className="block text-[0.42em] uppercase tracking-[0.18em] mt-1">
-              Marriage Celebrant
+            <span
+              className="block text-neutral-400 font-normal"
+              style={{ fontSize: "clamp(1rem, 2vw, 1.5rem)", letterSpacing: "0.01em", marginBottom: "0.15em" }}
+            >
+              Hello, I&apos;m
             </span>
+            Lena Saunig,
           </h1>
 
-          {/* Tagline */}
+          {/* Sub-title */}
           <p
-            className="font-display italic text-white/70"
-            style={{ fontSize: "clamp(1rem, 1.9dvh, 1.25rem)" }}
+            className="font-display italic text-neutral-400 mt-3 mb-10"
+            style={{ fontSize: "clamp(1rem, 1.6vw, 1.2rem)" }}
           >
-            Celebrating love, and also life.
+            Your Marriage Celebrant
+          </p>
+
+
+          {/* Body */}
+          <p
+            className="text-neutral-500 leading-relaxed"
+            style={{ fontSize: "clamp(0.9375rem, 1.3vw, 1.0625rem)", maxWidth: "44ch" }}
+          >
+            Becoming a Marriage Celebrant had been a secret dream of mine for over
+            20 years, which I happened to mention to a friend who was the Celebrant
+            at a mutual friend&apos;s wedding. He encouraged me to get myself qualified
+            and registered. No longer a dream for many years now! I will be forever
+            grateful to him.
           </p>
 
         </div>
+
+        {/* ── Image column ───────────────────────────────────────────────── */}
+        <div className="flex items-center order-1 md:order-2
+                        px-8 sm:px-12 md:pl-8 md:pr-16 xl:pr-24
+                        pt-8 pb-8 md:py-16">
+          <div className="relative w-full rounded-2xl overflow-hidden bg-neutral-100
+                          h-[70vw] md:h-[min(72dvh,620px)]">
+            <Image
+              src="/images/lena1.png"
+              alt="Lena Saunig — Loving Love"
+              fill
+              className="object-cover object-center"
+              priority
+            />
+          </div>
+        </div>
+
       </section>
+
     </>
   );
 }
