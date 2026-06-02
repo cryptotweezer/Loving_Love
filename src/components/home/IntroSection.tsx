@@ -377,6 +377,8 @@ export default function IntroSection() {
                 className="relative w-full rounded-2xl overflow-hidden bg-neutral-100
                            h-[min(45svh,360px)] md:h-[min(58dvh,520px)]"
                 style={{ opacity: isMobile ? lenaImgOpM : lenaImgOp }}
+                whileHover={isMobile ? {} : { scale: 1.03 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
               >
                 <Image
                   src="/images/hero1.webp"
@@ -426,6 +428,8 @@ export default function IntroSection() {
                 className="relative w-full rounded-2xl overflow-hidden bg-neutral-100
                            h-[min(45svh,360px)] md:h-[min(58dvh,520px)]"
                 style={{ opacity: isMobile ? cerImgOpM : cerImgOp }}
+                whileHover={isMobile ? {} : { scale: 1.03 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
               >
                 <Image
                   src="/images/hero2.webp"
@@ -456,7 +460,7 @@ export default function IntroSection() {
                 that truly reflects who you are,
               </h2>
               <p
-                className="text-neutral-500 leading-relaxed mb-10"
+                className="font-display italic text-neutral-500 leading-relaxed mb-10"
                 style={{ fontSize: "clamp(1.0625rem, 1.4vw, 1.125rem)" }}
               >
                 please get in touch. It would be a privilege to be your Celebrant.

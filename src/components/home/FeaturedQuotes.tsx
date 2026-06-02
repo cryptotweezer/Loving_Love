@@ -85,14 +85,17 @@ export default function FeaturedQuotes() {
       </button>
 
       <div className="mx-auto w-full max-w-5xl -translate-y-8 pb-24 text-center md:translate-y-0 md:pb-0">
-        <p
+        <motion.p
           ref={titleRef}
-          className={`text-shimmer mx-auto mb-5 inline-block max-w-2xl text-xs uppercase tracking-[0.26em] md:mb-6 md:text-sm ${
+          initial={{ opacity: 0, y: 16 }}
+          animate={titleVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className={`font-display italic text-shimmer mx-auto mb-5 inline-block max-w-2xl text-xs uppercase tracking-[0.26em] md:mb-6 md:text-sm ${
             titleVisible ? "is-visible" : ""
           }`}
         >
           Thoughtful comments shared by wonderful couples
-        </p>
+        </motion.p>
 
         <div className="flex w-full items-center justify-center">
           <AnimatePresence mode="wait">
@@ -114,12 +117,18 @@ export default function FeaturedQuotes() {
           </AnimatePresence>
         </div>
 
-        <Link
-          href="/moments"
-          className="mt-10 inline-flex items-center rounded-full bg-neutral-900 px-8 py-3.5 text-sm font-medium text-white transition-opacity duration-200 hover:opacity-85 md:mt-12"
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={titleVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
         >
-          Moments
-        </Link>
+          <Link
+            href="/moments"
+            className="mt-10 inline-flex items-center rounded-full bg-neutral-900 px-8 py-3.5 text-sm font-medium text-white transition-opacity duration-200 hover:opacity-85 md:mt-12"
+          >
+            Moments
+          </Link>
+        </motion.div>
       </div>
 
       <button

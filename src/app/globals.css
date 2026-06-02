@@ -45,6 +45,19 @@ body {
   }
 }
 
+/* Loop variant — sweep takes 20% of the cycle (~2 s), pauses 8 s, then repeats */
+@keyframes subtle-text-shimmer-loop {
+  0% {
+    background-position: 240% 50%, 0 0;
+  }
+  20% {
+    background-position: -240% 50%, 0 0;
+  }
+  100% {
+    background-position: -240% 50%, 0 0;
+  }
+}
+
 .text-shimmer {
   color: transparent;
   background-image:
@@ -67,7 +80,7 @@ body {
 }
 
 .text-shimmer.is-visible {
-  animation: subtle-text-shimmer 8s linear 1 forwards;
+  animation: subtle-text-shimmer-loop 10s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
