@@ -6,10 +6,17 @@ import { AnimatePresence, motion } from "motion/react";
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
-const TOTAL_FRAMES         = 140;
+const TOTAL_FRAMES         = 144;
 const BASE_URL             = "https://pub-a0ca4de753364cf088c21e9b4c9ee9ef.r2.dev";
 const SCROLL_HEIGHT        = "600vh";  // desktop
 const SCROLL_HEIGHT_MOBILE = "280vh";  // mobile — less scrolling needed
+
+const DESKTOP_IMAGE_X = -0.72;
+const DESKTOP_IMAGE_Y = 0.08;
+const DESKTOP_IMAGE_ZOOM = 1.12;
+const MOBILE_IMAGE_X  = 0.88;
+const MOBILE_IMAGE_Y  = 0.5;
+const MOBILE_IMAGE_ZOOM = 1;
 
 // ─── Scroll-driven titles ─────────────────────────────────────────────────────
 
@@ -91,16 +98,16 @@ export default function HeroSequence() {
       const isMobile = window.innerWidth < 768;
 
       // Cover — no extra zoom, preserves proportions
-      const scale = Math.max(W / iW, H / iH);
+      const imageZoom = isMobile ? MOBILE_IMAGE_ZOOM : DESKTOP_IMAGE_ZOOM;
+      const scale = Math.max(W / iW, H / iH) * imageZoom;
       const drawW = iW * scale;
       const drawH = iH * scale;
 
-      // Horizontal bias: 0 = leftmost crop · 0.5 = center · 1 = rightmost crop
-      const hBias   = isMobile ? 0.88 : 0.5;
-      const offsetX = (W - drawW) * hBias;
-
-      // Vertical: always center
-      const offsetY = (H - drawH) * 0.5;
+      // Crop bias: 0 = start edge, 0.5 = center, 1 = end edge.
+      const imageX  = isMobile ? MOBILE_IMAGE_X : DESKTOP_IMAGE_X;
+      const imageY  = isMobile ? MOBILE_IMAGE_Y : DESKTOP_IMAGE_Y;
+      const offsetX = (W - drawW) * imageX;
+      const offsetY = (H - drawH) * imageY;
 
       ctx.clearRect(0, 0, W, H);
       ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
