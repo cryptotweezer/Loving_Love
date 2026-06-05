@@ -49,8 +49,9 @@ export default function Navbar() {
       {/* ── Bar ──────────────────────────────────────────────────────────────
           Glass pill — centered, only as wide as content needs               */}
       <div
-        className="pointer-events-auto flex items-center mx-auto w-fit
-                   rounded-full px-5 md:px-6 py-2.5"
+        className="pointer-events-auto flex items-center justify-between md:justify-start
+                   mx-auto w-full md:w-fit
+                   rounded-full px-4 md:px-6 py-2.5"
         style={{
           background:           "rgba(255, 255, 255, 0.08)",
           backdropFilter:       "blur(16px) saturate(180%)",
@@ -66,7 +67,7 @@ export default function Navbar() {
           className="font-display font-normal text-neutral-900 leading-none whitespace-nowrap
                      text-[1.6rem] md:text-[1.85rem]
                      hover:opacity-70 transition-opacity duration-200
-                     mr-6 md:mr-10 flex-shrink-0"
+                     md:mr-10 flex-shrink-0"
         >
           Loving Love
         </Link>
@@ -140,8 +141,13 @@ export default function Navbar() {
             exit={{    opacity: 0, y: -8, scale: 0.97 }}
             transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
             className="mt-2 rounded-2xl overflow-hidden pointer-events-auto
-                       bg-white border border-neutral-200
-                       shadow-[0_4px_24px_rgba(0,0,0,0.08)]"
+                       border border-white/25
+                       shadow-[0_4px_24px_rgba(0,0,0,0.10)]"
+            style={{
+              background: "rgba(255, 255, 255, 0.34)",
+              backdropFilter: "blur(28px) saturate(190%)",
+              WebkitBackdropFilter: "blur(28px) saturate(190%)",
+            }}
           >
             <div className="px-3 py-3 flex flex-col gap-0.5">
               {navLinks.map((link, i) => (
@@ -159,8 +165,8 @@ export default function Navbar() {
                       text-[11px] tracking-[0.14em] uppercase font-medium
                       transition-colors duration-200
                       ${isActive(link.href)
-                        ? "bg-neutral-100 text-neutral-900"
-                        : "text-neutral-500 hover:text-neutral-900 hover:bg-neutral-50"
+                        ? "text-neutral-900 underline underline-offset-[5px] decoration-neutral-900 decoration-[1.5px]"
+                        : "text-neutral-600 hover:text-neutral-900 hover:bg-white/40"
                       }
                     `}
                   >
@@ -173,7 +179,7 @@ export default function Navbar() {
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: navLinks.length * 0.04 + 0.05, duration: 0.18 }}
-                className="mt-1 pt-2 border-t border-neutral-100"
+                className="mt-1 pt-2 border-t border-white/25"
               >
                 <Link
                   href="/connect"
