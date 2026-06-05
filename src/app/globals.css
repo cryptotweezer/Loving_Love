@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  touch-action: pan-y;
+}
+
+body > main {
+  overflow-x: clip;
+}
+
+@supports not (overflow: clip) {
+  html,
+  body,
+  body > main {
+    overflow-x: hidden;
+  }
+}
+
 /* System font stack — avoids Google Fonts network dependency */
 body {
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
