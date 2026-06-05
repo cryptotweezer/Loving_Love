@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import MeetLenaIntro from "@/components/home/MeetLenaIntro";
+import MeetLenaSocial from "@/components/meet-lena/MeetLenaSocial";
 
 export const metadata: Metadata = {
   title: "Meet Lena",
@@ -8,5 +9,10 @@ export const metadata: Metadata = {
 };
 
 export default function MeetLenaPage() {
-  return <MeetLenaIntro />;
+  return (
+    <>
+      <MeetLenaIntro />
+      <MeetLenaSocial />
+    </>
+  );
 }

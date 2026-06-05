@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 export default function MeetLenaIntro() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -12,21 +13,109 @@ export default function MeetLenaIntro() {
     offset: ["start start", "end end"],
   });
 
+  // ── Horizontal track — 4 panels ──────────────────────────────────────────────
+  // 520vh total, 420vh scrollable → ~105vh per panel.
+  //
+  // Panel 1  visible:   0 → 0.12 (rest) then slides out
+  // Panel 2  settles:   0.48
+  // Panel 3  settles:   0.68
+  // Panel 4  settles:   0.87
   const trackX = useTransform(
     scrollYProgress,
-    [0, 0.18, 0.62, 1],
-    ["0vw", "0vw", "-100vw", "-100vw"]
+    [0,     0.12,  0.48,      0.60,      0.68,      0.78,      0.87,      1      ],
+    ["0vw", "0vw", "-100vw", "-100vw", "-200vw", "-200vw", "-300vw", "-300vw"]
   );
 
-  const firstTextOpacity = useTransform(scrollYProgress, [0, 0.18, 0.5], [1, 1, 0]);
-  const firstTextY = useTransform(scrollYProgress, [0, 0.18, 0.5], [0, 0, -24]);
-  const secondTextOpacity = useTransform(scrollYProgress, [0.42, 0.62], [0, 1]);
-  const secondTextY = useTransform(scrollYProgress, [0.42, 0.62], [32, 0]);
+  // ── Panel 1 — fades OUT as it slides away ─────────────────────────────────────
+  const firstTextOpacity = useTransform(scrollYProgress, [0, 0.12, 0.40], [1, 1, 0]);
+  const firstTextY       = useTransform(scrollYProgress, [0, 0.12, 0.40], [0, 0, -24]);
+
+  // ── Panel 2 — fades IN; completes before the 0.48 settle ─────────────────────
+  const secondTextOpacity = useTransform(scrollYProgress, [0.34, 0.47], [0, 1]);
+  const secondTextY       = useTransform(scrollYProgress, [0.34, 0.47], [32, 0]);
+
+  // ── Panel 3 — fades IN; both complete AT the 0.68 settle ─────────────────────
+  const thirdImgOpacity  = useTransform(scrollYProgress, [0.58, 0.68], [0, 1]);
+  const thirdTextOpacity = useTransform(scrollYProgress, [0.60, 0.68], [0, 1]);
+  const thirdTextY       = useTransform(scrollYProgress, [0.60, 0.68], [32, 0]);
+
+  // ── Panel 4 — fades IN; both complete AT the 0.87 settle ─────────────────────
+  const fourthImgOpacity  = useTransform(scrollYProgress, [0.77, 0.87], [0, 1]);
+  const fourthTextOpacity = useTransform(scrollYProgress, [0.79, 0.87], [0, 1]);
+  const fourthTextY       = useTransform(scrollYProgress, [0.79, 0.87], [32, 0]);
+
+  // ── Scroll snap — snaps to each settled panel position after user stops ───────
+  useEffect(() => {
+    const DOWN_SNAPS = [
+      { target: 0.48, range: [0.36, 0.58] as [number, number] },
+      { target: 0.68, range: [0.58, 0.77] as [number, number] },
+      { target: 0.87, range: [0.77, 0.95] as [number, number] },
+    ];
+    const UP_SNAPS = [
+      { target: 0.48, range: [0.40, 0.61] as [number, number] },
+      { target: 0.68, range: [0.61, 0.79] as [number, number] },
+    ];
+
+    let snapTimer: ReturnType<typeof setTimeout>;
+    let isSnapping    = false;
+    let lastSnappedAt = -1;
+    let lastScrollY   = window.scrollY;
+    let goingDown     = true;
+
+    const getProgress = (): number => {
+      const el = containerRef.current;
+      if (!el) return -1;
+      const scrollable = el.offsetHeight - window.innerHeight;
+      if (scrollable <= 0) return -1;
+      return Math.max(0, Math.min(1, -el.getBoundingClientRect().top / scrollable));
+    };
+
+    const snapTo = (target: number) => {
+      const el = containerRef.current;
+      if (!el || isSnapping) return;
+      if (Math.abs(target - lastSnappedAt) < 0.04) return;
+      const scrollable   = el.offsetHeight - window.innerHeight;
+      const containerTop = window.scrollY + el.getBoundingClientRect().top;
+      const targetY      = containerTop + target * scrollable;
+      isSnapping    = true;
+      lastSnappedAt = target;
+      window.scrollTo({ top: targetY, behavior: "smooth" });
+      setTimeout(() => { isSnapping = false; }, 900);
+    };
+
+    const onScrollEnd = () => {
+      const progress = getProgress();
+      if (progress < 0.30 || progress > 0.96) return;
+      const zones = goingDown ? DOWN_SNAPS : UP_SNAPS;
+      for (const { target, range } of zones) {
+        if (progress >= range[0] && progress <= range[1]) { snapTo(target); break; }
+      }
+    };
+
+    const onScroll = () => {
+      const y   = window.scrollY;
+      goingDown = y >= lastScrollY;
+      lastScrollY = y;
+      const p = getProgress();
+      if (p >= 0 && Math.abs(p - lastSnappedAt) > 0.12) lastSnappedAt = -1;
+      if (isSnapping) return;
+      clearTimeout(snapTimer);
+      snapTimer = setTimeout(onScrollEnd, 350);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      clearTimeout(snapTimer);
+    };
+  }, []);
 
   return (
-    <section ref={containerRef} className="relative h-[260vh] bg-white">
+    <section ref={containerRef} className="relative h-[520vh] bg-white">
       <div className="sticky top-0 h-[100dvh] overflow-hidden bg-white">
         <motion.div className="absolute inset-0 flex" style={{ x: trackX }}>
+
+          {/* ── Panel 1: Hello, I'm Lena ─────────────────────────────────────── */}
           <Panel>
             <div className="grid w-full max-w-7xl gap-10 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20">
               <motion.div
@@ -86,10 +175,25 @@ export default function MeetLenaIntro() {
                   and registered. No longer a dream for many years now! I will be forever
                   grateful to him.
                 </motion.p>
+
+                <motion.div
+                  className="mt-8"
+                  style={{ opacity: firstTextOpacity, y: firstTextY }}
+                >
+                  <Link
+                    href="/connect"
+                    className="inline-flex text-sm font-bold text-neutral-900
+                               underline underline-offset-[6px] decoration-neutral-900 decoration-2
+                               transition-opacity duration-200 hover:opacity-70"
+                  >
+                    Let&apos;s Chat
+                  </Link>
+                </motion.div>
               </div>
             </div>
           </Panel>
 
+          {/* ── Panel 2: I'm passionate ──────────────────────────────────────── */}
           <Panel>
             <div className="grid w-full max-w-7xl gap-10 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20">
               <motion.div
@@ -111,7 +215,7 @@ export default function MeetLenaIntro() {
                 </motion.div>
 
                 <motion.div
-                  className="absolute bottom-[4%] right-0 z-10 h-[48%] w-[52%] overflow-hidden bg-neutral-100"
+                  className="absolute bottom-[4%] right-0 z-10 h-[56%] w-[44%] overflow-hidden bg-neutral-100"
                   whileHover={{ scale: 1.035 }}
                   transition={{ duration: 0.5, ease: "easeOut" }}
                 >
@@ -153,6 +257,199 @@ export default function MeetLenaIntro() {
               </div>
             </div>
           </Panel>
+
+          {/* ── Panel 3: As a Marriage Celebrant ─────────────────────────────── */}
+          <Panel>
+            <div className="grid w-full max-w-7xl gap-10 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20">
+              <motion.div
+                className="relative h-[72vw] min-h-[320px] md:h-[min(72dvh,680px)]"
+                style={{ opacity: thirdImgOpacity }}
+              >
+                {/* lena7 — portrait, ceremony scene, top-left */}
+                <motion.div
+                  className="absolute left-0 top-[2%] h-[62%] w-[42%] overflow-hidden bg-neutral-100"
+                  whileHover={{ scale: 1.035 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                >
+                  <Image
+                    src="/images/lena7.png"
+                    alt="Lena officiating a wedding ceremony"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 50vw, 28vw"
+                  />
+                </motion.div>
+
+                {/* lena9 — portrait, outdoor group, top-right */}
+                <motion.div
+                  className="absolute right-[2%] top-[16%] h-[56%] w-[37%] overflow-hidden bg-neutral-100"
+                  whileHover={{ scale: 1.035 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                >
+                  <Image
+                    src="/images/lena9.png"
+                    alt="Lena with a couple outdoors"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 45vw, 25vw"
+                  />
+                </motion.div>
+
+                {/* lena8 — landscape ~4:3, indoor group, bottom-centre */}
+                <motion.div
+                  className="absolute left-[22%] bottom-[2%] z-10 h-[44%] w-[54%] overflow-hidden bg-neutral-100"
+                  whileHover={{ scale: 1.035 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                >
+                  <Image
+                    src="/images/lena8.png"
+                    alt="Lena with a couple at a venue"
+                    fill
+                    className="object-cover object-top"
+                    sizes="(max-width: 768px) 65vw, 36vw"
+                  />
+                </motion.div>
+              </motion.div>
+
+              <div className="flex flex-col justify-center md:max-w-[470px] md:justify-self-end">
+                <motion.h2
+                  className="font-display font-normal text-neutral-900 leading-[0.98] mb-7"
+                  style={{
+                    fontSize: "clamp(2.6rem, 4vw, 4.75rem)",
+                    opacity: thirdTextOpacity,
+                    y: thirdTextY,
+                  }}
+                >
+                  As a Marriage Celebrant
+                </motion.h2>
+
+                <motion.p
+                  className="text-neutral-500 leading-relaxed mb-8"
+                  style={{
+                    fontSize: "clamp(1rem, 1.25vw, 1.2rem)",
+                    opacity: thirdTextOpacity,
+                    y: thirdTextY,
+                  }}
+                >
+                  I have the opportunity to, not only connect with amazing couples,
+                  but to also get a sense of their love and the wonderful connection
+                  they share, which for me is important for creating a ceremony that
+                  is a true reflection of each couple I work with.
+                </motion.p>
+
+                <motion.div
+                  className="mt-8"
+                  style={{ opacity: thirdTextOpacity, y: thirdTextY }}
+                >
+                  <Link
+                    href="/moments"
+                    className="inline-flex text-sm font-bold text-neutral-900
+                               underline underline-offset-[6px] decoration-neutral-900 decoration-2
+                               transition-opacity duration-200 hover:opacity-70"
+                  >
+                    Moments
+                  </Link>
+                </motion.div>
+              </div>
+            </div>
+          </Panel>
+
+          {/* ── Panel 4: Married 20+ years ───────────────────────────────────── */}
+          <Panel>
+            <div className="grid w-full max-w-7xl gap-10 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20">
+
+              {/* Collage — lena5 top-left (couple portrait), lena10 bottom-right (couple selfie) */}
+              <motion.div
+                className="relative h-[72vw] min-h-[320px] md:h-[min(72dvh,680px)]"
+                style={{ opacity: fourthImgOpacity }}
+              >
+                {/* lena5 — couple portrait, top-left, larger */}
+                <motion.div
+                  className="absolute left-0 top-[3%] h-[64%] w-[58%] overflow-hidden bg-neutral-100"
+                  whileHover={{ scale: 1.035 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                >
+                  <Image
+                    src="/images/lena5.png"
+                    alt="Lena and her husband"
+                    fill
+                    className="object-cover object-top"
+                    sizes="(max-width: 768px) 65vw, 38vw"
+                  />
+                </motion.div>
+
+                {/* lena10 — 725×906px (0.80:1), bottom-right */}
+                <motion.div
+                  className="absolute right-[2%] bottom-[3%] z-10 h-[68%] w-[54%] overflow-hidden bg-neutral-100"
+                  whileHover={{ scale: 1.035 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                >
+                  <Image
+                    src="/images/lena10.png"
+                    alt="Lena and her husband"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 60vw, 36vw"
+                  />
+                </motion.div>
+              </motion.div>
+
+              {/* Text */}
+              <div className="flex flex-col justify-center md:max-w-[470px] md:justify-self-end">
+                <motion.h2
+                  className="font-display font-normal text-neutral-900 leading-[0.98] mb-7"
+                  style={{
+                    fontSize: "clamp(2.45rem, 3.7vw, 4.35rem)",
+                    opacity: fourthTextOpacity,
+                    y: fourthTextY,
+                  }}
+                >
+                  I&apos;ve been married for over twenty years.
+                </motion.h2>
+
+                <motion.p
+                  className="text-neutral-500 leading-relaxed mb-4"
+                  style={{
+                    fontSize: "clamp(1rem, 1.25vw, 1.2rem)",
+                    opacity: fourthTextOpacity,
+                    y: fourthTextY,
+                  }}
+                >
+                  Which means I know a thing or two about love, about what it actually
+                  looks like up close, what it takes to choose someone every single day,
+                  and why the moment you say <em>I do</em> deserves to be felt deeply
+                  by everyone in the room.
+                </motion.p>
+
+                <motion.p
+                  className="text-neutral-500 leading-relaxed"
+                  style={{
+                    fontSize: "clamp(1rem, 1.25vw, 1.2rem)",
+                    opacity: fourthTextOpacity,
+                    y: fourthTextY,
+                  }}
+                >
+                  That lived experience is something I carry into every ceremony
+                  I create. It would be a genuine pleasure to be your Celebrant.
+                </motion.p>
+
+                <motion.div
+                  className="mt-8"
+                  style={{ opacity: fourthTextOpacity, y: fourthTextY }}
+                >
+                  <Link
+                    href="/connect"
+                    className="inline-flex text-sm font-bold text-neutral-900
+                               underline underline-offset-[6px] decoration-neutral-900 decoration-2
+                               transition-opacity duration-200 hover:opacity-70"
+                  >
+                    Let&apos;s Chat
+                  </Link>
+                </motion.div>
+              </div>
+            </div>
+          </Panel>
+
         </motion.div>
       </div>
     </section>
@@ -161,9 +458,7 @@ export default function MeetLenaIntro() {
 
 function Panel({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      className="flex h-full w-screen flex-shrink-0 items-center px-6 pb-12 pt-[calc(var(--navbar-h)+2rem)] md:px-16 md:py-20 xl:px-24"
-    >
+    <div className="flex h-full w-screen flex-shrink-0 items-center px-6 pb-12 pt-[calc(var(--navbar-h)+2rem)] md:px-16 md:py-20 xl:px-24">
       {children}
     </div>
   );
