@@ -54,6 +54,8 @@ export default function IntroSection() {
   const lenaBodyOp  = useTransform(scrollYProgress, [0.50, 0.62], [0, 1]);
   const lenaBodyY   = useTransform(scrollYProgress, [0.50, 0.62], [24, 0]);
   const lenaImgOp   = useTransform(scrollYProgress, [0.44, 0.58], [0, 1]);
+  const lenaTextOp  = useTransform(scrollYProgress, [0.46, 0.62], [0, 1]);
+  const lenaTextY   = useTransform(scrollYProgress, [0.46, 0.62], [32, 0]);
 
   // Ceremony panel
   const cerTitleOp  = useTransform(scrollYProgress, [0.68, 0.80], [0, 1]);
@@ -61,6 +63,8 @@ export default function IntroSection() {
   const cerBodyOp   = useTransform(scrollYProgress, [0.72, 0.83], [0, 1]);
   const cerBodyY    = useTransform(scrollYProgress, [0.72, 0.83], [24, 0]);
   const cerImgOp    = useTransform(scrollYProgress, [0.66, 0.80], [0, 1]);
+  const cerTextOp   = useTransform(scrollYProgress, [0.68, 0.83], [0, 1]);
+  const cerTextY    = useTransform(scrollYProgress, [0.68, 0.83], [32, 0]);
 
   // CTA panel
   const ctaOp = useTransform(scrollYProgress, [0.85, 0.93, 1.00], [0, 1, 1]);
@@ -335,8 +339,7 @@ export default function IntroSection() {
                           items-start md:items-center
                           px-6 md:px-16 xl:px-24
                           pt-24 pb-6 md:py-20">
-            <div className="w-full grid grid-cols-1 md:grid-cols-2
-                            gap-6 md:gap-16 items-start md:items-center">
+            <div className="md:hidden w-full grid grid-cols-1 gap-6 items-start">
               <div>
                 <motion.h2
                   className="font-display font-normal text-neutral-900 leading-tight mb-4"
@@ -389,6 +392,111 @@ export default function IntroSection() {
                 />
               </motion.div>
             </div>
+
+            <div className="hidden md:grid w-full grid-cols-[minmax(0,1.45fr)_minmax(360px,0.9fr)]
+                            gap-14 xl:gap-20 items-center">
+              <motion.div
+                className="relative h-[min(72dvh,680px)]"
+                style={{ opacity: lenaImgOp }}
+              >
+                <motion.div
+                  className="absolute left-0 top-[2%] h-[72%] w-[43%] overflow-hidden bg-neutral-100"
+                  whileHover={{ scale: 1.035 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                >
+                  <Image
+                    src="/images/lena.png"
+                    alt="Lena Saunig"
+                    fill
+                    className="object-cover"
+                    sizes="28vw"
+                    priority={false}
+                  />
+                </motion.div>
+
+                <motion.div
+                  className="absolute left-[31%] bottom-[2%] z-10 h-[44%] w-[38%] overflow-hidden bg-neutral-100"
+                  whileHover={{ scale: 1.035 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                >
+                  <Image
+                    src="/images/hero1.webp"
+                    alt="Lena preparing a ceremony"
+                    fill
+                    className="object-cover"
+                    sizes="28vw"
+                  />
+                </motion.div>
+
+                <motion.div
+                  className="absolute right-[2%] top-[27%] h-[54%] w-[34%] overflow-hidden bg-neutral-100"
+                  whileHover={{ scale: 1.035 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                >
+                  <Image
+                    src="/images/lena2.png"
+                    alt="Lena Saunig wedding celebrant"
+                    fill
+                    className="object-cover"
+                    sizes="24vw"
+                  />
+                </motion.div>
+              </motion.div>
+
+              <div className="max-w-[470px] justify-self-end">
+                <motion.h2
+                  className="font-display font-normal text-neutral-900 leading-[0.98] mb-7"
+                  style={{
+                    fontSize: "clamp(3.25rem, 5.1vw, 5.75rem)",
+                    opacity: lenaTextOp,
+                    y:       lenaTextY,
+                  }}
+                >
+                  My name&apos;s Lena Saunig,
+                </motion.h2>
+
+                <motion.p
+                  className="text-neutral-500 leading-relaxed"
+                  style={{
+                    fontSize: "clamp(1rem, 1.25vw, 1.2rem)",
+                    opacity: lenaTextOp,
+                    y:       lenaTextY,
+                  }}
+                >
+                  I&apos;m a Sydney based Authorised Marriage Celebrant,
+                  I do travel out of Sydney and yes, I most certainly love Love!
+                </motion.p>
+                <motion.p
+                  className="text-neutral-500 leading-relaxed mt-4"
+                  style={{
+                    fontSize: "clamp(1rem, 1.25vw, 1.2rem)",
+                    opacity: lenaTextOp,
+                    y:       lenaTextY,
+                  }}
+                >
+                  I&apos;m passionate about love, people, and connection.
+                  Getting to truly know each couple I work with is something
+                  I genuinely treasure.
+                </motion.p>
+
+                <motion.div
+                  className="mt-8"
+                  style={{
+                    opacity: lenaTextOp,
+                    y:       lenaTextY,
+                  }}
+                >
+                  <Link
+                    href="/meet-lena"
+                    className="inline-flex text-sm font-bold text-neutral-900
+                               underline underline-offset-[6px] decoration-neutral-900 decoration-2
+                               transition-opacity duration-200 hover:opacity-70"
+                  >
+                    Meet Lena
+                  </Link>
+                </motion.div>
+              </div>
+            </div>
           </div>
 
           {/* ── Panel B: Ceremony ──────────────────────────────────────────── */}
@@ -396,8 +504,7 @@ export default function IntroSection() {
                           items-start md:items-center
                           px-6 md:px-16 xl:px-24
                           pt-24 pb-6 md:py-20">
-            <div className="w-full grid grid-cols-1 md:grid-cols-2
-                            gap-6 md:gap-16 items-start md:items-center">
+            <div className="md:hidden w-full grid grid-cols-1 gap-6 items-start">
               <div>
                 <motion.h2
                   className="font-display font-normal text-neutral-900 leading-tight mb-4"
@@ -439,6 +546,86 @@ export default function IntroSection() {
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </motion.div>
+            </div>
+
+            <div className="hidden md:grid w-full grid-cols-[minmax(0,1.45fr)_minmax(360px,0.9fr)]
+                            gap-14 xl:gap-20 items-center">
+              <motion.div
+                className="relative h-[min(72dvh,680px)]"
+                style={{ opacity: cerImgOp }}
+              >
+                <motion.div
+                  className="absolute left-[3%] top-[7%] h-[56%] w-[62%] overflow-hidden bg-neutral-100"
+                  whileHover={{ scale: 1.035 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                >
+                  <Image
+                    src="/images/hero2.webp"
+                    alt="Wedding ceremony"
+                    fill
+                    className="object-cover"
+                    sizes="42vw"
+                  />
+                </motion.div>
+
+                <motion.div
+                  className="absolute left-[35%] bottom-[5%] z-10 h-[46%] w-[50%] overflow-hidden bg-neutral-100"
+                  whileHover={{ scale: 1.035 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                >
+                  <Image
+                    src="/images/lena6.png"
+                    alt="Wedding ceremony details"
+                    fill
+                    className="object-cover"
+                    sizes="34vw"
+                  />
+                </motion.div>
+              </motion.div>
+
+              <div className="max-w-[470px] justify-self-end">
+                <motion.h2
+                  className="font-display font-normal text-neutral-900 leading-[0.98] mb-7"
+                  style={{
+                    fontSize: "clamp(2.45rem, 3.7vw, 4.35rem)",
+                    opacity: cerTextOp,
+                    y:       cerTextY,
+                  }}
+                >
+                  Your marriage ceremony is a celebration of your special and unique love.
+                </motion.h2>
+
+                <motion.p
+                  className="text-neutral-500 leading-relaxed"
+                  style={{
+                    fontSize: "clamp(1rem, 1.25vw, 1.2rem)",
+                    opacity: cerTextOp,
+                    y:       cerTextY,
+                  }}
+                >
+                  I want to make sure that you totally feel each moment, and for
+                  the precious people in your life, taking part in witnessing your
+                  marriage, to feel a deep sense of joy and connection with you,
+                  and each other.
+                </motion.p>
+
+                <motion.div
+                  className="mt-8"
+                  style={{
+                    opacity: cerTextOp,
+                    y:       cerTextY,
+                  }}
+                >
+                  <Link
+                    href="/your-ceremony"
+                    className="inline-flex text-sm font-bold text-neutral-900
+                               underline underline-offset-[6px] decoration-neutral-900 decoration-2
+                               transition-opacity duration-200 hover:opacity-70"
+                  >
+                    Your Ceremony
+                  </Link>
+                </motion.div>
+              </div>
             </div>
           </div>
 

@@ -37,6 +37,10 @@ body {
   --navbar-h: 81px;
 }
 
+.hide-navbar [data-navbar] {
+  transform: translateY(calc(-100% - 2rem));
+}
+
 /* Snap only on desktop — mandatory feels "stuck" on mobile touch scrolling */
 @media (min-width: 768px) {
   .home-section-snap {
