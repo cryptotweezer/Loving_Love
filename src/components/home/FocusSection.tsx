@@ -30,13 +30,16 @@ export default function FocusSection() {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        document.documentElement.classList.toggle("hide-navbar", entry.isIntersecting);
+        document.documentElement.classList.toggle("hide-navbar-focus", entry.isIntersecting);
       },
       { threshold: 0.3 }
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      document.documentElement.classList.remove("hide-navbar-focus");
+    };
   }, []);
 
   return (

@@ -31,7 +31,7 @@ export default function Footer() {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        document.documentElement.classList.toggle("hide-navbar", entry.isIntersecting);
+        document.documentElement.classList.toggle("hide-navbar-footer", entry.isIntersecting);
       },
       { threshold: 0.12 }
     );
@@ -39,7 +39,7 @@ export default function Footer() {
     observer.observe(footer);
     return () => {
       observer.disconnect();
-      document.documentElement.classList.remove("hide-navbar");
+      document.documentElement.classList.remove("hide-navbar-footer");
     };
   }, []);
 

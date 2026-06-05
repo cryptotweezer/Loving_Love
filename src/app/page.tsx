@@ -5,6 +5,7 @@ import FocusSection from "@/components/home/FocusSection";
 import GoogleReviewsPlaceholder from "@/components/home/GoogleReviewsPlaceholder";
 import HomeSnapZone from "@/components/home/HomeSnapZone";
 import FeaturedQuotes from "@/components/home/FeaturedQuotes";
+import FinalCallToAction from "@/components/home/FinalCallToAction";
 
 export const metadata: Metadata = {
   title: "Lena Saunig — Loving Love | Authorised Marriage Celebrant",
@@ -22,6 +23,7 @@ export default function HomePage() {
         <GoogleReviewsPlaceholder />
         <FeaturedQuotes />
       </HomeSnapZone>
+      <FinalCallToAction />
     </>
   );
 }

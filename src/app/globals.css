@@ -37,7 +37,10 @@ body {
   --navbar-h: 81px;
 }
 
-.hide-navbar [data-navbar] {
+.hide-navbar [data-navbar],
+.hide-navbar-focus [data-navbar],
+.hide-navbar-footer [data-navbar],
+.hide-navbar-cta [data-navbar] {
   transform: translateY(calc(-100% - 2rem));
 }
 
