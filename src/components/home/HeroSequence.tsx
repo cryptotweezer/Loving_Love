@@ -14,9 +14,10 @@ const SCROLL_HEIGHT_MOBILE = "280vh";  // mobile — less scrolling needed
 const DESKTOP_IMAGE_X = -0.72;
 const DESKTOP_IMAGE_Y = 0.08;
 const DESKTOP_IMAGE_ZOOM = 1.12;
-const MOBILE_IMAGE_X  = 0.88;
+const MOBILE_IMAGE_X  = 0.50;
 const MOBILE_IMAGE_Y  = 0.5;
 const MOBILE_IMAGE_ZOOM = 1;
+const HERO_EXIT_FADE_DISTANCE = 0.9;
 
 // ─── Scroll-driven titles ─────────────────────────────────────────────────────
 
@@ -27,7 +28,7 @@ const TITLES = [
 
 const EYEBROWS = [
   "Lena Saunig",
-  "Lena Saunig | Loving Love",
+  "Lena Saunig Loving Love",
 ] as const;
 
 const TAGLINES = [
@@ -39,6 +40,13 @@ const BODY_COPY = [
   "Lena is a Sydney based Authorised Marriage Celebrant creating meaningful, personal ceremonies across Sydney and beyond.",
   "Your ceremony is the heart of your wedding day. I create deeply personal, heartfelt ceremonies that are a true reflection of who you are, leaving everyone in the room moved.",
 ] as const;
+
+const TEXT_TRANSITION = {
+  duration: 0.7,
+  ease: [0.22, 1, 0.36, 1],
+} as const;
+const TEXT_INITIAL = { opacity: 0, y: 12, filter: "blur(6px)" };
+const TEXT_EXIT = { opacity: 0, y: -10, filter: "blur(6px)" };
 
 function getTitleIndex(progress: number): number {
   return progress < 0.5 ? 0 : 1;
@@ -159,12 +167,21 @@ export default function HeroSequence() {
           setTitleIndex(newTitleIndex);
         }
 
+        // Fade the full hero as it physically slides off and the next section rises.
+        const exitScrolled = Math.max(0, scrolled - scrollable);
+        const exitProgress = Math.max(
+          0,
+          Math.min(1, exitScrolled / (window.innerHeight * HERO_EXIT_FADE_DISTANCE))
+        );
+        if (stickyRef.current) {
+          stickyRef.current.style.opacity = String(1 - exitProgress);
+        }
+
         // Mobile: blur the hero as it physically slides off the top —
         // Apple-style frosted-glass transition into the white IntroSection.
         // exitScrolled = 0 while sticky (animation running), positive once
         // the hero is scrolling off. One viewport height later blur is at max.
         if (whiteOverlayRef.current && window.innerWidth < 768) {
-          const exitScrolled = Math.max(0, scrolled - scrollable);
           const t      = Math.max(0, Math.min(1, exitScrolled / window.innerHeight));
           const blurPx = (t * 24).toFixed(1);
           const fadeW  = (t * 0.85).toFixed(3);
@@ -196,11 +213,16 @@ export default function HeroSequence() {
       <motion.span
         key={titleIndex}
         className="block"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.45, ease: "easeInOut" }}
+        initial={TEXT_INITIAL}
+        animate={{
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+        }}
+        exit={TEXT_EXIT}
+        transition={TEXT_TRANSITION}
         aria-live="polite"
+        style={{ originX: 0, originY: 0.5 }}
       >
         <span className="whitespace-nowrap">{TITLES[titleIndex].line1}</span>
         <br />
@@ -216,10 +238,10 @@ export default function HeroSequence() {
       <motion.span
         key={titleIndex}
         className="block"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.35, ease: "easeInOut" }}
+        initial={TEXT_INITIAL}
+        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        exit={TEXT_EXIT}
+        transition={TEXT_TRANSITION}
       >
         {EYEBROWS[titleIndex]}
       </motion.span>
@@ -231,10 +253,10 @@ export default function HeroSequence() {
       <motion.span
         key={titleIndex}
         className="block"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.35, ease: "easeInOut" }}
+        initial={TEXT_INITIAL}
+        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        exit={TEXT_EXIT}
+        transition={TEXT_TRANSITION}
       >
         {TAGLINES[titleIndex]}
       </motion.span>
@@ -246,10 +268,10 @@ export default function HeroSequence() {
       <motion.span
         key={titleIndex}
         className="block"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.35, ease: "easeInOut" }}
+        initial={TEXT_INITIAL}
+        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        exit={TEXT_EXIT}
+        transition={TEXT_TRANSITION}
       >
         {BODY_COPY[titleIndex]}
       </motion.span>
@@ -296,7 +318,7 @@ export default function HeroSequence() {
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.60) 28%, rgba(0,0,0,0.20) 52%, transparent 70%)",
+                "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.74) 30%, rgba(0,0,0,0.38) 58%, transparent 78%)",
             }}
           />
 
@@ -311,22 +333,28 @@ export default function HeroSequence() {
             }}
           >
             {/* Eyebrow */}
-            <p className="text-[9px] tracking-[0.26em] uppercase text-white/90 mb-3">
+            <p className="text-[9px] tracking-[0.26em] uppercase text-white/90 mb-1.5">
               {eyebrowMotion}
             </p>
 
             {/* H1 — vw-based so "A ceremony as unique" fits without overflow.
                 7.5vw ≈ 29px on 390px (iPhone 14 Pro). */}
             <h1
-              className="font-display font-normal text-white mb-3"
-              style={{ fontSize: "clamp(1.75rem, 7.5vw, 2.5rem)", lineHeight: 1.1 }}
+              className="font-display font-normal text-white mb-0.5"
+              style={{
+                fontSize:
+                  titleIndex === 1
+                    ? "clamp(1.4rem, 6.4vw, 2.05rem)"
+                    : "clamp(1.75rem, 7.5vw, 2.5rem)",
+                lineHeight: 1,
+              }}
             >
               {titleMotion}
             </h1>
 
             {/* Tagline — italic, clearly smaller than h1, clearly larger than body */}
             <p
-              className="font-display italic text-white/70 mb-2.5"
+              className="font-display italic text-white/70 mb-1"
               style={{ fontSize: "clamp(0.9375rem, 3.8vw, 1.125rem)" }}
             >
               {taglineMotion}
@@ -393,21 +421,27 @@ export default function HeroSequence() {
           <div className="md:pl-24 lg:pl-32 xl:pl-36 md:max-w-[46%]">
 
             {/* Eyebrow — tight to heading */}
-            <p className="text-[10px] tracking-[0.26em] uppercase text-neutral-400 mb-2">
+            <p className="text-[10px] tracking-[0.26em] uppercase text-neutral-400 mb-0.5">
               {eyebrowMotion}
             </p>
 
             {/* H1 — dvh-based, lineHeight 1.08 gives breathing room on 2 lines */}
             <h1
-              className="font-display font-normal text-neutral-900 mb-4"
-              style={{ fontSize: "clamp(3rem, 9.5dvh, 6.5rem)", lineHeight: 1.08 }}
+              className="font-display font-normal text-neutral-900 mb-1"
+              style={{
+                fontSize:
+                  titleIndex === 1
+                    ? "clamp(2.4rem, 7.6dvh, 5.2rem)"
+                    : "clamp(3rem, 9.5dvh, 6.5rem)",
+                lineHeight: 1,
+              }}
             >
               {titleMotion}
             </h1>
 
             {/* Tagline — italic, clearly smaller than h1 */}
             <p
-              className="font-display italic text-neutral-500 mb-3"
+              className="font-display italic text-neutral-500 mb-1"
               style={{ fontSize: "clamp(1rem, 1.9dvh, 1.25rem)" }}
             >
               {taglineMotion}
