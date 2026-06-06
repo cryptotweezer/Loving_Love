@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
 import YourCeremonyHero from "@/components/your-ceremony/YourCeremonyHero";
+import YourCeremonyStep1 from "@/components/your-ceremony/YourCeremonyStep1";
+import YourCeremonyStep2 from "@/components/your-ceremony/YourCeremonyStep2";
+import YourCeremonyStep3 from "@/components/your-ceremony/YourCeremonyStep3";
+import YourCeremonyStep4 from "@/components/your-ceremony/YourCeremonyStep4";
+import YourCeremonyCTA from "@/components/your-ceremony/YourCeremonyCTA";
 
 export const metadata: Metadata = {
   title: "Your Ceremony",
@@ -11,6 +16,11 @@ export default function YourCeremonyPage() {
   return (
     <>
       <YourCeremonyHero />
+      <YourCeremonyStep1 />
+      <YourCeremonyStep2 />
+      <YourCeremonyStep3 />
+      <YourCeremonyStep4 />
+      <YourCeremonyCTA />
     </>
   );
 }

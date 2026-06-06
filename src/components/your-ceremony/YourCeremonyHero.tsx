@@ -1,10 +1,13 @@
 "use client";
 
 import { motion } from "motion/react";
+import { useScrollSnap } from "@/hooks/useScrollSnap";
 
 export default function YourCeremonyHero() {
+  const sectionRef = useScrollSnap();
+
   return (
-    <section className="flex h-[100dvh] flex-col items-center justify-center bg-white px-6 text-center md:px-16 xl:px-24">
+    <section ref={sectionRef} className="flex h-[100dvh] flex-col items-center justify-center bg-white px-6 text-center md:px-16 xl:px-24">
       <div className="max-w-4xl">
 
         {/* Title — visible on load, same presence as "A big congratulations" */}
