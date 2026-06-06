@@ -55,9 +55,9 @@ export default function MeetLenaSocial() {
   return (
     <motion.section
       ref={sectionRef}
-      className="relative flex h-[100dvh] min-h-[100svh] flex-col items-center justify-center
+      className="relative flex h-[100svh] flex-col items-center justify-center
                  overflow-hidden bg-white px-6 text-white
-                 md:min-h-[720px] md:px-16"
+                 md:h-[100dvh] md:min-h-[720px] md:px-16"
       initial={{ opacity: 0.92 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: false, amount: 0.35 }}

@@ -7,11 +7,27 @@ import { useEffect, useRef } from "react";
 
 const SCROLL_END_DELAY = 420;
 const SNAP_SETTLE_MS = 1100;
-const PANEL_SNAPS = [
-  { target: 0.12, range: [0.02, 0.25] as [number, number] },
-  { target: 0.48, range: [0.30, 0.58] as [number, number] },
-  { target: 0.68, range: [0.58, 0.78] as [number, number] },
-  { target: 0.87, range: [0.78, 0.97] as [number, number] },
+
+// DOWN: snap to the panel that is arriving (heading forward).
+// — Gap [0.25 → 0.30] between panels 1 and 2 is now closed (Panel 2 starts at 0.25).
+// — Panel 4 range ends at 0.92 so snap stops pulling the user back once they
+//   are heading into MeetLenaSocial (which starts appearing past ~0.93).
+const DOWN_SNAPS = [
+  { target: 0.12, range: [0.02, 0.25] as [number, number] }, // Panel 1 settled
+  { target: 0.48, range: [0.25, 0.57] as [number, number] }, // Panel 2 arriving
+  { target: 0.68, range: [0.58, 0.77] as [number, number] }, // Panel 3 arriving
+  { target: 0.87, range: [0.78, 0.92] as [number, number] }, // Panel 4 arriving
+];
+
+// UP: snap to the panel the user is returning to.
+// Ranges follow the DEPARTURE transition of each panel (the band where it
+// slides OUT of view as the user scrolls back up), so the snap pulls them
+// back to the correct settled position.
+const UP_SNAPS = [
+  { target: 0.12, range: [0.02, 0.30] as [number, number] }, // back to Panel 1
+  { target: 0.48, range: [0.42, 0.55] as [number, number] }, // back to Panel 2
+  { target: 0.68, range: [0.62, 0.75] as [number, number] }, // back to Panel 3
+  { target: 0.87, range: [0.82, 0.94] as [number, number] }, // back to Panel 4
 ];
 
 export default function MeetLenaIntro() {
@@ -89,8 +105,10 @@ export default function MeetLenaIntro() {
 
     const onScrollEnd = () => {
       const progress = getProgress();
-      if (progress < 0.02 || progress > 0.98) return;
-      const zones = goingDown ? PANEL_SNAPS : [...PANEL_SNAPS].reverse();
+      // Stop snapping near the very start and once Panel 4 is settled and the
+      // user is heading into MeetLenaSocial (progress > 0.95).
+      if (progress < 0.02 || progress > 0.95) return;
+      const zones = goingDown ? DOWN_SNAPS : UP_SNAPS;
       for (const { target, range } of zones) {
         if (progress >= range[0] && progress <= range[1]) {
           snapTo(target);
@@ -119,7 +137,7 @@ export default function MeetLenaIntro() {
 
   return (
     <section ref={containerRef} className="relative h-[520vh] bg-white">
-      <div className="sticky top-0 h-[100dvh] overflow-hidden bg-white">
+      <div className="sticky top-0 h-[100svh] overflow-hidden bg-white md:h-[100dvh]">
         <motion.div className="absolute inset-0 flex" style={{ x: trackX }}>
 
           {/* ── Panel 1: Hello, I'm Lena ─────────────────────────────────────── */}
