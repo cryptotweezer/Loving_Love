@@ -19,7 +19,7 @@ export default function OtherServicesCommitment() {
                         px-6 py-20 md:min-h-[100dvh] md:px-16 xl:px-24">
       <div className="grid w-full max-w-7xl mx-auto gap-12
                       md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]
-                      md:gap-16 xl:gap-20 items-center">
+                      md:gap-16 xl:gap-20 2xl:max-w-[1400px] items-center">
 
         {/* ── Text — left ──────────────────────────────────────────────────── */}
         <motion.div
