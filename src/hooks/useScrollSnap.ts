@@ -1,15 +1,31 @@
 import { useEffect, useRef } from "react";
 
+interface UseScrollSnapOptions {
+  /**
+   * When true the snap listener is only registered on screens ≥ 768 px.
+   * Use for sections that are taller than one viewport on mobile (min-h
+   * sections with long text / stacked images) so that the UP-snap logic
+   * does not pull the user back to the section top while they are still
+   * reading content inside it.
+   */
+  desktopOnly?: boolean;
+}
+
 /**
  * Attaches a scroll-snap listener to the returned ref.
  * Snaps the section into full-screen view when the user stops scrolling
  * near it — both on the way down and on the way back up.
  * Does NOT interfere once the user has scrolled well past the section.
  */
-export function useScrollSnap() {
+export function useScrollSnap({ desktopOnly = false }: UseScrollSnapOptions = {}) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    // Skip on mobile when the caller opts in to desktop-only behaviour.
+    // This prevents the UP-snap from trapping users inside sections that
+    // are taller than one viewport height on small screens.
+    if (desktopOnly && window.innerWidth < 768) return;
+
     const section = ref.current;
     if (!section) return;
 
@@ -55,7 +71,7 @@ export function useScrollSnap() {
       window.removeEventListener("scroll", onScroll);
       clearTimeout(snapTimer);
     };
-  }, []);
+  }, [desktopOnly]);
 
   return ref;
 }

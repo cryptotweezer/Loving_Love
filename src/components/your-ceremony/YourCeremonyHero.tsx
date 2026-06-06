@@ -7,7 +7,7 @@ export default function YourCeremonyHero() {
   const sectionRef = useScrollSnap();
 
   return (
-    <section ref={sectionRef} className="flex h-[100dvh] flex-col items-center justify-center bg-white px-6 text-center md:px-16 xl:px-24">
+    <section ref={sectionRef} className="flex h-[100svh] flex-col items-center justify-center bg-white px-6 text-center md:h-[100dvh] md:px-16 xl:px-24">
       <div className="max-w-4xl">
 
         {/* Label — above title */}

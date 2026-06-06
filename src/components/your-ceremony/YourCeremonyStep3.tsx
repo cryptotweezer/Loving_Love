@@ -5,11 +5,11 @@ import { motion } from "motion/react";
 import { useScrollSnap } from "@/hooks/useScrollSnap";
 
 export default function YourCeremonyStep3() {
-  const sectionRef = useScrollSnap();
+  const sectionRef = useScrollSnap({ desktopOnly: true });
 
   return (
-    <section ref={sectionRef} className="flex min-h-[100dvh] items-center bg-white
-                        px-6 py-20 md:px-16 xl:px-24">
+    <section ref={sectionRef} className="flex min-h-[100svh] items-center bg-white
+                        px-6 py-20 md:min-h-[100dvh] md:px-16 xl:px-24">
       <div className="grid w-full max-w-7xl mx-auto gap-12
                       md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]
                       md:gap-16 xl:gap-20 items-center">

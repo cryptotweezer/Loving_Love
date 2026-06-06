@@ -34,9 +34,9 @@ export default function YourCeremonyCTA() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex h-[100dvh] flex-col items-center justify-center
+      className="relative flex h-[100svh] flex-col items-center justify-center
                         overflow-hidden bg-white px-6 text-center text-neutral-900
-                        md:px-16 xl:px-24"
+                        md:h-[100dvh] md:px-16 xl:px-24"
     >
       <Image
         src="/images/background3.jpeg"
