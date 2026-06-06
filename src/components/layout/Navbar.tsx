@@ -59,6 +59,16 @@ export default function Navbar() {
     ? "bg-white/10 text-white"
     : "bg-neutral-100 text-neutral-900";
 
+  const pillStyle = {
+    background:           pillBg,
+    backdropFilter:       "blur(16px) saturate(180%)",
+    WebkitBackdropFilter: "blur(16px) saturate(180%)",
+    borderWidth:          "1px",
+    borderStyle:          "solid",
+    borderColor:          pillBorder,
+    transition:           "background 0.45s ease, border-color 0.45s ease",
+  };
+
   return (
     <header
       ref={headerRef}
@@ -66,36 +76,26 @@ export default function Navbar() {
       className="fixed top-3 left-0 right-0 z-50 px-4 md:px-6 lg:px-10
                  pointer-events-none transition-transform duration-500 ease-in-out"
     >
-      {/* ── Bar ─────────────────────────────────────────────────────────────── */}
-      <div
-        className="pointer-events-auto flex items-center justify-between md:justify-start
-                   mx-auto w-full md:w-fit
-                   rounded-full px-4 md:px-6 py-2.5"
-        style={{
-          background:           pillBg,
-          backdropFilter:       "blur(16px) saturate(180%)",
-          WebkitBackdropFilter: "blur(16px) saturate(180%)",
-          borderWidth:          "1px",
-          borderStyle:          "solid",
-          borderColor:          pillBorder,
-          transition:           "background 0.45s ease, border-color 0.45s ease",
-        }}
-      >
 
-        {/* ── Brand ───────────────────────────────────────────────────────── */}
+      {/* ══ DESKTOP — full pill: brand + nav + CTA ═══════════════════════════ */}
+      <div
+        className="hidden md:flex pointer-events-auto items-center justify-start
+                   w-fit mx-auto rounded-full px-6 py-2.5"
+        style={pillStyle}
+      >
+        {/* Brand */}
         <Link
           href="/"
           aria-label="Loving Love — Home"
           className={`font-display font-normal leading-none whitespace-nowrap
-                     text-[1.6rem] md:text-[1.85rem]
-                     hover:opacity-70 transition-all duration-300
-                     md:mr-10 flex-shrink-0 ${brandCls}`}
+                     text-[1.85rem] hover:opacity-70 transition-all duration-300
+                     mr-10 flex-shrink-0 ${brandCls}`}
         >
           Loving Love
         </Link>
 
-        {/* ── Nav links — desktop ──────────────────────────────────────────── */}
-        <nav aria-label="Main navigation" className="hidden md:flex items-center gap-5 lg:gap-7 flex-1">
+        {/* Nav links */}
+        <nav aria-label="Main navigation" className="flex items-center gap-5 lg:gap-7 flex-1">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -111,45 +111,45 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* ── Right: CTA + hamburger ──────────────────────────────────────── */}
-        <div className="flex items-center gap-3 ml-auto md:ml-4">
-
-          {/* Let's Chat — desktop */}
+        {/* CTA */}
+        <div className="flex items-center ml-4">
           <Link
             href="/connect"
-            className={`hidden md:inline-flex items-center
+            className={`inline-flex items-center
                        px-5 py-2.5 rounded-full
                        text-[10px] tracking-[0.13em] uppercase font-medium whitespace-nowrap
                        hover:opacity-85 transition-all duration-300 ${ctaCls}`}
           >
             Let&apos;s Chat
           </Link>
-
-          {/* Hamburger — mobile */}
-          <button
-            onClick={() => setMobileOpen((p) => !p)}
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileOpen}
-            className={`md:hidden w-9 h-9 rounded-full flex items-center justify-center
-                       transition-all duration-300 hover:opacity-75 ${burgerCls}`}
-          >
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.span
-                key={mobileOpen ? "x" : "menu"}
-                initial={{ opacity: 0, rotate: -10 }}
-                animate={{ opacity: 1, rotate: 0   }}
-                exit={{    opacity: 0, rotate:  10  }}
-                transition={{ duration: 0.15 }}
-                className="flex"
-              >
-                {mobileOpen ? <X size={16} /> : <Menu size={16} />}
-              </motion.span>
-            </AnimatePresence>
-          </button>
         </div>
       </div>
 
-      {/* ── Mobile dropdown ─────────────────────────────────────────────────── */}
+      {/* ══ MOBILE — hamburger circle only ════════════════════════════════════ */}
+      <div className="md:hidden flex justify-end pointer-events-auto">
+        <button
+          onClick={() => setMobileOpen((p) => !p)}
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileOpen}
+          className={`w-9 h-9 rounded-full flex items-center justify-center
+                     transition-all duration-300 hover:opacity-75 ${burgerCls}`}
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={mobileOpen ? "x" : "menu"}
+              initial={{ opacity: 0, rotate: -10 }}
+              animate={{ opacity: 1, rotate: 0   }}
+              exit={{    opacity: 0, rotate:  10  }}
+              transition={{ duration: 0.15 }}
+              className="flex"
+            >
+              {mobileOpen ? <X size={16} /> : <Menu size={16} />}
+            </motion.span>
+          </AnimatePresence>
+        </button>
+      </div>
+
+      {/* ══ Mobile dropdown ════════════════════════════════════════════════════ */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -160,12 +160,12 @@ export default function Navbar() {
             className="mt-2 rounded-2xl overflow-hidden pointer-events-auto
                        shadow-[0_4px_24px_rgba(0,0,0,0.10)]"
             style={{
-              background:           isDark ? "rgba(0,0,0,0.80)"         : "rgba(255,255,255,0.34)",
+              background:           isDark ? "rgba(0,0,0,0.80)"         : "rgba(255,255,255,0.94)",
               backdropFilter:       "blur(28px) saturate(190%)",
               WebkitBackdropFilter: "blur(28px) saturate(190%)",
               borderWidth:          "1px",
               borderStyle:          "solid",
-              borderColor:          isDark ? "rgba(255,255,255,0.12)"   : "rgba(255,255,255,0.25)",
+              borderColor:          isDark ? "rgba(255,255,255,0.12)"   : "rgba(0,0,0,0.08)",
             }}
           >
             <div className="px-3 py-3 flex flex-col gap-0.5">
@@ -189,7 +189,7 @@ export default function Navbar() {
                           : "text-neutral-900 underline underline-offset-[5px] decoration-neutral-900 decoration-[1.5px]"
                         : isDark
                           ? "text-white/50 hover:text-white hover:bg-white/10"
-                          : "text-neutral-600 hover:text-neutral-900 hover:bg-white/40"
+                          : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100/60"
                       }
                     `}
                   >
@@ -203,7 +203,7 @@ export default function Navbar() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: navLinks.length * 0.04 + 0.05, duration: 0.18 }}
                 className="mt-1 pt-2"
-                style={{ borderTop: `1px solid ${isDark ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.25)"}` }}
+                style={{ borderTop: `1px solid ${isDark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.08)"}` }}
               >
                 <Link
                   href="/connect"

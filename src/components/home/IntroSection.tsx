@@ -384,6 +384,23 @@ export default function IntroSection() {
                   Getting to truly know each couple I work with is something
                   I genuinely treasure.
                 </motion.p>
+
+                <motion.div
+                  className="mt-5"
+                  style={{
+                    opacity: isMobile ? lenaBodyOpM : lenaBodyOp,
+                    y:       isMobile ? lenaBodyYM  : lenaBodyY,
+                  }}
+                >
+                  <Link
+                    href="/meet-lena"
+                    className="inline-flex text-sm font-bold text-neutral-900
+                               underline underline-offset-[6px] decoration-neutral-900 decoration-2
+                               transition-opacity duration-200 hover:opacity-70"
+                  >
+                    Meet Lena
+                  </Link>
+                </motion.div>
               </div>
 
               <motion.div
@@ -550,6 +567,23 @@ export default function IntroSection() {
                   marriage, to feel a deep sense of joy and connection with you,
                   and each other.
                 </motion.p>
+
+                <motion.div
+                  className="mt-5"
+                  style={{
+                    opacity: isMobile ? cerBodyOpM : cerBodyOp,
+                    y:       isMobile ? cerBodyYM  : cerBodyY,
+                  }}
+                >
+                  <Link
+                    href="/your-ceremony"
+                    className="inline-flex text-sm font-bold text-neutral-900
+                               underline underline-offset-[6px] decoration-neutral-900 decoration-2
+                               transition-opacity duration-200 hover:opacity-70"
+                  >
+                    Your Ceremony
+                  </Link>
+                </motion.div>
               </div>
 
               <motion.div
