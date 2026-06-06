@@ -32,12 +32,12 @@ export default function FinalCallToAction() {
       className="relative z-10 flex h-[100dvh] snap-start items-center justify-center overflow-hidden bg-white px-6 text-white md:h-[100dvh] md:min-h-[720px] md:px-16"
       style={{ boxShadow: "0 -10px 0 rgba(10, 10, 10, 0.76)" }}
     >
-      {/* Mobile background */}
+      {/* Mobile background — no scale to avoid zoom on toolbar show/hide */}
       <Image
         src="/images/mobile_background1.jpeg"
         alt=""
         fill
-        className="z-0 scale-[1.01] object-cover md:hidden"
+        className="z-0 object-cover md:hidden"
         sizes="100vw"
         priority={false}
       />
