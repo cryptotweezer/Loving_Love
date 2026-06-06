@@ -117,7 +117,7 @@ export default function MeetLenaIntro() {
 
           {/* ── Panel 1: Hello, I'm Lena ─────────────────────────────────────── */}
           <Panel>
-            <div className="grid w-full max-w-7xl gap-10 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20">
+            <div className="grid w-full max-w-7xl gap-10 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20 2xl:max-w-[1560px] 2xl:mx-auto">
               <motion.div
                 className="relative h-[72vw] min-h-[320px] md:h-[min(76dvh,720px)]"
                 style={{ opacity: firstTextOpacity }}
@@ -199,7 +199,7 @@ export default function MeetLenaIntro() {
 
           {/* ── Panel 2: I'm passionate ──────────────────────────────────────── */}
           <Panel>
-            <div className="grid w-full max-w-7xl gap-10 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20">
+            <div className="grid w-full max-w-7xl gap-10 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20 2xl:max-w-[1560px] 2xl:mx-auto">
               <motion.div
                 className="relative h-[72vw] min-h-[320px] md:h-[min(72dvh,680px)]"
                 style={{ opacity: secondTextOpacity }}
@@ -264,7 +264,7 @@ export default function MeetLenaIntro() {
 
           {/* ── Panel 3: As a Marriage Celebrant ─────────────────────────────── */}
           <Panel>
-            <div className="grid w-full max-w-7xl gap-10 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20">
+            <div className="grid w-full max-w-7xl gap-10 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20 2xl:max-w-[1560px] 2xl:mx-auto">
               <motion.div
                 className="relative h-[72vw] min-h-[320px] md:h-[min(72dvh,680px)]"
                 style={{ opacity: thirdImgOpacity }}
@@ -360,7 +360,7 @@ export default function MeetLenaIntro() {
 
           {/* ── Panel 4: Married 20+ years ───────────────────────────────────── */}
           <Panel>
-            <div className="grid w-full max-w-7xl gap-10 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20">
+            <div className="grid w-full max-w-7xl gap-10 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20 2xl:max-w-[1560px] 2xl:mx-auto">
 
               {/* Collage — lena5 top-left (couple portrait), lena10 bottom-right (couple selfie) */}
               <motion.div
