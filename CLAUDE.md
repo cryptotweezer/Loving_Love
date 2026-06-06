@@ -247,3 +247,48 @@ Full schema and architecture: `project_docs/WEBSITE_SCHEMA.md`
 - Supabase image URLs go through `next/image` — never `<img>` tags.
 - Contact form submissions email `lena@lovinglove.com.au`.
 - Copyright footer: `© 2019 by Loving Love`.
+
+---
+
+## Session Notes — Layout & Scroll (updated 2026-06-06)
+
+### Viewport height units
+- **`svh`** (safe) — stable, accounts for browser chrome. Use on mobile snap sections or sticky containers where layout stability matters.
+- **`dvh`** (dynamic) — changes as browser toolbar shows/hides. Use on non-snap sections with background images so they always fill the visible screen.
+- **`lvh`** (large) — ignores browser chrome. Only used on HeroSequence sticky div (intentional full-bleed behind toolbar).
+- **Never use `lvh` on snap sections** — too tall, creates gaps between snapped sections.
+
+### Screen-size scoping rules (established across all pages)
+- **`2xl:` prefix only** for large-monitor fixes (>1536px). Never touch `md:`, `lg:`, `xl:` when the task is large-screen only.
+- **No prefix / `sm:`** for mobile-only fixes. Never touch `md:` and above when the task is mobile-only.
+
+### 2xl large-screen layout — standard applied to all pages
+All content grids use **`2xl:max-w-[1400px] 2xl:mx-auto`** to prevent text and images from spreading too far apart on wide monitors. Status per page:
+
+| Page | Component(s) | 2xl fix applied |
+|------|-------------|-----------------|
+| Home | `IntroSection` (2 panel grids) | ✅ |
+| Meet Lena | `MeetLenaIntro` (4 panel grids) + `2xl:justify-self-start` on text cols | ✅ |
+| Your Ceremony | Steps 1–4 | ✅ |
+| Other Services | Commitment, Baby Naming, Vow Renewal, Celebrations of Life | ✅ |
+
+`MeetLenaIntro` text columns have **`2xl:justify-self-start`** (overrides `md:justify-self-end`) so text sits next to the gap rather than pushed to the far right edge on wide monitors.
+
+### Scroll snap architecture
+- **CSS snap** (`scroll-snap-type: y proximity`) — applied via `.home-section-snap` class on `<html>`, active **`md+` only** (defined in `globals.css`).
+- **`HomeSnapZone`** — wrapper that toggles `.home-section-snap` via IntersectionObserver (threshold `0.2`, not `0.25` — the exact max ratio was unreliable). Wraps FocusSection, GoogleReviews, FeaturedQuotes, FinalCallToAction.
+- **JS snap hook** `useScrollSnap()` — debounced scroll listener, fires on both UP and DOWN. Option `{ desktopOnly: true }` skips on `window.innerWidth < 768` to prevent trapping users inside tall `min-h` sections on mobile.
+- **`MeetLenaIntro`** uses separate `DOWN_SNAPS` / `UP_SNAPS` arrays for its horizontal panel scroll — reversing a single array does not produce correct UP-direction zones.
+
+### Pre-existing TypeScript errors (do not fix unless asked)
+`CelebrationsHero.tsx` has `ease: "easeOut"` (should be `"easeOut" as const`) — pre-existing, not blocking builds via Vercel. All other pages already have `as const` applied.
+
+### Navbar
+- **Desktop**: full glassmorphism pill — brand + nav links + Let's Chat CTA.
+- **Mobile**: only the hamburger circle (`w-9 h-9 rounded-full`), no surrounding pill, no brand text. The pill is `hidden md:flex`; the mobile button is a sibling `md:hidden` element.
+- Mobile dropdown uses `rgba(255,255,255,0.94)` background (opaque white) for readability on light sections.
+
+### Mobile-specific notes
+- `FinalCallToAction` uses **two separate `<Image>` tags** — `mobile_background1.jpeg` (`md:hidden`, no `scale`) and `background1.jpeg` (`hidden md:block`, keeps `scale-[1.01]`). The scale was causing visible zoom on iPhone when Safari toolbar shows/hides with `dvh` height.
+- `IntroSection` mobile panels (Panel A & B) have **underline-link buttons** (Meet Lena / Your Ceremony) that share the panel's opacity + y animation. Desktop panels are a completely separate JSX branch (`hidden md:grid`).
+- Hero mobile text block: `lineHeight: 1.15` on h1, `mb-2` between h1 and tagline, `mb-2.5` on eyebrow. The subtitle span ("AUTHORISED MARRIAGE CELEBRANT") has `mt-1` for extra separation from the title line — this span is shared between mobile and desktop `titleMotion` but the proportional impact on desktop (much larger font) is negligible.
