@@ -75,7 +75,7 @@ export default function FeaturedQuotes() {
 
   return (
     <section
-      className="relative flex h-[100lvh] snap-start items-center overflow-hidden bg-white px-6 py-24 md:h-[100dvh] md:px-16 xl:px-24"
+      className="relative flex h-[100svh] snap-start items-center overflow-hidden bg-white px-6 py-24 md:h-[100dvh] md:px-16 xl:px-24"
     >
       <button
         type="button"

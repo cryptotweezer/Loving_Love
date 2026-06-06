@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import Image from "next/image";
+import { useEffect, useRef } from "react";
 import { motion } from "motion/react";
-import { useScrollSnap } from "@/hooks/useScrollSnap";
 
 export default function FinalCallToAction() {
-  const sectionRef = useScrollSnap();
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -29,11 +29,24 @@ export default function FinalCallToAction() {
   return (
     <motion.section
       ref={sectionRef}
-      className="relative flex h-[100dvh] min-h-[100svh] items-center justify-center overflow-hidden bg-neutral-950 px-6 text-white md:min-h-[720px] md:px-16"
-      style={{ boxShadow: "0 -4px 0 rgb(10 10 10)" }}
+      className="relative z-10 flex h-[100svh] snap-start items-center justify-center overflow-hidden bg-white px-6 text-white md:h-[100dvh] md:min-h-[720px] md:px-16"
+      style={{ boxShadow: "0 -10px 0 rgba(10, 10, 10, 0.76)" }}
     >
+      <Image
+        src="/images/background1.jpeg"
+        alt=""
+        fill
+        className="z-0 scale-[1.01] object-cover"
+        sizes="100vw"
+        priority={false}
+      />
+      <div
+        className="absolute -inset-2 z-[1]"
+        style={{ backgroundColor: "rgba(10, 10, 10, 0.76)" }}
+      />
+
       <motion.div
-        className="mx-auto max-w-3xl text-center"
+        className="relative z-10 mx-auto max-w-3xl text-center"
         initial={{ y: 40 }}
         whileInView={{ y: 0 }}
         viewport={{ once: false, amount: 0.35 }}

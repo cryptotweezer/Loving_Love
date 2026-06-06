@@ -13,9 +13,11 @@ export default function HomeSnapZone({ children }: HomeSnapZoneProps) {
     const zone = zoneRef.current;
     if (!zone) return;
 
-    // threshold 0.25 — snap activates only once a meaningful portion of the
-    // snap zone is visible, preventing early activation while IntroSection
-    // is still animating at its very end.
+    // threshold 0.2 — fires when ~80 vh of the snap zone is visible, meaning
+    // the first section is substantially in view and IntroSection is done.
+    // Previously 0.25, which is the *exact* max ratio for a 4-section zone
+    // (100vh / 400vh) — browsers may never reach it due to floating-point
+    // imprecision, so the class was silently never applied.
     const observer = new IntersectionObserver(
       ([entry]) => {
         document.documentElement.classList.toggle(
@@ -23,7 +25,7 @@ export default function HomeSnapZone({ children }: HomeSnapZoneProps) {
           entry.isIntersecting
         );
       },
-      { threshold: 0.25 }
+      { threshold: 0.2 }
     );
 
     const onResize = () => {

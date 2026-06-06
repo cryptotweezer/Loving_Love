@@ -22,7 +22,7 @@ const HERO_EXIT_FADE_DISTANCE = 0.9;
 // ─── Scroll-driven titles ─────────────────────────────────────────────────────
 
 const TITLES = [
-  { line1: "Loving Love", line2: "Marriage Celebrant" },
+  { line1: "Loving Love", line2: "Authorised Marriage Celebrant" },
   { line1: "A ceremony as unique", line2: "as your love."  },
 ] as const;
 
@@ -226,7 +226,7 @@ export default function HeroSequence() {
       >
         <span className="whitespace-nowrap">{TITLES[titleIndex].line1}</span>
         <br />
-        <span className="block text-[0.42em] uppercase tracking-[0.18em]">
+        <span className="block whitespace-nowrap text-[0.32em] uppercase tracking-[0.14em]">
           {TITLES[titleIndex].line2}
         </span>
       </motion.span>

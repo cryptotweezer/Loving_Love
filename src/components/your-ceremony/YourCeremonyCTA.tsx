@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect } from "react";
 import { motion } from "motion/react";
 import { useScrollSnap } from "@/hooks/useScrollSnap";
@@ -31,12 +32,27 @@ export default function YourCeremonyCTA() {
   }, [sectionRef]);
 
   return (
-    <section ref={sectionRef} className="flex h-[100dvh] flex-col items-center justify-center
-                        bg-neutral-950 px-6 text-center text-white
-                        md:px-16 xl:px-24">
+    <section
+      ref={sectionRef}
+      className="relative flex h-[100dvh] flex-col items-center justify-center
+                        overflow-hidden bg-white px-6 text-center text-neutral-900
+                        md:px-16 xl:px-24"
+    >
+      <Image
+        src="/images/background3.jpeg"
+        alt=""
+        fill
+        className="z-0 scale-[1.01] object-cover"
+        sizes="100vw"
+        priority={false}
+      />
+      <div
+        className="absolute -inset-2 z-[1]"
+        style={{ backgroundColor: "rgba(10, 10, 10, 0.76)" }}
+      />
 
       <motion.h2
-        className="font-display font-normal text-white leading-tight mb-5"
+        className="relative z-10 font-display font-normal text-white leading-tight mb-5"
         style={{ fontSize: "clamp(2.5rem, 5vw, 5rem)" }}
         variants={fadeUp}
         initial="hidden"
@@ -48,7 +64,7 @@ export default function YourCeremonyCTA() {
       </motion.h2>
 
       <motion.p
-        className="font-display italic text-white/60 mb-12"
+        className="relative z-10 font-display italic text-white/60 mb-12"
         style={{ fontSize: "clamp(1rem, 1.6vw, 1.25rem)" }}
         variants={fadeUp}
         initial="hidden"
@@ -57,9 +73,13 @@ export default function YourCeremonyCTA() {
         transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 }}
       >
         I&apos;d love to hear from you.
+        <br />
+        Tell me what you&apos;re dreaming of, and we can begin shaping a ceremony
+        that feels meaningful, personal, and completely yours.
       </motion.p>
 
       <motion.div
+        className="relative z-10"
         variants={fadeUp}
         initial="hidden"
         whileInView="visible"

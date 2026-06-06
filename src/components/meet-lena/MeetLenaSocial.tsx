@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect } from "react";
 import { motion } from "motion/react";
 import { Facebook, Instagram, MessageCircle } from "lucide-react";
@@ -54,16 +55,29 @@ export default function MeetLenaSocial() {
   return (
     <motion.section
       ref={sectionRef}
-      className="flex h-[100dvh] min-h-[100svh] flex-col items-center justify-center
-                 overflow-hidden bg-neutral-950 px-6 text-white
+      className="relative flex h-[100dvh] min-h-[100svh] flex-col items-center justify-center
+                 overflow-hidden bg-white px-6 text-white
                  md:min-h-[720px] md:px-16"
       initial={{ opacity: 0.92 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: false, amount: 0.35 }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
     >
+      <Image
+        src="/images/background2.jpeg"
+        alt=""
+        fill
+        className="z-0 scale-[1.01] object-cover"
+        sizes="100vw"
+        priority={false}
+      />
+      <div
+        className="absolute -inset-2 z-[1]"
+        style={{ backgroundColor: "rgba(10, 10, 10, 0.76)" }}
+      />
+
       <motion.div
-        className="flex w-full flex-col items-center justify-center py-24 text-center"
+        className="relative z-10 flex w-full flex-col items-center justify-center py-24 text-center"
         initial={{ y: 36 }}
         whileInView={{ y: 0 }}
         viewport={{ once: false, amount: 0.35 }}

@@ -7,7 +7,7 @@ import { motion } from "motion/react";
 export default function GoogleReviewsPlaceholder() {
   return (
     <section
-      className="flex h-[100lvh] snap-start items-center bg-white px-6 py-24 md:h-[100dvh] md:px-16 md:py-32 xl:px-24"
+      className="flex h-[100svh] snap-start items-center bg-white px-6 py-24 md:h-[100dvh] md:px-16 md:py-32 xl:px-24"
     >
       <motion.div
         className="mx-auto max-w-5xl"

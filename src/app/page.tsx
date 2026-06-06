@@ -22,8 +22,8 @@ export default function HomePage() {
         <FocusSection />
         <GoogleReviewsPlaceholder />
         <FeaturedQuotes />
+        <FinalCallToAction />
       </HomeSnapZone>
-      <FinalCallToAction />
     </>
   );
 }

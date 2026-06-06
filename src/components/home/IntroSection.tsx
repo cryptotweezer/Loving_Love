@@ -342,7 +342,7 @@ export default function IntroSection() {
             <div className="md:hidden w-full grid grid-cols-1 gap-6 items-start">
               <div>
                 <motion.h2
-                  className="font-display font-normal text-neutral-900 leading-tight mb-4"
+                  className="font-display font-normal text-neutral-900 leading-tight mb-3"
                   style={{
                     fontSize: "clamp(2.125rem, 6vw, 3.25rem)",
                     opacity: isMobile ? lenaTitleOpM : lenaTitleOp,
@@ -351,6 +351,16 @@ export default function IntroSection() {
                 >
                   My name&apos;s<br />Lena Saunig,
                 </motion.h2>
+                <motion.p
+                  className="font-display italic text-neutral-500 mb-4"
+                  style={{
+                    fontSize: "clamp(1rem, 3.6vw, 1.125rem)",
+                    opacity: isMobile ? lenaBodyOpM : lenaBodyOp,
+                    y:       isMobile ? lenaBodyYM  : lenaBodyY,
+                  }}
+                >
+                  Authorised Marriage Celebrant
+                </motion.p>
                 <motion.p
                   className="text-neutral-500 leading-relaxed"
                   style={{
@@ -445,7 +455,7 @@ export default function IntroSection() {
 
               <div className="max-w-[470px] justify-self-end">
                 <motion.h2
-                  className="font-display font-normal text-neutral-900 leading-[0.98] mb-7"
+                  className="font-display font-normal text-neutral-900 leading-[0.98] mb-4"
                   style={{
                     fontSize: "clamp(3.25rem, 5.1vw, 5.75rem)",
                     opacity: lenaTextOp,
@@ -454,6 +464,17 @@ export default function IntroSection() {
                 >
                   My name&apos;s Lena Saunig,
                 </motion.h2>
+
+                <motion.p
+                  className="font-display italic text-neutral-500 leading-relaxed mb-7"
+                  style={{
+                    fontSize: "clamp(1rem, 1.25vw, 1.2rem)",
+                    opacity: lenaTextOp,
+                    y:       lenaTextY,
+                  }}
+                >
+                  Authorised Marriage Celebrant
+                </motion.p>
 
                 <motion.p
                   className="text-neutral-500 leading-relaxed"
