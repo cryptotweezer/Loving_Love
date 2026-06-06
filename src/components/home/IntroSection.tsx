@@ -404,7 +404,7 @@ export default function IntroSection() {
             </div>
 
             <div className="hidden md:grid w-full grid-cols-[minmax(0,1.45fr)_minmax(360px,0.9fr)]
-                            gap-14 xl:gap-20 items-center">
+                            gap-14 xl:gap-20 2xl:max-w-[1400px] 2xl:mx-auto items-center">
               <motion.div
                 className="relative h-[min(72dvh,680px)]"
                 style={{ opacity: lenaImgOp }}
@@ -570,7 +570,7 @@ export default function IntroSection() {
             </div>
 
             <div className="hidden md:grid w-full grid-cols-[minmax(0,1.45fr)_minmax(360px,0.9fr)]
-                            gap-14 xl:gap-20 items-center">
+                            gap-14 xl:gap-20 2xl:max-w-[1400px] 2xl:mx-auto items-center">
               <motion.div
                 className="relative h-[min(72dvh,680px)]"
                 style={{ opacity: cerImgOp }}
