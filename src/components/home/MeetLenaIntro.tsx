@@ -34,15 +34,15 @@ export default function MeetLenaIntro() {
   const secondTextOpacity = useTransform(scrollYProgress, [0.34, 0.47], [0, 1]);
   const secondTextY       = useTransform(scrollYProgress, [0.34, 0.47], [32, 0]);
 
-  // ── Panel 3 — fades IN; both complete AT the 0.68 settle ─────────────────────
+  // ── Panel 3 — fades IN; text span matches Panel 2 (0.13) ─────────────────────
   const thirdImgOpacity  = useTransform(scrollYProgress, [0.58, 0.68], [0, 1]);
-  const thirdTextOpacity = useTransform(scrollYProgress, [0.60, 0.68], [0, 1]);
-  const thirdTextY       = useTransform(scrollYProgress, [0.60, 0.68], [32, 0]);
+  const thirdTextOpacity = useTransform(scrollYProgress, [0.55, 0.68], [0, 1]);
+  const thirdTextY       = useTransform(scrollYProgress, [0.55, 0.68], [32, 0]);
 
-  // ── Panel 4 — fades IN; both complete AT the 0.87 settle ─────────────────────
+  // ── Panel 4 — fades IN; text span matches Panel 2 (0.13) ─────────────────────
   const fourthImgOpacity  = useTransform(scrollYProgress, [0.77, 0.87], [0, 1]);
-  const fourthTextOpacity = useTransform(scrollYProgress, [0.79, 0.87], [0, 1]);
-  const fourthTextY       = useTransform(scrollYProgress, [0.79, 0.87], [32, 0]);
+  const fourthTextOpacity = useTransform(scrollYProgress, [0.74, 0.87], [0, 1]);
+  const fourthTextY       = useTransform(scrollYProgress, [0.74, 0.87], [32, 0]);
 
   // ── Scroll snap — snaps to each settled panel position after user stops ───────
   useEffect(() => {
@@ -138,36 +138,38 @@ export default function MeetLenaIntro() {
                 </motion.div>
               </motion.div>
 
-              <div className="flex flex-col justify-center md:max-w-[470px] md:justify-self-end">
+              {/* Exit wrapper — fades out + lifts up as panel scrolls away */}
+              <motion.div
+                className="flex flex-col justify-center md:max-w-[470px] md:justify-self-end"
+                style={{ opacity: firstTextOpacity, y: firstTextY }}
+              >
+                {/* Each element enters with the same fade-up as panels 2–4 */}
                 <motion.h1
                   className="font-display font-normal text-neutral-900 leading-[0.98] mb-7"
-                  style={{
-                    fontSize: "clamp(3.25rem, 5.1vw, 5.75rem)",
-                    opacity: firstTextOpacity,
-                    y: firstTextY,
-                  }}
+                  initial={{ opacity: 0, y: 32 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.55, ease: "easeOut" }}
+                  style={{ fontSize: "clamp(3.25rem, 5.1vw, 5.75rem)" }}
                 >
                   Hello, I&apos;m Lena Saunig,
                 </motion.h1>
 
                 <motion.p
                   className="font-display italic text-neutral-500 leading-relaxed mb-7"
-                  style={{
-                    fontSize: "clamp(1rem, 1.25vw, 1.2rem)",
-                    opacity: firstTextOpacity,
-                    y: firstTextY,
-                  }}
+                  initial={{ opacity: 0, y: 32 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.55, ease: "easeOut" }}
+                  style={{ fontSize: "clamp(1rem, 1.25vw, 1.2rem)" }}
                 >
                   Your Marriage Celebrant
                 </motion.p>
 
                 <motion.p
                   className="text-neutral-500 leading-relaxed"
-                  style={{
-                    fontSize: "clamp(1rem, 1.25vw, 1.2rem)",
-                    opacity: firstTextOpacity,
-                    y: firstTextY,
-                  }}
+                  initial={{ opacity: 0, y: 32 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.55, ease: "easeOut" }}
+                  style={{ fontSize: "clamp(1rem, 1.25vw, 1.2rem)" }}
                 >
                   Becoming a Marriage Celebrant had been a secret dream of mine for over
                   20 years, which I happened to mention to a friend who was the Celebrant
@@ -178,7 +180,9 @@ export default function MeetLenaIntro() {
 
                 <motion.div
                   className="mt-8"
-                  style={{ opacity: firstTextOpacity, y: firstTextY }}
+                  initial={{ opacity: 0, y: 32 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.55, ease: "easeOut" }}
                 >
                   <Link
                     href="/connect"
@@ -189,7 +193,7 @@ export default function MeetLenaIntro() {
                     Let&apos;s Chat
                   </Link>
                 </motion.div>
-              </div>
+              </motion.div>
             </div>
           </Panel>
 
@@ -404,7 +408,7 @@ export default function MeetLenaIntro() {
                     y: fourthTextY,
                   }}
                 >
-                  I&apos;ve been married for over twenty years.
+                  Once, I said yes.
                 </motion.h2>
 
                 <motion.p
@@ -415,10 +419,9 @@ export default function MeetLenaIntro() {
                     y: fourthTextY,
                   }}
                 >
-                  Which means I know a thing or two about love, about what it actually
-                  looks like up close, what it takes to choose someone every single day,
-                  and why the moment you say <em>I do</em> deserves to be felt deeply
-                  by everyone in the room.
+                  I know what that moment feels like, really know it. Standing
+                  there, heart full, the world holding its breath around you.
+                  It is everything. And it passes in an instant.
                 </motion.p>
 
                 <motion.p
@@ -429,8 +432,10 @@ export default function MeetLenaIntro() {
                     y: fourthTextY,
                   }}
                 >
-                  That lived experience is something I carry into every ceremony
-                  I create. It would be a genuine pleasure to be your Celebrant.
+                  That&apos;s why I pour everything I have into every ceremony
+                  I create. Every word, every detail, every quiet pause between
+                  vows, cared for completely, so that yours is everything
+                  it should be.
                 </motion.p>
 
                 <motion.div

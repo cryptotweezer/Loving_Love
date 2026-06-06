@@ -33,6 +33,7 @@ const fadeUp = {
 export default function MeetLenaSocial() {
   const sectionRef = useRef<HTMLElement>(null);
 
+  // ── Navbar CTA toggle ────────────────────────────────────────────────────────
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
@@ -46,6 +47,56 @@ export default function MeetLenaSocial() {
     return () => {
       observer.disconnect();
       document.documentElement.classList.remove("hide-navbar-cta");
+    };
+  }, []);
+
+  // ── Scroll snap ──────────────────────────────────────────────────────────────
+  // Snaps section into view when approaching from above (scrolling down) OR
+  // from below (scrolling back up from the footer).
+  // Once the user has scrolled PAST the section into the footer, no snap fires.
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    let snapTimer: ReturnType<typeof setTimeout>;
+    let isSnapping  = false;
+    let lastScrollY = window.scrollY;
+    let goingDown   = true;
+
+    const onScrollEnd = () => {
+      const top = section.getBoundingClientRect().top;
+      const vh  = window.innerHeight;
+
+      // Approaching from below (scrolling down) — section is partially in view from bottom
+      if (goingDown && top > 40 && top < vh * 0.65) {
+        isSnapping = true;
+        window.scrollTo({ top: window.scrollY + top, behavior: "smooth" });
+        setTimeout(() => { isSnapping = false; }, 900);
+        return;
+      }
+
+      // Approaching from above (scrolling up from footer) — section partially cut off at top
+      // Guard: top > -(vh * 0.55) ensures we don't snap mid-footer scroll
+      if (!goingDown && top < -20 && top > -(vh * 0.55)) {
+        isSnapping = true;
+        window.scrollTo({ top: window.scrollY + top, behavior: "smooth" });
+        setTimeout(() => { isSnapping = false; }, 900);
+      }
+    };
+
+    const onScroll = () => {
+      const y   = window.scrollY;
+      goingDown = y >= lastScrollY;
+      lastScrollY = y;
+      if (isSnapping) return;
+      clearTimeout(snapTimer);
+      snapTimer = setTimeout(onScrollEnd, 350);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      clearTimeout(snapTimer);
     };
   }, []);
 
