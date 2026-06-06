@@ -398,49 +398,46 @@ export default function MeetLenaIntro() {
                 </motion.div>
               </motion.div>
 
-              {/* Text */}
-              <div className="flex flex-col justify-center md:max-w-[470px] md:justify-self-end">
-                <motion.h2
+              {/* Text — single wrapper layer so all children fade/move as one unit */}
+              <motion.div
+                className="flex flex-col justify-center md:max-w-[470px] md:justify-self-end"
+                style={{ opacity: fourthTextOpacity, y: fourthTextY }}
+              >
+                <h2
                   className="font-display font-normal text-neutral-900 leading-[0.98] mb-7"
-                  style={{
-                    fontSize: "clamp(2.45rem, 3.7vw, 4.35rem)",
-                    opacity: fourthTextOpacity,
-                    y: fourthTextY,
-                  }}
+                  style={{ fontSize: "clamp(2.45rem, 3.7vw, 4.35rem)" }}
                 >
                   Once, I said yes.
-                </motion.h2>
+                </h2>
 
-                <motion.p
+                <p
                   className="text-neutral-500 leading-relaxed mb-4"
-                  style={{
-                    fontSize: "clamp(1rem, 1.25vw, 1.2rem)",
-                    opacity: fourthTextOpacity,
-                    y: fourthTextY,
-                  }}
+                  style={{ fontSize: "clamp(1rem, 1.25vw, 1.2rem)" }}
                 >
                   I know what that moment feels like, really know it. Standing
                   there, heart full, the world holding its breath around you.
                   It is everything. And it passes in an instant.
-                </motion.p>
+                </p>
 
-                <motion.p
+                <p
                   className="text-neutral-500 leading-relaxed"
-                  style={{
-                    fontSize: "clamp(1rem, 1.25vw, 1.2rem)",
-                    opacity: fourthTextOpacity,
-                    y: fourthTextY,
-                  }}
+                  style={{ fontSize: "clamp(1rem, 1.25vw, 1.2rem)" }}
                 >
                   That&apos;s why I pour everything I have into every ceremony
                   I create. Every word, every detail, every quiet pause between
                   vows, cared for completely, so that yours is everything
                   it should be.
-                </motion.p>
+                </p>
 
-                <motion.div
+                <p
+                  className="font-display italic text-neutral-500 mt-5"
+                  style={{ fontSize: "clamp(1rem, 1.25vw, 1.2rem)" }}
+                >
+                  Cheers to love!
+                </p>
+
+                <div
                   className="mt-8"
-                  style={{ opacity: fourthTextOpacity, y: fourthTextY }}
                 >
                   <Link
                     href="/connect"
@@ -450,8 +447,8 @@ export default function MeetLenaIntro() {
                   >
                     Let&apos;s Chat
                   </Link>
-                </motion.div>
-              </div>
+                </div>
+              </motion.div>
             </div>
           </Panel>
 
