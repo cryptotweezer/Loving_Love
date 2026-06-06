@@ -47,7 +47,8 @@ body {
 /* Snap only on desktop — mandatory feels "stuck" on mobile touch scrolling */
 @media (min-width: 768px) {
   .home-section-snap {
-    scroll-snap-type: y mandatory;
+    scroll-snap-type: y proximity;
+    scroll-behavior: smooth;
   }
 }
 

@@ -1,10 +1,21 @@
+"use client";
+
 import Link from "next/link";
 import { Star } from "lucide-react";
+import { motion } from "motion/react";
 
 export default function GoogleReviewsPlaceholder() {
   return (
-    <section className="flex h-[100lvh] snap-start items-center bg-white px-6 py-24 md:h-[100dvh] md:px-16 md:py-32 xl:px-24">
-      <div className="mx-auto max-w-5xl">
+    <section
+      className="flex h-[100lvh] snap-start items-center bg-white px-6 py-24 md:h-[100dvh] md:px-16 md:py-32 xl:px-24"
+    >
+      <motion.div
+        className="mx-auto max-w-5xl"
+        initial={{ opacity: 0, y: 42 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.35 }}
+        transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
+      >
         <div className="grid gap-10 md:grid-cols-[0.9fr_1.1fr] md:items-center">
           <div>
             <p className="mb-4 text-[10px] uppercase tracking-[0.26em] text-neutral-400">
@@ -45,7 +56,7 @@ export default function GoogleReviewsPlaceholder() {
             </Link>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

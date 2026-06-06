@@ -74,7 +74,9 @@ export default function FeaturedQuotes() {
   };
 
   return (
-    <section className="relative flex h-[100lvh] snap-start items-center overflow-hidden bg-white px-6 py-24 md:h-[100dvh] md:px-16 xl:px-24">
+    <section
+      className="relative flex h-[100lvh] snap-start items-center overflow-hidden bg-white px-6 py-24 md:h-[100dvh] md:px-16 xl:px-24"
+    >
       <button
         type="button"
         onClick={showPrevious}
@@ -84,7 +86,13 @@ export default function FeaturedQuotes() {
         <ChevronLeft aria-hidden="true" className="h-5 w-5" strokeWidth={1.5} />
       </button>
 
-      <div className="mx-auto w-full max-w-5xl -translate-y-8 pb-24 text-center md:translate-y-0 md:pb-0">
+      <motion.div
+        className="mx-auto w-full max-w-5xl -translate-y-8 pb-24 text-center md:translate-y-0 md:pb-0"
+        initial={{ opacity: 0, y: 42 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.35 }}
+        transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
+      >
         <motion.p
           ref={titleRef}
           initial={{ opacity: 0, y: 16 }}
@@ -129,7 +137,7 @@ export default function FeaturedQuotes() {
             Moments
           </Link>
         </motion.div>
-      </div>
+      </motion.div>
 
       <button
         type="button"

@@ -13,7 +13,7 @@ export default function HomeSnapZone({ children }: HomeSnapZoneProps) {
     const zone = zoneRef.current;
     if (!zone) return;
 
-    // threshold 0.15 — snap activates only once a meaningful portion of the
+    // threshold 0.25 — snap activates only once a meaningful portion of the
     // snap zone is visible, preventing early activation while IntroSection
     // is still animating at its very end.
     const observer = new IntersectionObserver(
@@ -23,7 +23,7 @@ export default function HomeSnapZone({ children }: HomeSnapZoneProps) {
           entry.isIntersecting
         );
       },
-      { threshold: 0.15 }
+      { threshold: 0.25 }
     );
 
     const onResize = () => {

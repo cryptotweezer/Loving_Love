@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
+import { motion } from "motion/react";
+import { useScrollSnap } from "@/hooks/useScrollSnap";
 
 export default function FinalCallToAction() {
-  const sectionRef = useRef<HTMLElement>(null);
+  const sectionRef = useScrollSnap();
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -22,14 +24,21 @@ export default function FinalCallToAction() {
       observer.disconnect();
       document.documentElement.classList.remove("hide-navbar-cta");
     };
-  }, []);
+  }, [sectionRef]);
 
   return (
-    <section
+    <motion.section
       ref={sectionRef}
-      className="flex h-[100dvh] min-h-[100svh] items-center justify-center overflow-hidden bg-neutral-950 px-6 text-white md:min-h-[720px] md:px-16"
+      className="relative flex h-[100dvh] min-h-[100svh] items-center justify-center overflow-hidden bg-neutral-950 px-6 text-white md:min-h-[720px] md:px-16"
+      style={{ boxShadow: "0 -4px 0 rgb(10 10 10)" }}
     >
-      <div className="mx-auto max-w-3xl text-center">
+      <motion.div
+        className="mx-auto max-w-3xl text-center"
+        initial={{ y: 40 }}
+        whileInView={{ y: 0 }}
+        viewport={{ once: false, amount: 0.35 }}
+        transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
+      >
         <p className="mb-4 text-[9px] font-medium uppercase tracking-[0.24em] text-white/45 md:mb-5 md:text-xs md:tracking-[0.26em]">
           Lena Saunig Loving Love
         </p>
@@ -54,7 +63,7 @@ export default function FinalCallToAction() {
             Let&apos;s Chat
           </Link>
         </div>
-      </div>
-    </section>
+      </motion.div>
+    </motion.section>
   );
 }

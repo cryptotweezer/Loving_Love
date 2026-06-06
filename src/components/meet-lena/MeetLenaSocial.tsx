@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { motion } from "motion/react";
 import { Facebook, Instagram, MessageCircle } from "lucide-react";
+import { useScrollSnap } from "@/hooks/useScrollSnap";
 
 const socialLinks = [
   {
@@ -31,7 +32,7 @@ const fadeUp = {
 };
 
 export default function MeetLenaSocial() {
-  const sectionRef = useRef<HTMLElement>(null);
+  const sectionRef = useScrollSnap();
 
   // ── Navbar CTA toggle ────────────────────────────────────────────────────────
   useEffect(() => {
@@ -48,66 +49,26 @@ export default function MeetLenaSocial() {
       observer.disconnect();
       document.documentElement.classList.remove("hide-navbar-cta");
     };
-  }, []);
-
-  // ── Scroll snap ──────────────────────────────────────────────────────────────
-  // Snaps section into view when approaching from above (scrolling down) OR
-  // from below (scrolling back up from the footer).
-  // Once the user has scrolled PAST the section into the footer, no snap fires.
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    let snapTimer: ReturnType<typeof setTimeout>;
-    let isSnapping  = false;
-    let lastScrollY = window.scrollY;
-    let goingDown   = true;
-
-    const onScrollEnd = () => {
-      const top = section.getBoundingClientRect().top;
-      const vh  = window.innerHeight;
-
-      // Approaching from below (scrolling down) — section is partially in view from bottom
-      if (goingDown && top > 40 && top < vh * 0.65) {
-        isSnapping = true;
-        window.scrollTo({ top: window.scrollY + top, behavior: "smooth" });
-        setTimeout(() => { isSnapping = false; }, 900);
-        return;
-      }
-
-      // Approaching from above (scrolling up from footer) — section partially cut off at top
-      // Guard: top > -(vh * 0.55) ensures we don't snap mid-footer scroll
-      if (!goingDown && top < -20 && top > -(vh * 0.55)) {
-        isSnapping = true;
-        window.scrollTo({ top: window.scrollY + top, behavior: "smooth" });
-        setTimeout(() => { isSnapping = false; }, 900);
-      }
-    };
-
-    const onScroll = () => {
-      const y   = window.scrollY;
-      goingDown = y >= lastScrollY;
-      lastScrollY = y;
-      if (isSnapping) return;
-      clearTimeout(snapTimer);
-      snapTimer = setTimeout(onScrollEnd, 350);
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      clearTimeout(snapTimer);
-    };
-  }, []);
+  }, [sectionRef]);
 
   return (
-    <section
+    <motion.section
       ref={sectionRef}
       className="flex h-[100dvh] min-h-[100svh] flex-col items-center justify-center
                  overflow-hidden bg-neutral-950 px-6 text-white
                  md:min-h-[720px] md:px-16"
+      initial={{ opacity: 0.92 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: false, amount: 0.35 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="flex w-full flex-col items-center justify-center py-24 text-center">
+      <motion.div
+        className="flex w-full flex-col items-center justify-center py-24 text-center"
+        initial={{ y: 36 }}
+        whileInView={{ y: 0 }}
+        viewport={{ once: false, amount: 0.35 }}
+        transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
+      >
 
         {/* Eyebrow */}
         <motion.p
@@ -178,7 +139,7 @@ export default function MeetLenaSocial() {
             </a>
           ))}
         </motion.div>
-      </div>
-    </section>
+      </motion.div>
+    </motion.section>
   );
 }

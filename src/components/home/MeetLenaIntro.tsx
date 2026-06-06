@@ -2,8 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { useEffect, useRef } from "react";
+
+const SCROLL_END_DELAY = 420;
+const SNAP_SETTLE_MS = 1100;
+const PANEL_SNAPS = [
+  { target: 0.12, range: [0.02, 0.25] as [number, number] },
+  { target: 0.48, range: [0.30, 0.58] as [number, number] },
+  { target: 0.68, range: [0.58, 0.78] as [number, number] },
+  { target: 0.87, range: [0.78, 0.97] as [number, number] },
+];
 
 export default function MeetLenaIntro() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -11,6 +20,11 @@ export default function MeetLenaIntro() {
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
+  });
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 90,
+    damping: 28,
+    mass: 0.35,
   });
 
   // ── Horizontal track — 4 panels ──────────────────────────────────────────────
@@ -21,41 +35,31 @@ export default function MeetLenaIntro() {
   // Panel 3  settles:   0.68
   // Panel 4  settles:   0.87
   const trackX = useTransform(
-    scrollYProgress,
-    [0,     0.12,  0.48,      0.60,      0.68,      0.78,      0.87,      1      ],
-    ["0vw", "0vw", "-100vw", "-100vw", "-200vw", "-200vw", "-300vw", "-300vw"]
+    smoothProgress,
+    [0,     0.14,  0.46,      0.52,      0.66,      0.72,      0.85,      0.91,      1      ],
+    ["0vw", "0vw", "-100vw", "-100vw", "-200vw", "-200vw", "-300vw", "-300vw", "-300vw"]
   );
 
   // ── Panel 1 — fades OUT as it slides away ─────────────────────────────────────
-  const firstTextOpacity = useTransform(scrollYProgress, [0, 0.12, 0.40], [1, 1, 0]);
-  const firstTextY       = useTransform(scrollYProgress, [0, 0.12, 0.40], [0, 0, -24]);
+  const firstTextOpacity = useTransform(smoothProgress, [0, 0.16, 0.38], [1, 1, 0]);
+  const firstTextY       = useTransform(smoothProgress, [0, 0.16, 0.38], [0, 0, -24]);
 
   // ── Panel 2 — fades IN; completes before the 0.48 settle ─────────────────────
-  const secondTextOpacity = useTransform(scrollYProgress, [0.34, 0.47], [0, 1]);
-  const secondTextY       = useTransform(scrollYProgress, [0.34, 0.47], [32, 0]);
+  const secondTextOpacity = useTransform(smoothProgress, [0.32, 0.48], [0, 1]);
+  const secondTextY       = useTransform(smoothProgress, [0.32, 0.48], [34, 0]);
 
   // ── Panel 3 — fades IN; text span matches Panel 2 (0.13) ─────────────────────
-  const thirdImgOpacity  = useTransform(scrollYProgress, [0.58, 0.68], [0, 1]);
-  const thirdTextOpacity = useTransform(scrollYProgress, [0.55, 0.68], [0, 1]);
-  const thirdTextY       = useTransform(scrollYProgress, [0.55, 0.68], [32, 0]);
+  const thirdImgOpacity  = useTransform(smoothProgress, [0.56, 0.68], [0, 1]);
+  const thirdTextOpacity = useTransform(smoothProgress, [0.54, 0.68], [0, 1]);
+  const thirdTextY       = useTransform(smoothProgress, [0.54, 0.68], [34, 0]);
 
   // ── Panel 4 — fades IN; text span matches Panel 2 (0.13) ─────────────────────
-  const fourthImgOpacity  = useTransform(scrollYProgress, [0.77, 0.87], [0, 1]);
-  const fourthTextOpacity = useTransform(scrollYProgress, [0.74, 0.87], [0, 1]);
-  const fourthTextY       = useTransform(scrollYProgress, [0.74, 0.87], [32, 0]);
+  const fourthImgOpacity  = useTransform(smoothProgress, [0.76, 0.87], [0, 1]);
+  const fourthTextOpacity = useTransform(smoothProgress, [0.73, 0.87], [0, 1]);
+  const fourthTextY       = useTransform(smoothProgress, [0.73, 0.87], [34, 0]);
 
   // ── Scroll snap — snaps to each settled panel position after user stops ───────
   useEffect(() => {
-    const DOWN_SNAPS = [
-      { target: 0.48, range: [0.36, 0.58] as [number, number] },
-      { target: 0.68, range: [0.58, 0.77] as [number, number] },
-      { target: 0.87, range: [0.77, 0.95] as [number, number] },
-    ];
-    const UP_SNAPS = [
-      { target: 0.48, range: [0.40, 0.61] as [number, number] },
-      { target: 0.68, range: [0.61, 0.79] as [number, number] },
-    ];
-
     let snapTimer: ReturnType<typeof setTimeout>;
     let isSnapping    = false;
     let lastSnappedAt = -1;
@@ -80,15 +84,18 @@ export default function MeetLenaIntro() {
       isSnapping    = true;
       lastSnappedAt = target;
       window.scrollTo({ top: targetY, behavior: "smooth" });
-      setTimeout(() => { isSnapping = false; }, 900);
+      setTimeout(() => { isSnapping = false; }, SNAP_SETTLE_MS);
     };
 
     const onScrollEnd = () => {
       const progress = getProgress();
-      if (progress < 0.30 || progress > 0.96) return;
-      const zones = goingDown ? DOWN_SNAPS : UP_SNAPS;
+      if (progress < 0.02 || progress > 0.98) return;
+      const zones = goingDown ? PANEL_SNAPS : [...PANEL_SNAPS].reverse();
       for (const { target, range } of zones) {
-        if (progress >= range[0] && progress <= range[1]) { snapTo(target); break; }
+        if (progress >= range[0] && progress <= range[1]) {
+          snapTo(target);
+          break;
+        }
       }
     };
 
@@ -100,7 +107,7 @@ export default function MeetLenaIntro() {
       if (p >= 0 && Math.abs(p - lastSnappedAt) > 0.12) lastSnappedAt = -1;
       if (isSnapping) return;
       clearTimeout(snapTimer);
-      snapTimer = setTimeout(onScrollEnd, 350);
+      snapTimer = setTimeout(onScrollEnd, SCROLL_END_DELAY);
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });

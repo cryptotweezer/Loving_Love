@@ -18,22 +18,26 @@ export function useScrollSnap() {
     let lastScrollY = window.scrollY;
     let goingDown   = true;
 
+    const snapToSectionTop = () => {
+      if (isSnapping) return;
+      isSnapping = true;
+      window.scrollTo({ top: section.offsetTop, behavior: "smooth" });
+      setTimeout(() => { isSnapping = false; }, 1100);
+    };
+
     const onScrollEnd = () => {
-      const top = section.getBoundingClientRect().top;
+      const { top, bottom } = section.getBoundingClientRect();
       const vh  = window.innerHeight;
 
       // Approaching from below (scrolling down)
-      if (goingDown && top > 40 && top < vh * 0.65) {
-        isSnapping = true;
-        window.scrollTo({ top: window.scrollY + top, behavior: "smooth" });
-        setTimeout(() => { isSnapping = false; }, 900);
+      if (goingDown && top > 16 && top < vh * 0.9) {
+        snapToSectionTop();
         return;
       }
-      // Approaching from above (scrolling up)
-      if (!goingDown && top < -20 && top > -(vh * 0.55)) {
-        isSnapping = true;
-        window.scrollTo({ top: window.scrollY + top, behavior: "smooth" });
-        setTimeout(() => { isSnapping = false; }, 900);
+
+      // Approaching from below the section, such as scrolling up from footer.
+      if (!goingDown && top < -16 && bottom > vh * 0.12) {
+        snapToSectionTop();
       }
     };
 
@@ -43,7 +47,7 @@ export function useScrollSnap() {
       lastScrollY = y;
       if (isSnapping) return;
       clearTimeout(snapTimer);
-      snapTimer = setTimeout(onScrollEnd, 350);
+      snapTimer = setTimeout(onScrollEnd, 420);
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
