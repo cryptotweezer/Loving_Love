@@ -11,11 +11,11 @@ const blurIn = (delay = 0) => ({
   initial:     { opacity: 0, filter: "blur(12px)" },
   whileInView: { opacity: 1, filter: "blur(0px)"  },
   viewport:    { once: false, amount: 0.15 },
-  transition:  { duration: 0.9, ease: "easeOut", delay },
+  transition:  { duration: 0.9, ease: "easeOut" as const, delay },
 });
 
 export default function OtherServicesCelebrationsOfLife() {
-  const sectionRef          = useScrollSnap();
+  const sectionRef          = useScrollSnap({ desktopOnly: true });
   const { setDark, setLight } = useNavbarTheme();
 
   // Switch navbar to dark while this section is visible
@@ -38,8 +38,8 @@ export default function OtherServicesCelebrationsOfLife() {
   return (
     <section
       ref={sectionRef}
-      className="flex min-h-[100dvh] items-center bg-black
-                 px-6 py-20 md:px-16 xl:px-24"
+      className="flex min-h-[100svh] items-center bg-black
+                 px-6 py-20 md:min-h-[100dvh] md:px-16 xl:px-24"
     >
       <div className="grid w-full max-w-7xl mx-auto gap-12
                       md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]

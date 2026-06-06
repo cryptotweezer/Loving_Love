@@ -1,17 +1,22 @@
 "use client";
 
 import { motion } from "motion/react";
+import { useScrollSnap } from "@/hooks/useScrollSnap";
 
 const blurIn = (delay = 0) => ({
   initial:    { opacity: 0, filter: "blur(12px)" },
   animate:    { opacity: 1, filter: "blur(0px)"  },
-  transition: { duration: 0.9, ease: "easeOut", delay },
+  transition: { duration: 0.9, ease: "easeOut" as const, delay },
 });
 
 export default function OtherServicesHero() {
+  // Always one-screen tall — snap on all screen sizes is safe and gives a
+  // clean lock-in when the user scrolls back up from the first content section.
+  const sectionRef = useScrollSnap();
+
   return (
-    <section className="flex h-[100dvh] flex-col items-center justify-center
-                        bg-white px-6 text-center md:px-16 xl:px-24">
+    <section ref={sectionRef} className="flex h-[100svh] flex-col items-center justify-center
+                        bg-white px-6 text-center md:h-[100dvh] md:px-16 xl:px-24">
       <div className="max-w-3xl">
 
         {/* Label */}
