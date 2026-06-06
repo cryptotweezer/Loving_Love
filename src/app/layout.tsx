@@ -3,6 +3,7 @@ import { Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { NavbarThemeProvider } from "@/context/NavbarThemeContext";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -33,9 +34,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={playfair.variable}>
       <body>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <NavbarThemeProvider>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </NavbarThemeProvider>
       </body>
     </html>
   );
