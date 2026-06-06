@@ -226,7 +226,7 @@ export default function HeroSequence() {
       >
         <span className="whitespace-nowrap">{TITLES[titleIndex].line1}</span>
         <br />
-        <span className="block whitespace-nowrap text-[0.32em] uppercase tracking-[0.14em]">
+        <span className="block whitespace-nowrap text-[0.32em] uppercase tracking-[0.14em] mt-1">
           {TITLES[titleIndex].line2}
         </span>
       </motion.span>
@@ -333,20 +333,20 @@ export default function HeroSequence() {
             }}
           >
             {/* Eyebrow */}
-            <p className="text-[9px] tracking-[0.26em] uppercase text-white/90 mb-1.5">
+            <p className="text-[9px] tracking-[0.26em] uppercase text-white/90 mb-2.5">
               {eyebrowMotion}
             </p>
 
             {/* H1 — vw-based so "A ceremony as unique" fits without overflow.
                 7.5vw ≈ 29px on 390px (iPhone 14 Pro). */}
             <h1
-              className="font-display font-normal text-white mb-0.5"
+              className="font-display font-normal text-white mb-2"
               style={{
                 fontSize:
                   titleIndex === 1
                     ? "clamp(1.4rem, 6.4vw, 2.05rem)"
                     : "clamp(1.75rem, 7.5vw, 2.5rem)",
-                lineHeight: 1,
+                lineHeight: 1.15,
               }}
             >
               {titleMotion}
@@ -354,7 +354,7 @@ export default function HeroSequence() {
 
             {/* Tagline — italic, clearly smaller than h1, clearly larger than body */}
             <p
-              className="font-display italic text-white/70 mb-1"
+              className="font-display italic text-white/70 mb-2"
               style={{ fontSize: "clamp(0.9375rem, 3.8vw, 1.125rem)" }}
             >
               {taglineMotion}

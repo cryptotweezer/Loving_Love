@@ -45,7 +45,7 @@ export default function FocusSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative isolate h-[100svh] w-full snap-start overflow-hidden bg-neutral-950 md:h-[100dvh]"
+      className="relative isolate h-[100dvh] w-full snap-start overflow-hidden bg-neutral-950 md:h-[100dvh]"
     >
 
       {/* ── Image ─────────────────────────────────────────────────────────────

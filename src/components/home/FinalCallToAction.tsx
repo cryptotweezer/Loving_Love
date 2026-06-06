@@ -29,7 +29,7 @@ export default function FinalCallToAction() {
   return (
     <motion.section
       ref={sectionRef}
-      className="relative z-10 flex h-[100svh] snap-start items-center justify-center overflow-hidden bg-white px-6 text-white md:h-[100dvh] md:min-h-[720px] md:px-16"
+      className="relative z-10 flex h-[100dvh] snap-start items-center justify-center overflow-hidden bg-white px-6 text-white md:h-[100dvh] md:min-h-[720px] md:px-16"
       style={{ boxShadow: "0 -10px 0 rgba(10, 10, 10, 0.76)" }}
     >
       <Image
