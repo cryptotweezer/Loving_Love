@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import YourCeremonyHero from "@/components/your-ceremony/YourCeremonyHero";
 
 export const metadata: Metadata = {
   title: "Your Ceremony",
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function YourCeremonyPage() {
-  return null;
+  return (
+    <>
+      <YourCeremonyHero />
+    </>
+  );
 }
