@@ -307,3 +307,50 @@ All content grids use **`2xl:max-w-[1400px] 2xl:mx-auto`** to prevent text and i
 - **Connect** is a real contact page (tel/mailto/socials, no form) — a working form needs an email service (e.g. Resend) + route handler first.
 - **Partners** is an on-brand "coming soon" page until Lena provides content; **Admin** is a styled stub behind middleware.
 - **Never run `next build`/`next start` while `npm run dev` is running** — they share `.next/` and the production bundle gets corrupted (symptom: `EvalError: Code generation from strings disallowed` in middleware).
+
+---
+
+## Image optimisation — pre-launch checklist
+
+Do this once Lena's final images are in place (don't optimise placeholder PNGs that will be replaced).
+
+### Why the gray box appears on first load
+`next/image` lazy-loads by default and Vercel generates WebP variants on-demand the first time each size is requested (~300–800ms extra). After that first request the CDN caches the variant — repeat visitors never see the delay. The gray box is `bg-neutral-100` on the image container showing through while the image downloads.
+
+### Fix 1 — `priority` on above-the-fold images (high impact)
+Add `priority` to every image that is visible without scrolling. This injects `<link rel="preload">` in `<head>` so the download starts in parallel with the HTML instead of after.
+
+Candidates (verify per page at launch):
+- `MeetLenaIntro` Panel 1 — `lena1.png` (first visible image on `/meet-lena`)
+- `YourCeremonyStep1` — `lena11.png` / `lena12.png`
+- `OtherServicesCommitment` — `services1.jpeg`
+- `OtherServicesBabyNaming` — `services2.jpeg` (if it's the first section in view)
+- `FocusSection` — `hero3.webp` already has `priority` ✅
+- Any image in a hero or first panel that is in the initial viewport
+
+### Fix 2 — `placeholder="blur"` (high visual impact)
+Replaces the gray box with a blurred preview of the actual image while it loads. For local images in `/public/images/` switch from string paths to static imports — Next.js auto-generates the blur data URL:
+
+```tsx
+// Before
+import Image from "next/image"
+<Image src="/images/lena1.png" ... />
+
+// After
+import Image from "next/image"
+import lena1 from "@/public/images/lena1.png"  // or "public/images/lena1.png"
+<Image src={lena1} placeholder="blur" ... />
+```
+
+For images with dynamic/Supabase URLs, generate a tiny base64 blurDataURL from the dominant colour (1×1px PNG) and pass it manually.
+
+### Fix 3 — Convert source PNGs to WebP (medium impact)
+`next/image` already converts to WebP on Vercel when serving, so this doesn't change what users download. It does reduce:
+- On-demand processing time on first CDN request
+- Storage size in Supabase when Lena uploads images
+- Rule of thumb: WebP at 80% quality ≈ 10–20% of the equivalent PNG size
+
+Convert with: `cwebp -q 80 input.png -o output.webp` (install via `brew install webp` or Windows equivalent).
+
+### Fix 4 — CDN warm-up (no action needed)
+The very-first-ever request for each image size variant is slow. This is only visible to the first visitor after a new deploy. It resolves itself automatically and is not worth solving for — real users won't notice after the first few page loads post-deploy.
