@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ConnectContent from "@/components/connect/ConnectContent";
 
 export const metadata: Metadata = {
   title: "Connect",
@@ -7,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function ConnectPage() {
-  return null;
+  return <ConnectContent />;
 }

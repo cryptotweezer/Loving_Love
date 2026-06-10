@@ -90,7 +90,7 @@ export default function Footer() {
           </div>
 
           <p className="text-sm text-neutral-400">
-            Copyright 2019 by Loving Love
+            &copy; 2019 by Loving Love
           </p>
         </AnimatedContainer>
 

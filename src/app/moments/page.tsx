@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import MomentsContent from "@/components/moments/MomentsContent";
 
 export const metadata: Metadata = {
   title: "Moments & Thoughtful Words",
@@ -7,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function MomentsPage() {
-  return null;
+  return <MomentsContent />;
 }

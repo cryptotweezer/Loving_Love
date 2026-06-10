@@ -39,20 +39,20 @@ export default function GoogleReviewsPlaceholder() {
             </div>
 
             <p className="mb-6 text-lg leading-relaxed text-neutral-600">
-              Lena&apos;s Google Reviews will appear here once the Google Business
-              Profile link is available.
+              Couples consistently describe their ceremonies with Lena as
+              personal, heartfelt and unforgettable.
             </p>
 
             <p className="mb-8 text-sm leading-relaxed text-neutral-500">
-              This section is reserved for the live review widget, including
-              rating, review count, and selected review cards.
+              Read their stories — in their own words — over on the Moments
+              page.
             </p>
 
             <Link
-              href="/connect"
+              href="/moments"
               className="inline-flex items-center rounded-full bg-neutral-900 px-7 py-3 text-sm font-medium text-white transition-opacity duration-200 hover:opacity-85"
             >
-              Leave a Google Review
+              Read their words
             </Link>
           </div>
         </div>

@@ -5,13 +5,6 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 
-// ─── Snap points (scrollYProgress) — desktop only ─────────────────────────────
-const SNAP_POINTS = [
-  { target: 0.62, min: 0.52 }, // Lena panel settled
-  { target: 0.81, min: 0.72 }, // Ceremony panel settled
-  { target: 0.95, min: 0.88 }, // CTA
-];
-
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function IntroSection() {
