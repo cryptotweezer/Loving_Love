@@ -14,9 +14,9 @@ export default function YourCeremonyStep2() {
                       md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]
                       md:gap-16 xl:gap-20 2xl:max-w-[1400px] items-center">
 
-        {/* ── Photo collage — left ──────────────────────────────────────────── */}
+        {/* ── Photo collage — left (below text on mobile) ───────────────────── */}
         <motion.div
-          className="relative h-[72vw] min-h-[320px] md:h-[min(74dvh,700px)]"
+          className="relative h-[72vw] min-h-[320px] md:h-[min(74dvh,700px)] order-last md:order-none"
           initial={{ opacity: 0, filter: "blur(12px)" }}
           whileInView={{ opacity: 1, filter: "blur(0px)" }}
           viewport={{ once: true, amount: 0.3 }}

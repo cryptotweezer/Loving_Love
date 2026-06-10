@@ -292,6 +292,8 @@ All content grids use **`2xl:max-w-[1400px] 2xl:mx-auto`** to prevent text and i
 - `FinalCallToAction` uses **two separate `<Image>` tags** — `mobile_background1.jpeg` (`md:hidden`, no `scale`) and `background1.jpeg` (`hidden md:block`, keeps `scale-[1.01]`). The scale was causing visible zoom on iPhone when Safari toolbar shows/hides with `dvh` height.
 - `IntroSection` mobile panels (Panel A & B) have **underline-link buttons** (Meet Lena / Your Ceremony) that share the panel's opacity + y animation. Desktop panels are a completely separate JSX branch (`hidden md:grid`).
 - Hero mobile text block: `lineHeight: 1.15` on h1, `mb-2` between h1 and tagline, `mb-2.5` on eyebrow. The subtitle span ("AUTHORISED MARRIAGE CELEBRANT") has `mt-1` for extra separation from the title line — this span is shared between mobile and desktop `titleMotion` but the proportional impact on desktop (much larger font) is negligible.
+- **Sticky panels must fit 100svh on mobile** (`MeetLenaIntro`, `IntroSection`) — the sticky container has `overflow-hidden`, so overflowing content is silently clipped. Fix pattern (2026-06-10): inline `fontSize` clamps were moved to Tailwind classes as `text-[mobile] md:text-[clamp(original)]` so mobile shrinks while md+ keeps the exact original value. Collage heights are `h-[52vw] min-h-[210px]` (MeetLenaIntro) / `h-[min(34svh,300px)]` (IntroSection) on mobile. Don't add tall fixed-height content to these panels without re-checking total height ≤ ~700px.
+- `GoogleReviewsPlaceholder` uses `min-h-[100svh]` (not `h-`) on mobile so the card can never clip; `md:h-[100dvh]` keeps desktop snap height (min-h ≤ dvh on desktop, so it never interferes).
 
 ---
 
@@ -301,7 +303,7 @@ All content grids use **`2xl:max-w-[1400px] 2xl:mx-auto`** to prevent text and i
 - **Middleware lives at `src/middleware.ts`** (root `middleware.ts` is ignored when using a `src/` directory — `/admin` was unprotected before). It degrades gracefully: if Supabase env vars are missing it skips session refresh but still redirects `/admin` → `/`.
 - **Viewport** is exported separately (`export const viewport: Viewport`) in `layout.tsx` per Next.js 15 rules; `metadataBase` is set to `https://lovinglove.com.au`.
 - **Lint** migrated from deprecated `next lint` to ESLint CLI flat config (`eslint.config.mjs`, script `"lint": "eslint ."`). `.eslintrc.json` removed.
-- **Moments** renders 29 testimonials from `src/data/testimonials.ts` (static interim source copied from `project_docs/CONTENT.md`) — replace with Supabase once Phase 1 backend lands.
+- **Moments** is a full-screen heading placeholder (client request 2026-06-10 — testimonials removed). The 29 testimonials remain in `src/data/testimonials.ts` (currently unused; keep as the Supabase seed source). The masonry layout exists in git history (commit `19dbecd`).
 - **Connect** is a real contact page (tel/mailto/socials, no form) — a working form needs an email service (e.g. Resend) + route handler first.
 - **Partners** is an on-brand "coming soon" page until Lena provides content; **Admin** is a styled stub behind middleware.
 - **Never run `next build`/`next start` while `npm run dev` is running** — they share `.next/` and the production bundle gets corrupted (symptom: `EvalError: Code generation from strings disallowed` in middleware).

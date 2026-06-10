@@ -357,7 +357,7 @@ export default function IntroSection() {
                 <motion.p
                   className="text-neutral-500 leading-relaxed"
                   style={{
-                    fontSize: "clamp(1.0625rem, 1.4vw, 1.125rem)",
+                    fontSize: "clamp(0.9375rem, 1.4vw, 1.125rem)",
                     opacity: isMobile ? lenaBodyOpM : lenaBodyOp,
                     y:       isMobile ? lenaBodyYM  : lenaBodyY,
                   }}
@@ -368,7 +368,7 @@ export default function IntroSection() {
                 <motion.p
                   className="text-neutral-500 leading-relaxed mt-3"
                   style={{
-                    fontSize: "clamp(1.0625rem, 1.4vw, 1.125rem)",
+                    fontSize: "clamp(0.9375rem, 1.4vw, 1.125rem)",
                     opacity: isMobile ? lenaBodyOpM : lenaBodyOp,
                     y:       isMobile ? lenaBodyYM  : lenaBodyY,
                   }}
@@ -398,7 +398,7 @@ export default function IntroSection() {
 
               <motion.div
                 className="relative w-full rounded-2xl overflow-hidden bg-neutral-100
-                           h-[min(45svh,360px)] md:h-[min(58dvh,520px)]"
+                           h-[min(34svh,300px)] md:h-[min(58dvh,520px)]"
                 style={{ opacity: isMobile ? lenaImgOpM : lenaImgOp }}
                 whileHover={isMobile ? {} : { scale: 1.03 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
@@ -550,7 +550,7 @@ export default function IntroSection() {
                 <motion.p
                   className="text-neutral-500 leading-relaxed"
                   style={{
-                    fontSize: "clamp(1.0625rem, 1.4vw, 1.125rem)",
+                    fontSize: "clamp(0.9375rem, 1.4vw, 1.125rem)",
                     opacity: isMobile ? cerBodyOpM : cerBodyOp,
                     y:       isMobile ? cerBodyYM  : cerBodyY,
                   }}
@@ -581,7 +581,7 @@ export default function IntroSection() {
 
               <motion.div
                 className="relative w-full rounded-2xl overflow-hidden bg-neutral-100
-                           h-[min(45svh,360px)] md:h-[min(58dvh,520px)]"
+                           h-[min(34svh,300px)] md:h-[min(58dvh,520px)]"
                 style={{ opacity: isMobile ? cerImgOpM : cerImgOp }}
                 whileHover={isMobile ? {} : { scale: 1.03 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}

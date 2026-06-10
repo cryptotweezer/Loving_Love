@@ -142,9 +142,9 @@ export default function MeetLenaIntro() {
 
           {/* ── Panel 1: Hello, I'm Lena ─────────────────────────────────────── */}
           <Panel>
-            <div className="grid w-full max-w-7xl gap-10 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20 2xl:max-w-[1400px] 2xl:mx-auto">
+            <div className="grid w-full max-w-7xl gap-6 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20 2xl:max-w-[1400px] 2xl:mx-auto">
               <motion.div
-                className="relative h-[72vw] min-h-[320px] md:h-[min(76dvh,720px)]"
+                className="relative h-[52vw] min-h-[210px] md:h-[min(76dvh,720px)]"
                 style={{ opacity: firstTextOpacity }}
               >
                 <motion.div
@@ -170,31 +170,31 @@ export default function MeetLenaIntro() {
               >
                 {/* Each element enters with the same fade-up as panels 2–4 */}
                 <motion.h1
-                  className="font-display font-normal text-neutral-900 leading-[0.98] mb-7"
+                  className="font-display font-normal text-neutral-900 leading-tight md:leading-[0.98] mb-4 md:mb-7
+                             text-[2rem] md:text-[clamp(3.25rem,5.1vw,5.75rem)]"
                   initial={{ opacity: 0, y: 32 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.55, ease: "easeOut" }}
-                  style={{ fontSize: "clamp(3.25rem, 5.1vw, 5.75rem)" }}
                 >
                   Hello, I&apos;m Lena Saunig,
                 </motion.h1>
 
                 <motion.p
-                  className="font-display italic text-neutral-500 leading-relaxed mb-7"
+                  className="font-display italic text-neutral-500 leading-relaxed mb-4 md:mb-7
+                             text-[0.9375rem] md:text-[clamp(1rem,1.25vw,1.2rem)]"
                   initial={{ opacity: 0, y: 32 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.55, ease: "easeOut" }}
-                  style={{ fontSize: "clamp(1rem, 1.25vw, 1.2rem)" }}
                 >
                   Your Marriage Celebrant
                 </motion.p>
 
                 <motion.p
-                  className="text-neutral-500 leading-relaxed"
+                  className="text-neutral-500 leading-relaxed
+                             text-[0.9375rem] md:text-[clamp(1rem,1.25vw,1.2rem)]"
                   initial={{ opacity: 0, y: 32 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.55, ease: "easeOut" }}
-                  style={{ fontSize: "clamp(1rem, 1.25vw, 1.2rem)" }}
                 >
                   Becoming a Marriage Celebrant had been a secret dream of mine for over
                   20 years, which I happened to mention to a friend who was the Celebrant
@@ -204,7 +204,7 @@ export default function MeetLenaIntro() {
                 </motion.p>
 
                 <motion.div
-                  className="mt-8"
+                  className="mt-5 md:mt-8"
                   initial={{ opacity: 0, y: 32 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.55, ease: "easeOut" }}
@@ -224,9 +224,9 @@ export default function MeetLenaIntro() {
 
           {/* ── Panel 2: I'm passionate ──────────────────────────────────────── */}
           <Panel>
-            <div className="grid w-full max-w-7xl gap-10 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20 2xl:max-w-[1400px] 2xl:mx-auto">
+            <div className="grid w-full max-w-7xl gap-6 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20 2xl:max-w-[1400px] 2xl:mx-auto">
               <motion.div
-                className="relative h-[72vw] min-h-[320px] md:h-[min(72dvh,680px)]"
+                className="relative h-[52vw] min-h-[210px] md:h-[min(72dvh,680px)]"
                 style={{ opacity: secondTextOpacity }}
               >
                 <motion.div
@@ -260,9 +260,9 @@ export default function MeetLenaIntro() {
 
               <div className="flex flex-col justify-center md:max-w-[470px] md:justify-self-end 2xl:justify-self-start">
                 <motion.h2
-                  className="font-display font-normal text-neutral-900 leading-[0.98] mb-7"
+                  className="font-display font-normal text-neutral-900 leading-tight md:leading-[0.98] mb-4 md:mb-7
+                             text-[1.75rem] md:text-[clamp(2.45rem,3.7vw,4.35rem)]"
                   style={{
-                    fontSize: "clamp(2.45rem, 3.7vw, 4.35rem)",
                     opacity: secondTextOpacity,
                     y: secondTextY,
                   }}
@@ -271,9 +271,9 @@ export default function MeetLenaIntro() {
                 </motion.h2>
 
                 <motion.p
-                  className="text-neutral-500 leading-relaxed"
+                  className="text-neutral-500 leading-relaxed
+                             text-[0.9375rem] md:text-[clamp(1rem,1.25vw,1.2rem)]"
                   style={{
-                    fontSize: "clamp(1rem, 1.25vw, 1.2rem)",
                     opacity: secondTextOpacity,
                     y: secondTextY,
                   }}
@@ -289,9 +289,9 @@ export default function MeetLenaIntro() {
 
           {/* ── Panel 3: As a Marriage Celebrant ─────────────────────────────── */}
           <Panel>
-            <div className="grid w-full max-w-7xl gap-10 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20 2xl:max-w-[1400px] 2xl:mx-auto">
+            <div className="grid w-full max-w-7xl gap-6 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20 2xl:max-w-[1400px] 2xl:mx-auto">
               <motion.div
-                className="relative h-[72vw] min-h-[320px] md:h-[min(72dvh,680px)]"
+                className="relative h-[52vw] min-h-[210px] md:h-[min(72dvh,680px)]"
                 style={{ opacity: thirdImgOpacity }}
               >
                 {/* lena7 — portrait, ceremony scene, top-left */}
@@ -342,9 +342,9 @@ export default function MeetLenaIntro() {
 
               <div className="flex flex-col justify-center md:max-w-[470px] md:justify-self-end 2xl:justify-self-start">
                 <motion.h2
-                  className="font-display font-normal text-neutral-900 leading-[0.98] mb-7"
+                  className="font-display font-normal text-neutral-900 leading-tight md:leading-[0.98] mb-4 md:mb-7
+                             text-[2rem] md:text-[clamp(2.6rem,4vw,4.75rem)]"
                   style={{
-                    fontSize: "clamp(2.6rem, 4vw, 4.75rem)",
                     opacity: thirdTextOpacity,
                     y: thirdTextY,
                   }}
@@ -353,9 +353,9 @@ export default function MeetLenaIntro() {
                 </motion.h2>
 
                 <motion.p
-                  className="text-neutral-500 leading-relaxed mb-8"
+                  className="text-neutral-500 leading-relaxed mb-0 md:mb-8
+                             text-[0.9375rem] md:text-[clamp(1rem,1.25vw,1.2rem)]"
                   style={{
-                    fontSize: "clamp(1rem, 1.25vw, 1.2rem)",
                     opacity: thirdTextOpacity,
                     y: thirdTextY,
                   }}
@@ -367,7 +367,7 @@ export default function MeetLenaIntro() {
                 </motion.p>
 
                 <motion.div
-                  className="mt-8"
+                  className="mt-5 md:mt-8"
                   style={{ opacity: thirdTextOpacity, y: thirdTextY }}
                 >
                   <Link
@@ -385,11 +385,11 @@ export default function MeetLenaIntro() {
 
           {/* ── Panel 4: Married 20+ years ───────────────────────────────────── */}
           <Panel>
-            <div className="grid w-full max-w-7xl gap-10 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20 2xl:max-w-[1400px] 2xl:mx-auto">
+            <div className="grid w-full max-w-7xl gap-6 md:grid-cols-[minmax(0,1.25fr)_minmax(360px,0.9fr)] md:gap-14 xl:gap-20 2xl:max-w-[1400px] 2xl:mx-auto">
 
               {/* Collage — lena5 top-left (couple portrait), lena10 bottom-right (couple selfie) */}
               <motion.div
-                className="relative h-[72vw] min-h-[320px] md:h-[min(72dvh,680px)]"
+                className="relative h-[52vw] min-h-[210px] md:h-[min(72dvh,680px)]"
                 style={{ opacity: fourthImgOpacity }}
               >
                 {/* lena5 — couple portrait, top-left, larger */}
@@ -429,15 +429,15 @@ export default function MeetLenaIntro() {
                 style={{ opacity: fourthTextOpacity, y: fourthTextY }}
               >
                 <h2
-                  className="font-display font-normal text-neutral-900 leading-[0.98] mb-7"
-                  style={{ fontSize: "clamp(2.45rem, 3.7vw, 4.35rem)" }}
+                  className="font-display font-normal text-neutral-900 leading-tight md:leading-[0.98] mb-4 md:mb-7
+                             text-[2rem] md:text-[clamp(2.45rem,3.7vw,4.35rem)]"
                 >
                   Once, I said yes.
                 </h2>
 
                 <p
-                  className="text-neutral-500 leading-relaxed mb-4"
-                  style={{ fontSize: "clamp(1rem, 1.25vw, 1.2rem)" }}
+                  className="text-neutral-500 leading-relaxed mb-4
+                             text-[0.9375rem] md:text-[clamp(1rem,1.25vw,1.2rem)]"
                 >
                   I know what that moment feels like, really know it. Standing
                   there, heart full, the world holding its breath around you.
@@ -445,8 +445,8 @@ export default function MeetLenaIntro() {
                 </p>
 
                 <p
-                  className="text-neutral-500 leading-relaxed"
-                  style={{ fontSize: "clamp(1rem, 1.25vw, 1.2rem)" }}
+                  className="text-neutral-500 leading-relaxed
+                             text-[0.9375rem] md:text-[clamp(1rem,1.25vw,1.2rem)]"
                 >
                   That&apos;s why I pour everything I have into every ceremony
                   I create. Every word, every detail, every quiet pause between
@@ -455,14 +455,14 @@ export default function MeetLenaIntro() {
                 </p>
 
                 <p
-                  className="font-display italic text-neutral-500 mt-5"
-                  style={{ fontSize: "clamp(1rem, 1.25vw, 1.2rem)" }}
+                  className="font-display italic text-neutral-500 mt-3 md:mt-5
+                             text-[0.9375rem] md:text-[clamp(1rem,1.25vw,1.2rem)]"
                 >
                   Cheers to love!
                 </p>
 
                 <div
-                  className="mt-8"
+                  className="mt-5 md:mt-8"
                 >
                   <Link
                     href="/connect"
@@ -485,7 +485,7 @@ export default function MeetLenaIntro() {
 
 function Panel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-full w-screen flex-shrink-0 items-center px-6 pb-12 pt-[calc(var(--navbar-h)+2rem)] md:px-16 md:py-20 xl:px-24">
+    <div className="flex h-full w-screen flex-shrink-0 items-center px-6 pb-8 pt-[calc(var(--navbar-h)+1rem)] md:px-16 md:py-20 xl:px-24">
       {children}
     </div>
   );
